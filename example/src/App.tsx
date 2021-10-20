@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  SafeAreaView,
 } from 'react-native';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
 
@@ -61,7 +62,7 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.subContainer}>
           <TouchableOpacity
@@ -107,7 +108,7 @@ export default function App() {
       {result.error && (
         <Text style={styles.message}>Error type: {result.error.message}</Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
