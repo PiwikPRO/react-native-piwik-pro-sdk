@@ -17,7 +17,7 @@ export default function App() {
     error?: Error;
   }>({ message: 'Press any button' });
   const [eventNum, setEventNum] = React.useState<number>(1);
-  const [dispatchInterval, setDispatchInterval] = React.useState<number>(120);
+  const [dispatchInterval, setDispatchInterval] = React.useState<number>(0);
 
   const initializePiwikProSdk = async () => {
     PiwikProSdk.init(
@@ -26,6 +26,8 @@ export default function App() {
     )
       .then(() => setResult({ message: 'Success' }))
       .catch((error) => setResult({ message: 'Error', error }));
+    const di = await PiwikProSdk.getDispatchInterval();
+    setDispatchInterval(di);
   };
 
   const trackScreen = () => {
@@ -55,10 +57,12 @@ export default function App() {
       .catch((error) => setResult({ message: 'Error', error }));
   };
 
-  const changeDispatchInterval = () => {
+  const changeDispatchInterval = async () => {
     PiwikProSdk.setDispatchInterval(dispatchInterval)
       .then(() => setResult({ message: 'Change successfully' }))
       .catch((error) => setResult({ message: 'Error', error }));
+    const di = await PiwikProSdk.getDispatchInterval();
+    console.log(di);
   };
 
   return (
