@@ -6,7 +6,6 @@ import pro.piwik.sdk.Tracker
 import pro.piwik.sdk.TrackerConfig
 import pro.piwik.sdk.extra.TrackHelper
 
-
 class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
 
@@ -16,8 +15,6 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     return "PiwikProSdk"
   }
 
-  // Initialize Piwik PRO SDK
-  // See https://reactnative.dev/docs/native-modules-android
   @ReactMethod
   fun init(apiUrl: String, siteId: String, promise: Promise) {
     if (this.tracker != null) {
@@ -26,12 +23,13 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
 
     try {
-      this.tracker = Piwik.getInstance(this.reactApplicationContext).newTracker(
+      var tracker = Piwik.getInstance(this.reactApplicationContext).newTracker(
         TrackerConfig.createDefault(
           apiUrl, siteId
         )
       )
 
+      this.tracker = tracker
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
