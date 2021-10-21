@@ -20,7 +20,7 @@ export default function App() {
   const [dispatchInterval, setDispatchInterval] = React.useState<number>(0);
 
   const initializePiwikProSdk = async () => {
-    PiwikProSdk.init(
+    await PiwikProSdk.init(
       'https://your.piwik.pro.server.com',
       '01234567-89ab-cdef-0123-456789abcdef'
     )
@@ -58,11 +58,11 @@ export default function App() {
   };
 
   const changeDispatchInterval = async () => {
-    PiwikProSdk.setDispatchInterval(dispatchInterval)
+    await PiwikProSdk.setDispatchInterval(dispatchInterval)
       .then(() => setResult({ message: 'Change successfully' }))
       .catch((error) => setResult({ message: 'Error', error }));
     const di = await PiwikProSdk.getDispatchInterval();
-    console.log(di);
+    setDispatchInterval(di);
   };
 
   return (
