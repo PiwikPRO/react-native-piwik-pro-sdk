@@ -28,6 +28,7 @@ export default function App() {
       .catch((error) => setResult({ message: 'Error', error }));
     const di = await PiwikProSdk.getDispatchInterval();
     setDispatchInterval(di);
+    console.log(di);
   };
 
   const trackScreen = () => {
@@ -59,10 +60,8 @@ export default function App() {
 
   const changeDispatchInterval = async () => {
     await PiwikProSdk.setDispatchInterval(dispatchInterval)
-      .then(() => setResult({ message: 'Change successfully' }))
+      .then(() => setResult({ message: 'Changed successfully' }))
       .catch((error) => setResult({ message: 'Error', error }));
-    const di = await PiwikProSdk.getDispatchInterval();
-    setDispatchInterval(di);
   };
 
   return (
@@ -74,19 +73,6 @@ export default function App() {
             onPress={initializePiwikProSdk}
           >
             <Text style={styles.buttonText}>Initialize Piwik Pro SDK</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={trackScreen}>
-            <Text style={styles.buttonText}>Track screen</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={trackScreenWithCustomDimensions}
-          >
-            <Text style={styles.buttonText}>
-              Track screen with custom dimensions
-            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} onPress={dispatchEvents}>
@@ -105,6 +91,19 @@ export default function App() {
             onPress={changeDispatchInterval}
           >
             <Text style={styles.buttonText}>Set dispatch interval</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackScreen}>
+            <Text style={styles.buttonText}>Track screen</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={trackScreenWithCustomDimensions}
+          >
+            <Text style={styles.buttonText}>
+              Track screen with custom dimensions
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
