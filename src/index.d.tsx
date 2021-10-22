@@ -13,7 +13,9 @@ type PiwikProSdkType = {
   trackScreen(
     path: string,
     title?: string,
-    customDimensions?: CustomDimensions
+    customDimensions?: CustomDimensions,
+    visitCustomVariables?: CustomVariables,
+    screenCustomVariables?: CustomVariables
   ): Promise<void>;
 
   /**
@@ -38,4 +40,13 @@ type PiwikProSdkType = {
 
 type CustomDimensions = {
   [index: number]: string;
+};
+
+type CustomVariable = {
+  name: string;
+  value: string;
+};
+
+type CustomVariables = {
+  [index: number]: CustomVariable;
 };

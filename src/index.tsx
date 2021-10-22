@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import { validateInt, validateCustomDimensions } from './util/validator';
+import { validateInt, validateCustomKeyValue } from './util/validator';
 
 const LINKING_ERROR =
   `The package 'react-native-piwik-pro-sdk' doesn't seem to be linked. Make sure: \n\n` +
@@ -25,10 +25,21 @@ async function init(apiUrl: string, siteId: string): Promise<void> {
 async function trackScreen(
   path: string,
   title?: string,
-  customDimensions?: CustomDimensions
+  customDimensions?: CustomDimensions,
+  visitCustomVariables?: CustomVariables,
+  screenCustomVariables?: CustomVariables
 ): Promise<void> {
-  validateCustomDimensions(customDimensions);
-  return await PiwikProNativeSdk.trackScreen(path, title, customDimensions);
+  validateCustomKeyValue(customDimensions);
+  validateCustomKeyValue(visitCustomVariables);
+  validateCustomKeyValue(screenCustomVariables);
+
+  return await PiwikProNativeSdk.trackScreen(
+    path,
+    title,
+    customDimensions,
+    visitCustomVariables,
+    screenCustomVariables
+  );
 }
 
 async function dispatch(): Promise<void> {
