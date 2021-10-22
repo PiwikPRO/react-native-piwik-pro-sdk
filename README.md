@@ -50,7 +50,7 @@ const customDimensions = {
 await PiwikProSdk.trackScreen(`your_activity_path`, 'title', customDimensions);
 ```
 
-`1` and `2` are our dimension IDs. `dashboard`, `menu` are the dimension values for the tracked screen view.
+`1` and `2` are dimension IDs. `dashboard`, `menu` are the dimension values for the tracked screen view event.
 
 
 ## Dispatching

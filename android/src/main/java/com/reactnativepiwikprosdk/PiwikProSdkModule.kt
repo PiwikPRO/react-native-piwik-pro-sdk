@@ -23,7 +23,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
 
     try {
-      var tracker = Piwik.getInstance(this.reactApplicationContext).newTracker(
+      val tracker = Piwik.getInstance(this.reactApplicationContext).newTracker(
         TrackerConfig.createDefault(
           apiUrl, siteId
         )
@@ -40,12 +40,9 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   fun trackScreen(path: String, title: String?, customDimensions: ReadableMap?, promise: Promise) {
     try {
       val tracker = getTracker()
-      var trackHelper = TrackHelper.track()
+      val trackHelper = TrackHelper.track()
 
-      customDimensions?.entryIterator?.forEach {
-        trackHelper.dimension(it.key.toInt(), it.value.toString())
-      }
-
+      applyCustomDimensions(trackHelper, customDimensions)
       trackHelper.screen(path).title(title).with(tracker)
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -85,5 +82,11 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
   private fun getTracker(): Tracker {
     return this.tracker ?: throw Exception("Piwik Pro SDK has not been initialized")
+  }
+
+  private fun applyCustomDimensions(trackHelper: TrackHelper, customDimensions: ReadableMap?) {
+    customDimensions?.entryIterator?.forEach {
+      trackHelper.dimension(it.key.toInt(), it.value.toString())
+    }
   }
 }
