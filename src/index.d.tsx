@@ -36,6 +36,16 @@ type PiwikProSdkType = {
    * dispatch has been disabled.
    */
   getDispatchInterval(): Promise<number>;
+
+  /**
+   * Sets flag that determines whether default custom variables should be
+   * added to each tracking event.
+   * @includeDefaultCustomVariable flag that determines whether to include default
+   * custom variables
+   */
+  setIncludeDefaultCustomVariable(
+    includeDefaultCustomVariable: boolean
+  ): Promise<void>;
 };
 
 type CustomDimensions = {

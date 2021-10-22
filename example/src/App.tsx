@@ -29,6 +29,10 @@ export default function App() {
     const di = await PiwikProSdk.getDispatchInterval();
     setDispatchInterval(di);
     console.log(di);
+    const includeDefaultCustomVariable = true;
+    await PiwikProSdk.setIncludeDefaultCustomVariable(
+      includeDefaultCustomVariable
+    );
   };
 
   const trackScreen = () => {

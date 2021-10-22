@@ -55,12 +55,21 @@ async function getDispatchInterval(): Promise<number> {
   return await PiwikProNativeSdk.getDispatchInterval();
 }
 
+async function setIncludeDefaultCustomVariable(
+  includeDefaultCustomVariable: boolean
+): Promise<void> {
+  return await PiwikProNativeSdk.setIncludeDefaultCustomVariable(
+    includeDefaultCustomVariable
+  );
+}
+
 const PiwikProSdk: PiwikProSdkType = {
   init,
   trackScreen,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,
+  setIncludeDefaultCustomVariable,
 };
 
 export default PiwikProSdk;
