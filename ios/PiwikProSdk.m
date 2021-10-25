@@ -93,8 +93,8 @@ RCT_REMAP_METHOD(getDispatchInterval,
     }
 }
 
-RCT_REMAP_METHOD(setIncludeDefaultCustomVariable,
-                 withIncludeDefaultCustomVariable:(BOOL)includeDefaultCustomVariable
+RCT_REMAP_METHOD(setIncludeDefaultCustomVariables,
+                 withIncludeDefaultCustomVariables:(BOOL)includeDefaultCustomVariables
                  getDispatchIntervalWithResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -104,8 +104,25 @@ RCT_REMAP_METHOD(setIncludeDefaultCustomVariable,
     }
     
     @try {
-        [PiwikTracker sharedInstance].includeDefaultCustomVariable = includeDefaultCustomVariable;
+        [PiwikTracker sharedInstance].includeDefaultCustomVariable = includeDefaultCustomVariables;
         resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(getIncludeDefaultCustomVariables,
+                 getIncludeDefaultCustomVariablesWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        BOOL includeDefaultCustomVariables = [PiwikTracker sharedInstance].includeDefaultCustomVariable;
+        resolve(includeDefaultCustomVariables);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
     }
