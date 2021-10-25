@@ -28,11 +28,13 @@ export default function App() {
       .catch((error) => setResult({ message: 'Error', error }));
     const di = await PiwikProSdk.getDispatchInterval();
     setDispatchInterval(di);
-    console.log(di);
-    const includeDefaultCustomVariable = true;
-    await PiwikProSdk.setIncludeDefaultCustomVariable(
-      includeDefaultCustomVariable
+    console.log('Dispatch interval:', di);
+    const includeDefaultCustomVariables = false;
+    await PiwikProSdk.setIncludeDefaultCustomVariables(
+      includeDefaultCustomVariables
     );
+    const include = await PiwikProSdk.getIncludeDefaultCustomVariables();
+    console.log('Include default custom variables:', include);
   };
 
   const trackScreen = () => {

@@ -115,6 +115,23 @@ Returns:
 - `dispatchInterval: number` - current dispatch interval (in seconds) or negative number if automatic dispatch has been disabled.
 
 
+## Default custom variables
+
+SDK can automatically add information about the platform version, OS version and app version in custom variables with indexes 1-3. By default, this option is turned on. This can be changed via the `setIncludeDefaultCustomVars` method:
+```js
+await PiwikProSdk.setIncludeDefaultCustomVariables(true);
+```
+Parameters:
+- `includeDefaultCustomVariables: boolean` (*required*) - flag that determines whether default custom variables should be added to each tracking event.
+
+The status of the option can be checked with `getIncludeDefaultCustomVariables`:
+```js
+const includeDefaultCustomVariables = await PiwikProSdk.getIncludeDefaultCustomVariables();
+```
+Returns:
+- `includeDefaultCustomVariables: boolean` - flag that determines whether default custom variables should be added to each tracking event.
+
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.

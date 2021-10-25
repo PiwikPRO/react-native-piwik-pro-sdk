@@ -84,6 +84,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  @ReactMethod
+  fun setIncludeDefaultCustomVariables(includeDefaultCustomVariables: Boolean, promise: Promise) {
+    try {
+      getTracker().setIncludeDefaultCustomVars(includeDefaultCustomVariables);
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getIncludeDefaultCustomVariables(promise: Promise) {
+    try {
+      val includeDefaultCustomVariables = getTracker().includeDefaultCustomVars
+      promise.resolve(includeDefaultCustomVariables)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
   private fun getTracker(): Tracker {
     return this.tracker ?: throw Exception("Piwik Pro SDK has not been initialized")
   }

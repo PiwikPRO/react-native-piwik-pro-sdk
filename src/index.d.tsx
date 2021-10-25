@@ -43,9 +43,15 @@ type PiwikProSdkType = {
    * @includeDefaultCustomVariable flag that determines whether to include default
    * custom variables
    */
-  setIncludeDefaultCustomVariable(
-    includeDefaultCustomVariable: boolean
+  setIncludeDefaultCustomVariables(
+    includeDefaultCustomVariables: boolean
   ): Promise<void>;
+
+  /**
+   * Returns the flag that determines whether default custom variables should be
+   * added to each tracking event.
+   */
+  getIncludeDefaultCustomVariables(): Promise<boolean>;
 };
 
 type CustomDimensions = {

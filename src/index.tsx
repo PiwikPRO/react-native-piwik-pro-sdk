@@ -55,12 +55,16 @@ async function getDispatchInterval(): Promise<number> {
   return await PiwikProNativeSdk.getDispatchInterval();
 }
 
-async function setIncludeDefaultCustomVariable(
-  includeDefaultCustomVariable: boolean
+async function setIncludeDefaultCustomVariables(
+  includeDefaultCustomVariables: boolean
 ): Promise<void> {
-  return await PiwikProNativeSdk.setIncludeDefaultCustomVariable(
-    includeDefaultCustomVariable
+  return await PiwikProNativeSdk.setIncludeDefaultCustomVariables(
+    includeDefaultCustomVariables
   );
+}
+
+async function getIncludeDefaultCustomVariables(): Promise<boolean> {
+  return await PiwikProNativeSdk.getIncludeDefaultCustomVariables();
 }
 
 const PiwikProSdk: PiwikProSdkType = {
@@ -69,7 +73,8 @@ const PiwikProSdk: PiwikProSdkType = {
   dispatch,
   setDispatchInterval,
   getDispatchInterval,
-  setIncludeDefaultCustomVariable,
+  setIncludeDefaultCustomVariables,
+  getIncludeDefaultCustomVariables,
 };
 
 export default PiwikProSdk;
