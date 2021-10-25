@@ -29,12 +29,12 @@ export default function App() {
     const di = await PiwikProSdk.getDispatchInterval();
     setDispatchInterval(di);
     console.log('Dispatch interval:', di);
-    // const includeDefaultCustomVariables = false;
-    // await PiwikProSdk.setIncludeDefaultCustomVariables(
-    //   includeDefaultCustomVariables
-    // );
-    // const include = await PiwikProSdk.getIncludeDefaultCustomVariables();
-    // console.log('Include default custom variables:', include);
+    const includeDefaultCustomVariables = false;
+    await PiwikProSdk.setIncludeDefaultCustomVariables(
+      includeDefaultCustomVariables
+    );
+    const include = await PiwikProSdk.getIncludeDefaultCustomVariables();
+    console.log('Include default custom variables:', include);
   };
 
   const trackScreen = () => {
