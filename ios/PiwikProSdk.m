@@ -122,7 +122,7 @@ RCT_REMAP_METHOD(getIncludeDefaultCustomVariables,
     
     @try {
         BOOL includeDefaultCustomVariables = [PiwikTracker sharedInstance].includeDefaultCustomVariable;
-        resolve(includeDefaultCustomVariables);
+        resolve(@(includeDefaultCustomVariables));
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
     }
