@@ -10,13 +10,7 @@ type PiwikProSdkType = {
   /**
    * Set anonymization state of Piwik Pro SDK
    */
-  trackScreen(
-    path: string,
-    title?: string,
-    customDimensions?: CustomDimensions,
-    visitCustomVariables?: CustomVariables,
-    screenCustomVariables?: CustomVariables
-  ): Promise<void>;
+  trackScreen(path: string, options?: TrackScreenOptions): Promise<void>;
 
   /**
    * Dispatches queued events.
@@ -76,4 +70,11 @@ type CustomVariable = {
 
 type CustomVariables = {
   [index: number]: CustomVariable;
+};
+
+type TrackScreenOptions = {
+  title?: string;
+  customDimensions?: CustomDimensions;
+  visitCustomVariables?: CustomVariables;
+  screenCustomVariables?: CustomVariables;
 };

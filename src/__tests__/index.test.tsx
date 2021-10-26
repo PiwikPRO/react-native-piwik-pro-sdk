@@ -108,9 +108,7 @@ describe('PiwikProSdk', () => {
 
   describe('#isAnonymizationOn', () => {
     it('calls isAnonymizationOn from native SDK', async () => {
-      NativeModules.PiwikProSdk.isAnonymizationOn.mockResolvedValue(
-        true
-      );
+      NativeModules.PiwikProSdk.isAnonymizationOn.mockResolvedValue(true);
       const result = await PiwikProSdk.isAnonymizationOn();
 
       expect(result).toStrictEqual(true);
