@@ -110,7 +110,7 @@ export default function App() {
       path: 'some/path',
       value: 1.5,
       visitCustomVariables,
-      customDimensions,
+      // customDimensions,
     };
 
     try {
