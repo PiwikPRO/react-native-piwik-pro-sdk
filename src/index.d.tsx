@@ -27,6 +27,18 @@ type PiwikProSdkType = {
   ): Promise<void>;
 
   /**
+   * Tracks exception.
+   * @category event category
+   * @action specific event action within the category specified
+   * @options custom event options (name, value, path, customDimensions, visitCustomVariables)
+   */
+  trackException(
+    description: string,
+    isFatal: boolean,
+    options?: TrackExceptionOptions
+  ): Promise<void>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;
@@ -101,3 +113,5 @@ type TrackCustomEventOptions = CommonEventOptions & {
   value?: number;
   path?: string;
 };
+
+type TrackExceptionOptions = CommonEventOptions;

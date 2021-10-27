@@ -75,6 +75,23 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackException(description: String, isFatal: Boolean, options: ReadableMap?, promise: Promise) {
+    try {
+      val tracker = getTracker()
+      val trackHelper = TrackHelper.track()
+      val exceptionTracker = trackHelper.exception(Exception(description)).description(description).fatal(isFatal)
+
+      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      exceptionTracker.with(tracker)
+
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

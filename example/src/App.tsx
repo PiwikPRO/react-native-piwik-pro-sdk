@@ -31,8 +31,8 @@ export default function App() {
 
   const initializePiwikProSdk = async () => {
     await PiwikProSdk.init(
-      'https://your.piwik.pro.server.com',
-      '01234567-89ab-cdef-0123-456789abcdef'
+      'https://astralprojection.promilci.com',
+      '0bcdeb8b-8055-49ec-8425-b45ce73c46a6'
     )
       .then(() => setResult({ message: 'Success' }))
       .catch((error) => setResult({ message: 'Error', error }));
@@ -125,6 +125,19 @@ export default function App() {
     }
   };
 
+  const trackException = async () => {
+    const options: TrackExceptionOptions = {
+      visitCustomVariables,
+    };
+
+    try {
+      await PiwikProSdk.trackException(`exception_${eventNum}`, false, options);
+      setEventNum(eventNum + 1);
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -188,6 +201,10 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackCustomEvent}>
             <Text style={styles.buttonText}>Track custom event</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackException}>
+            <Text style={styles.buttonText}>Track exception</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
