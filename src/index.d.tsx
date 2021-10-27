@@ -8,7 +8,9 @@ type PiwikProSdkType = {
   init(apiUrl: string, siteId: string): Promise<void>;
 
   /**
-   * Set anonymization state of Piwik Pro SDK
+   * Sends tracking screen view event.
+   * @path screen path
+   * @options tracking screen view options (title, customDimensions, screenCustomVariables, visitCustomVariables)
    */
   trackScreen(path: string, options?: TrackScreenOptions): Promise<void>;
 
