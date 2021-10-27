@@ -42,11 +42,11 @@ async function trackCustomEvent(
 }
 
 async function trackException(
-  exception: string,
+  description: string,
   isFatal: boolean,
   options?: TrackExceptionOptions
 ): Promise<void> {
-  return await PiwikProNativeSdk.trackException(exception, isFatal, options);
+  return await PiwikProNativeSdk.trackException(description, isFatal, options);
 }
 
 async function dispatch(): Promise<void> {

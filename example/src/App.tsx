@@ -31,8 +31,8 @@ export default function App() {
 
   const initializePiwikProSdk = async () => {
     await PiwikProSdk.init(
-      'https://astralprojection.promilci.com',
-      '0bcdeb8b-8055-49ec-8425-b45ce73c46a6'
+      'https://your.piwik.pro.server.com',
+      '01234567-89ab-cdef-0123-456789abcdef'
     )
       .then(() => setResult({ message: 'Success' }))
       .catch((error) => setResult({ message: 'Error', error }));
