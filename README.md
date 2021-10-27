@@ -78,7 +78,13 @@ Parameters:
 To collect data about the user’s interaction with the interactive components of the application, like a button presses or the use of a particular item in the game - use event method.
 
 ```js
-TrackHelper.track().event("category", "action").path("/main/actionScreen").name("label").value(1000f).with(tracker);
+const options = {
+  name: 'customEvent',
+  path: 'some/path',
+  value: 1.5,
+  customDimensions: { 1: 'some custom dimension value' },
+}
+await PiwikProSdk.trackCustomEvent(`custom_event`, 'custom_event_action', options);
 ```
 Parameters:
 
