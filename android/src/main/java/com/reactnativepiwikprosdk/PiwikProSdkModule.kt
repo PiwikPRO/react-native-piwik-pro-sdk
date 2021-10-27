@@ -61,8 +61,8 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
       val customEventTracker = trackHelper.event(category, action).path(options?.getString("path"))
         .name(options?.getString("name")).value(
-        options?.getDouble("value")?.toFloat()
-      )
+          options?.getDouble("value")?.toFloat()
+        )
 
       applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
       applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
@@ -75,11 +75,17 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun trackException(description: String, isFatal: Boolean, options: ReadableMap?, promise: Promise) {
+  fun trackException(
+    description: String,
+    isFatal: Boolean,
+    options: ReadableMap?,
+    promise: Promise
+  ) {
     try {
       val tracker = getTracker()
       val trackHelper = TrackHelper.track()
-      val exceptionTracker = trackHelper.exception(Exception(description)).description(description).fatal(isFatal)
+      val exceptionTracker =
+        trackHelper.exception(Exception(description)).description(description).fatal(isFatal)
 
       applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
       applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
@@ -124,7 +130,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setIncludeDefaultCustomVariables(includeDefaultCustomVariables: Boolean, promise: Promise) {
     try {
-      getTracker().setIncludeDefaultCustomVars(includeDefaultCustomVariables);
+      getTracker().setIncludeDefaultCustomVars(includeDefaultCustomVariables)
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -144,7 +150,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setAnonymizationState(anonymizationState: Boolean, promise: Promise) {
     try {
-      getTracker().setAnonymizationState(anonymizationState);
+      getTracker().setAnonymizationState(anonymizationState)
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)

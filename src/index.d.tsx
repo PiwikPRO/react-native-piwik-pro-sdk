@@ -28,9 +28,9 @@ type PiwikProSdkType = {
 
   /**
    * Tracks exception.
-   * @category event category
-   * @action specific event action within the category specified
-   * @options custom event options (name, value, path, customDimensions, visitCustomVariables)
+   * @description the exception message
+   * @isFatal determines whether the exception prefix will be `'fatal'` or `'caught'`
+   * @options exception tracking options (customDimensions, visitCustomVariables)
    */
   trackException(
     description: string,
