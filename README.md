@@ -219,6 +219,7 @@ where:
 - `value: string` *(required)* - the value of a specific custom variable such as 'Customer' (Limited to 200 characters).
 
 
+
 ## Tracking custom dimensions
 
 To track a custom name-value pair assigned to your users or screen views, use [Custom Dimensions](https://help.piwik.pro/support/analytics/custom-dimension/). Note that the custom value data is not sent by itself, but only with other tracking actions such as screen views, events or other tracking actions (see the documentation of other tracking methods), for example:
