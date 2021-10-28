@@ -53,7 +53,7 @@ type PiwikProSdkType = {
   /**
    * Tracks download.
    */
-  trackDownload(url: string, options: CommonEventOptions): Promise<void>;
+  trackDownload(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
    * Dispatches queued events.

@@ -63,7 +63,7 @@ async function trackSocialInteraction(
 
 async function trackDownload(
   url: string,
-  options: CommonEventOptions
+  options?: CommonEventOptions
 ): Promise<void> {
   return await PiwikProNativeSdk.trackDownload(url, options);
 }
