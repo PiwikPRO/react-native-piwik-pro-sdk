@@ -40,9 +40,9 @@ type PiwikProSdkType = {
 
   /**
    * Tracks social interaction.
-   * @interaction the exception message
-   * @network determines whether the exception prefix will be `'fatal'` or `'caught'`
-   * @options exception tracking options (customDimensions, visitCustomVariables)
+   * @interaction defines the social interaction
+   * @network social network associated with interaction
+   * @options exception tracking options (target, customDimensions, visitCustomVariables)
    */
   trackSocialInteraction(
     interaction: string,
