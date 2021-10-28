@@ -48,29 +48,6 @@ RCT_REMAP_METHOD(trackScreen,
     }
 }
 
-RCT_REMAP_METHOD(trackCustomEvent,
-                 trackCustomEventWithCategory:(nonnull NSString*)category
-                 withAction:(nonnull NSString*)action
-                 withOptions:(NSDictionary*)options
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
-{
-    if ([PiwikTracker sharedInstance] == nil) {
-        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
-        return;
-    }
-    
-    @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
-
-        [[PiwikTracker sharedInstance] sendEventWithCategory:category action:action name:options[@"name"] value:options[@"value"]];
-        resolve(nil);
-    } @catch (NSException *exception) {
-        reject(exception.name, exception.reason, nil);
-    }
-}
-
 RCT_REMAP_METHOD(trackException,
                  trackExceptionWithDescription:(nonnull NSString*)description
                  withIsFatal:(BOOL)isFatal
@@ -117,6 +94,28 @@ RCT_REMAP_METHOD(trackSocialInteraction,
     }
 }
 
+RCT_REMAP_METHOD(trackDownload,
+                 trackDownloadWithUrl:(nonnull NSString*)url
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [self applyCustomDimensions:options[@"customDimensions"]];
+        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+
+        [[PiwikTracker sharedInstance] sendSocialInteractionWithAction:interaction target:options[@"target"] network:network];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(trackSocialInteraction,
                  trackSocialInteractionWithInteraction:(nonnull NSString*)interaction
                  withNetwork:(nonnull NSString*)network
@@ -133,7 +132,7 @@ RCT_REMAP_METHOD(trackSocialInteraction,
         [self applyCustomDimensions:options[@"customDimensions"]];
         [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
 
-        [[PiwikTracker sharedInstance] sendSocialInteractionWithAction:interaction target:options[@"target"] network:network];
+        [[PiwikTracker sharedInstance] sendDownload:url];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
