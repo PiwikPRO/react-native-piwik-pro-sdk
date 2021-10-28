@@ -52,8 +52,7 @@ export default function App() {
   const trackScreen = () => {
     PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, undefined)
       .then(() => {
-        setResult({ message: `Success track screen ${eventNum}` });
-        setEventNum(eventNum + 1);
+        successMessage('track screen');
       })
       .catch((error) => setResult({ message: 'Error', error }));
   };
@@ -66,8 +65,7 @@ export default function App() {
 
     await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
       .then(() => {
-        setResult({ message: `Success track screen ${eventNum}` });
-        setEventNum(eventNum + 1);
+        successMessage('track screen');
       })
       .catch((error) => setResult({ message: 'Error', error }));
   };
@@ -80,8 +78,7 @@ export default function App() {
 
     await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
       .then(() => {
-        setResult({ message: `Success track screen ${eventNum}` });
-        setEventNum(eventNum + 1);
+        successMessage('track screen');
       })
       .catch((error) => setResult({ message: 'Error', error }));
   };
@@ -119,7 +116,7 @@ export default function App() {
         'custom_event_action',
         options
       );
-      setEventNum(eventNum + 1);
+      successMessage('track custom event');
     } catch (error) {
       setResult({ message: 'Error', error: error as Error });
     }
@@ -132,7 +129,7 @@ export default function App() {
 
     try {
       await PiwikProSdk.trackException(`exception_${eventNum}`, false, options);
-      setEventNum(eventNum + 1);
+      successMessage('track exception');
     } catch (error) {
       setResult({ message: 'Error', error: error as Error });
     }
@@ -151,10 +148,15 @@ export default function App() {
         'Facebook',
         options
       );
-      setEventNum(eventNum + 1);
+      successMessage('track social interaction');
     } catch (error) {
       setResult({ message: 'Error', error: error as Error });
     }
+  };
+
+  const successMessage = (eventType: string) => {
+    setResult({ message: `Success: ${eventType} ${eventNum}` });
+    setEventNum(eventNum + 1);
   };
 
   return (
