@@ -138,6 +138,25 @@ export default function App() {
     }
   };
 
+  const trackSocialInteraction = async () => {
+    const options: TrackSocialInteractionOptions = {
+      visitCustomVariables,
+      target: 'Photo',
+      // customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackSocialInteraction(
+        `like_${eventNum}`,
+        'Facebook',
+        options
+      );
+      setEventNum(eventNum + 1);
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -205,6 +224,13 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackException}>
             <Text style={styles.buttonText}>Track exception</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={trackSocialInteraction}
+          >
+            <Text style={styles.buttonText}>Track social interaction</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

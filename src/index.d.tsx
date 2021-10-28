@@ -39,6 +39,18 @@ type PiwikProSdkType = {
   ): Promise<void>;
 
   /**
+   * Tracks social interaction.
+   * @interaction the exception message
+   * @network determines whether the exception prefix will be `'fatal'` or `'caught'`
+   * @options exception tracking options (customDimensions, visitCustomVariables)
+   */
+  trackSocialInteraction(
+    interaction: string,
+    network: string,
+    options?: TrackSocialInteractionOptions
+  ): Promise<void>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;
@@ -115,3 +127,7 @@ type TrackCustomEventOptions = CommonEventOptions & {
 };
 
 type TrackExceptionOptions = CommonEventOptions;
+
+type TrackSocialInteractionOptions = CommonEventOptions & {
+  target?: string;
+};
