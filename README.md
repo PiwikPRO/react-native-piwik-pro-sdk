@@ -170,6 +170,25 @@ All downloads can be viewed in the corresponding section in the analytics panel.
 
 
 
+## Tracking outlinks
+
+Requires Analytics
+
+For tracking outlinks to external websites or other apps opened from your application use the `trackOutlink` method:
+
+```js
+const options = {
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackOutlink(`http://your.server.com/bonusmap.zip`, options);
+```
+Parameters:
+- URL *(required)* – outlink target. HTTPS, HTTP and FTP are valid.
+
+
+
+
 ## Tracking custom variables
 
 A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name - for example, 'User status' - and a value - for example, 'LoggedIn' or 'Anonymous'. It is required for names and values to be encoded in UTF-8.
