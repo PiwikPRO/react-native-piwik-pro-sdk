@@ -117,7 +117,7 @@ RCT_REMAP_METHOD(trackDownload,
 }
 
 RCT_REMAP_METHOD(trackOutlink,
-                 ttrackOutlinkWithUrl:(nonnull NSString*)outlink
+                 trackOutlinkWithOutlink:(nonnull NSString*)outlink
                  withOptions:(NSDictionary*)options
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
@@ -154,6 +154,28 @@ RCT_REMAP_METHOD(trackOutlink,
         [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
 
         [[PiwikTracker sharedInstance] sendOutlink:outlink];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(trackSearch,
+                 trackSearchWithKeyword:(nonnull NSString*)keyword
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [self applyCustomDimensions:options[@"customDimensions"]];
+        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+
+        [[PiwikTracker sharedInstance] sendSearchWithKeyword:keyword category:options[@"category"] numberOfHits:options[@"count"]];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
