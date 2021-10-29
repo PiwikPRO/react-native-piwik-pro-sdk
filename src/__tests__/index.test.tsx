@@ -114,7 +114,7 @@ describe('PiwikProSdk', () => {
     it('calls trackException from native SDK', async () => {
       const description = 'sample exception';
       const isFatal = true;
-      const options: TrackExceptionOptions = commonEventOptions;
+      const options: CommonEventOptions = commonEventOptions;
 
       await PiwikProSdk.trackException(description, isFatal, options);
 
