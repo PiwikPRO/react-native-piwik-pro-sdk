@@ -66,8 +66,8 @@ type PiwikProSdkType = {
 
   /**
    * Tracks search.
-   * @keyword outlink target
-   * @options outlink tracking options (customDimensions, visitCustomVariables)
+   * @keyword searched query that was used in the app
+   * @options search tracking options (category, count, customDimensions, visitCustomVariables)
    */
   trackSearch(keyword: string, options?: TrackScreenOptions): Promise<void>;
 
