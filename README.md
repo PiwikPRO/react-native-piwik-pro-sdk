@@ -274,6 +274,8 @@ Parameters:
   - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
 
+***Note:*** On iOS the campaign information will be sent to the server together with the next analytics event.
+
 
 
 ## Tracking custom variables
