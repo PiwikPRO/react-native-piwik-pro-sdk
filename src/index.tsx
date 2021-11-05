@@ -117,6 +117,10 @@ async function checkAudienceMembership(audienceId: string): Promise<boolean> {
   return await PiwikProNativeSdk.checkAudienceMembership(audienceId);
 }
 
+async function setUserId(userId: string): Promise<void> {
+  return await PiwikProNativeSdk.setUserId(userId);
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -188,6 +192,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackCampaign,
   getProfileAttributes,
   checkAudienceMembership,
+  setUserId,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

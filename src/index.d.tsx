@@ -108,6 +108,12 @@ type PiwikProSdkType = {
   checkAudienceMembership(audienceId: string): Promise<boolean>;
 
   /**
+   * Sets the user ID
+   * @param userId user ID to set
+   */
+  setUserId(userId: string): Promise<void>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;
