@@ -362,6 +362,17 @@ Returns:
 
 ## Advanced usage
 
+### User ID
+
+UserID will allow the association of events from various sources to the same user. Each time a new visitor enters your page, Piwik PRO assigns a cookie containing a random string of characters. The purpose of this cookie is for Piwik PRO to be able to recognize the same visitor whenever the website is visited again. However, instead of a random string, you can assign your visitors with your own human-friendly name (ex. visitor email). In order to set [UserID](https://help.piwik.pro/support/getting-started/userid/), use the `setUserId` method:
+```js
+await PiwikProSdk.setUserId("John Doe");
+```
+Parameters:
+- `userId: string` *(required)* - any non-empty unique string identifying the user. Passing null will delete the current UserID
+
+
+
 ### Dispatching
 
 Tracked events are stored temporarily on the queue and dispatched in batches every 30 seconds (default setting). This behavior can be changed in the following way:
