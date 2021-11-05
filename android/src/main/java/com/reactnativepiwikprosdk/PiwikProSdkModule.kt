@@ -216,6 +216,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  @ReactMethod
   fun setUserId(userId: String, promise: Promise) {
     try {
       getTracker().userId = userId;
