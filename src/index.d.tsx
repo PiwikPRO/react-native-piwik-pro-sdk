@@ -96,7 +96,7 @@ type PiwikProSdkType = {
   trackCampaign(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
-   * Tracks campaign.
+   * Returns user profile attributes.
    */
   getProfileAttributes(): Promise<ProfileAttributes>;
 
