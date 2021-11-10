@@ -235,7 +235,8 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
         override fun onError(errorData: String) {
           var errorData: String? = errorData
-          errorData = if (TextUtils.isEmpty(errorData)) "Network error" else errorData
+          errorData =
+            if (TextUtils.isEmpty(errorData)) "Getting user profile attributes failed" else errorData
           promise.reject(Exception(errorData))
         }
       })
