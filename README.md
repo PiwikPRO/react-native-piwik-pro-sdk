@@ -335,8 +335,8 @@ const attributes = await PiwikProSdk.getProfileAttributes();
 console.log(attributes);
 // {"device_type": "desktop", ...}
 ```
-Result:
-- `attributes: object` - dictionary of key-value pairs, where each pair represents the attribute name (key) and value. In case of error, returns error message.
+Returns:
+- `attributes: object` - dictionary of key-value pairs, where each pair represents the attribute name (key) and value. In case of error (for example when user profile does not yet exist), returns error message.
 
 
 
