@@ -439,7 +439,7 @@ const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
 console.log(currentPrefixingState); // false
 ```
 Returns:
-- `anonymizationState: boolean` - current prefixing state.
+- `prefixingEnabled: boolean` - current prefixing state.
 
 
 
