@@ -415,13 +415,32 @@ Parameters:
 - `optOut: boolean` *(required)* – flag that determines whether opt-out is enabled.
 
 You can obtain current `optOut` value with `getOptOut`:
-
 ```js
 const currentOptOutState = await PiwikProSdk.getOptOut();
 console.log(currentOptOutState); // false
 ```
 Returns:
 - `optOut: boolean` - current opt-out flag state.
+
+
+
+## Prefixing
+
+In case of tracking events like screen view, exception or social interaction event path in the tracker will contain corresponding prefix. You can disable prefixing with:
+```js
+await PiwikProSdk.setPrefixing(false);
+```
+Parameters:
+- `prefixingEnabled: boolean` *(required)* - flag that determines whether prefixing is enabled
+
+You can also check the prefixing status using the `isPrefixingOn` method:
+
+```js
+const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
+console.log(currentPrefixingState); // false
+```
+Returns:
+- `anonymizationState: boolean` - current prefixing state.
 
 
 

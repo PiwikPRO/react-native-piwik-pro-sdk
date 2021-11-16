@@ -166,7 +166,7 @@ type PiwikProSdkType = {
 
   /**
    * Sets the new prefixing state.
-   * @anonymizationState new anonymization state
+   * @prefixingEnabled new prefixing state
    */
   setPrefixing(prefixingEnabled: boolean): Promise<void>;
 
