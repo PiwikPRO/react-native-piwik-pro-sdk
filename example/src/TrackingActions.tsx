@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from './piwikSdk';
-export default function TrackingActions() {
+export default function TrackingActions(props: any) {
+  const { successMessage, setResult, eventNum } = props;
   const customDimensions = {
     1: 'beta',
     2: 'gamma',
@@ -9,7 +10,6 @@ export default function TrackingActions() {
   const visitCustomVariables = { 4: { name: 'food', value: 'pizza' } };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const screenCustomVariables = { 5: { name: 'drink', value: 'water' } };
-  const eventNum = 1;
 
   const trackScreen = () => {
     PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, undefined)
@@ -199,12 +199,12 @@ export default function TrackingActions() {
     }
   };
 
-  const successMessage = (message: string) => {
-    console.log(message);
-  };
-  const setResult = (tmp: any) => {
-    console.log(tmp);
-  };
+  // const successMessage = (message: string) => {
+  //   console.log(message);
+  // };
+  // const setResult = (tmp: any) => {
+  //   console.log(tmp);
+  // };
 
   return (
     <View style={styles.subContainer}>

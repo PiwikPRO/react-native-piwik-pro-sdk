@@ -9,7 +9,8 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
-import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import PiwikProSdk from './piwikSdk';
+import TrackingActions from './TrackingActions';
 
 export default function App() {
   const [result, setResult] = React.useState<{
@@ -21,18 +22,10 @@ export default function App() {
   const [anonymizationEnabled, setAnonymizationEnabled] =
     React.useState<boolean>(true);
 
-  const customDimensions = {
-    1: 'beta',
-    2: 'gamma',
-  };
-  const visitCustomVariables = { 4: { name: 'food', value: 'pizza' } };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const screenCustomVariables = { 5: { name: 'drink', value: 'water' } };
-
   const initializePiwikProSdk = async () => {
     await PiwikProSdk.init(
-      'https://your.piwik.pro.server.com',
-      '01234567-89ab-cdef-0123-456789abcdef'
+      'https://staging-qa.piwik.pro/',
+      'beaa97a5-ff9f-45b2-b7d1-0b80ea8c7740'
     )
       .then(() => setResult({ message: 'Success' }))
       .catch((error) => setResult({ message: 'Error', error }));
@@ -49,39 +42,39 @@ export default function App() {
     console.log('Include default custom variables:', include);
   };
 
-  const trackScreen = () => {
-    PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, undefined)
-      .then(() => {
-        successMessage('track screen');
-      })
-      .catch((error) => setResult({ message: 'Error', error }));
-  };
+  // const trackScreen = () => {
+  //   PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, undefined)
+  //     .then(() => {
+  //       successMessage('track screen');
+  //     })
+  //     .catch((error) => setResult({ message: 'Error', error }));
+  // };
 
-  const trackScreenWithCustomDimensions = async () => {
-    const options: TrackScreenOptions = {
-      title: 'customDimensions',
-      customDimensions,
-    };
+  // const trackScreenWithCustomDimensions = async () => {
+  //   const options: TrackScreenOptions = {
+  //     title: 'customDimensions',
+  //     customDimensions,
+  //   };
 
-    await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
-      .then(() => {
-        successMessage('track screen');
-      })
-      .catch((error) => setResult({ message: 'Error', error }));
-  };
+  //   await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
+  //     .then(() => {
+  //       successMessage('track screen');
+  //     })
+  //     .catch((error) => setResult({ message: 'Error', error }));
+  // };
 
-  const trackScreenWithCustomVariables = async () => {
-    const options: TrackScreenOptions = {
-      title: 'customVariables',
-      visitCustomVariables,
-    };
+  // const trackScreenWithCustomVariables = async () => {
+  //   const options: TrackScreenOptions = {
+  //     title: 'customVariables',
+  //     visitCustomVariables,
+  //   };
 
-    await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
-      .then(() => {
-        successMessage('track screen');
-      })
-      .catch((error) => setResult({ message: 'Error', error }));
-  };
+  //   await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
+  //     .then(() => {
+  //       successMessage('track screen');
+  //     })
+  //     .catch((error) => setResult({ message: 'Error', error }));
+  // };
 
   const dispatchEvents = () => {
     PiwikProSdk.dispatch()
@@ -101,159 +94,159 @@ export default function App() {
     setAnonymizationEnabled(currentAnonymizationState);
   };
 
-  const trackCustomEvent = async () => {
-    const options: TrackCustomEventOptions = {
-      name: 'customEvent',
-      path: 'some/path',
-      value: 1.5,
-      visitCustomVariables,
-      customDimensions,
-    };
+  // const trackCustomEvent = async () => {
+  //   const options: TrackCustomEventOptions = {
+  //     name: 'customEvent',
+  //     path: 'some/path',
+  //     value: 1.5,
+  //     visitCustomVariables,
+  //     customDimensions,
+  //   };
 
-    try {
-      await PiwikProSdk.trackCustomEvent(
-        `custom_event_${eventNum}`,
-        'custom_event_action',
-        options
-      );
-      successMessage('track custom event');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackCustomEvent(
+  //       `custom_event_${eventNum}`,
+  //       'custom_event_action',
+  //       options
+  //     );
+  //     successMessage('track custom event');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
-  const trackException = async () => {
-    const options: CommonEventOptions = {
-      visitCustomVariables,
-    };
+  // const trackException = async () => {
+  //   const options: CommonEventOptions = {
+  //     visitCustomVariables,
+  //   };
 
-    try {
-      await PiwikProSdk.trackException(`exception_${eventNum}`, false, options);
-      successMessage('track exception');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackException(`exception_${eventNum}`, false, options);
+  //     successMessage('track exception');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
-  const trackSocialInteraction = async () => {
-    const options: TrackSocialInteractionOptions = {
-      visitCustomVariables,
-      target: 'Photo',
-      // customDimensions,
-    };
+  // const trackSocialInteraction = async () => {
+  //   const options: TrackSocialInteractionOptions = {
+  //     visitCustomVariables,
+  //     target: 'Photo',
+  //     // customDimensions,
+  //   };
 
-    try {
-      await PiwikProSdk.trackSocialInteraction(
-        `like_${eventNum}`,
-        'Facebook',
-        options
-      );
-      successMessage('track social interaction');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackSocialInteraction(
+  //       `like_${eventNum}`,
+  //       'Facebook',
+  //       options
+  //     );
+  //     successMessage('track social interaction');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
-  const trackDownload = async () => {
-    const options: CommonEventOptions = {
-      visitCustomVariables,
-      // customDimensions,
-    };
+  // const trackDownload = async () => {
+  //   const options: CommonEventOptions = {
+  //     visitCustomVariables,
+  //     // customDimensions,
+  //   };
 
-    try {
-      await PiwikProSdk.trackDownload(
-        `http://your.server.com/bonusmap${eventNum}.zip`,
-        options
-      );
-      successMessage('track download');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackDownload(
+  //       `http://your.server.com/bonusmap${eventNum}.zip`,
+  //       options
+  //     );
+  //     successMessage('track download');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
-  const trackOutlink = async () => {
-    const options: CommonEventOptions = {
-      visitCustomVariables,
-      // customDimensions,
-    };
+  // const trackOutlink = async () => {
+  //   const options: CommonEventOptions = {
+  //     visitCustomVariables,
+  //     // customDimensions,
+  //   };
 
-    try {
-      await PiwikProSdk.trackOutlink(
-        `http://your.server.com/bonusmap${eventNum}.zip`,
-        options
-      );
-      successMessage('track outlink');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackOutlink(
+  //       `http://your.server.com/bonusmap${eventNum}.zip`,
+  //       options
+  //     );
+  //     successMessage('track outlink');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
-  const trackSearch = async () => {
-    const options: TrackSearchOptions = {
-      visitCustomVariables,
-      category: `Movies`,
-      count: 3,
-      // customDimensions,
-    };
+  // const trackSearch = async () => {
+  //   const options: TrackSearchOptions = {
+  //     visitCustomVariables,
+  //     category: `Movies`,
+  //     count: 3,
+  //     // customDimensions,
+  //   };
 
-    try {
-      await PiwikProSdk.trackSearch(`Space${eventNum}`, options);
-      successMessage('track search');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackSearch(`Space${eventNum}`, options);
+  //     successMessage('track search');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
-  const trackImpression = async () => {
-    const options: TrackImpressionOptions = {
-      visitCustomVariables,
-      piece: 'banner',
-      target: 'https://www.dn.se/',
-      // customDimensions,
-    };
+  // const trackImpression = async () => {
+  //   const options: TrackImpressionOptions = {
+  //     visitCustomVariables,
+  //     piece: 'banner',
+  //     target: 'https://www.dn.se/',
+  //     // customDimensions,
+  //   };
 
-    try {
-      await PiwikProSdk.trackImpression(
-        `Some content impression${eventNum}`,
-        options
-      );
-      successMessage('track impression');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackImpression(
+  //       `Some content impression${eventNum}`,
+  //       options
+  //     );
+  //     successMessage('track impression');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
-  const trackGoal = async () => {
-    const options: TrackGoalOptions = {
-      visitCustomVariables,
-      revenue: 30,
-      // customDimensions,
-    };
+  // const trackGoal = async () => {
+  //   const options: TrackGoalOptions = {
+  //     visitCustomVariables,
+  //     revenue: 30,
+  //     // customDimensions,
+  //   };
 
-    try {
-      await PiwikProSdk.trackGoal(1, options);
-      successMessage('track goal');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackGoal(1, options);
+  //     successMessage('track goal');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
-  const trackCampaign = async () => {
-    const options: CommonEventOptions = {
-      visitCustomVariables,
-      // customDimensions,
-    };
+  // const trackCampaign = async () => {
+  //   const options: CommonEventOptions = {
+  //     visitCustomVariables,
+  //     // customDimensions,
+  //   };
 
-    try {
-      await PiwikProSdk.trackCampaign(
-        `http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore${eventNum}`,
-        options
-      );
-      successMessage('track campaign');
-    } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
-    }
-  };
+  //   try {
+  //     await PiwikProSdk.trackCampaign(
+  //       `http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore${eventNum}`,
+  //       options
+  //     );
+  //     successMessage('track campaign');
+  //   } catch (error) {
+  //     setResult({ message: 'Error', error: error as Error });
+  //   }
+  // };
 
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
@@ -298,8 +291,13 @@ export default function App() {
               {anonymizationEnabled ? 'enabled' : 'disabled'}
             </Text>
           </TouchableOpacity>
+          <TrackingActions
+            successMessage={successMessage}
+            setResult={setResult}
+            eventNum={eventNum}
+          />
 
-          <TouchableOpacity style={styles.button} onPress={trackScreen}>
+          {/* <TouchableOpacity style={styles.button} onPress={trackScreen}>
             <Text style={styles.buttonText}>Track screen</Text>
           </TouchableOpacity>
 
@@ -358,7 +356,7 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackCampaign}>
             <Text style={styles.buttonText}>Track campaign</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
       <Text style={styles.message}>Result: {result.message}</Text>
