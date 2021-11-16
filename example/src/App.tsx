@@ -278,9 +278,13 @@ export default function App() {
   };
 
   const toggleOptOut = async () => {
-    await PiwikProSdk.setOptOut(!optOut);
-    const currentOptOutState = await PiwikProSdk.getOptOut();
-    setOptOut(currentOptOutState);
+    try {
+      await PiwikProSdk.setOptOut(!optOut);
+      const currentOptOutState = await PiwikProSdk.getOptOut();
+      setOptOut(currentOptOutState);
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
   };
 
   const successMessage = (eventType: string) => {
