@@ -20,6 +20,7 @@ export default function App() {
   const [dispatchInterval, setDispatchInterval] = React.useState<number>(0);
   const [anonymizationEnabled, setAnonymizationEnabled] =
     React.useState<boolean>(true);
+  const [optOut, setOptOut] = React.useState<boolean>(false);
 
   const customDimensions = {
     1: 'beta',
@@ -276,6 +277,12 @@ export default function App() {
     }
   };
 
+  const toggleOptOut = async () => {
+    await PiwikProSdk.setOptOut(!optOut);
+    const currentOptOutState = await PiwikProSdk.getOptOut();
+    setOptOut(currentOptOutState);
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -393,6 +400,12 @@ export default function App() {
             onPress={checkAudienceMembership}
           >
             <Text style={styles.buttonText}>Check audience membership</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={toggleOptOut}>
+            <Text style={styles.buttonText}>
+              Toggle opt out state, current: {optOut ? 'enabled' : 'disabled'}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
