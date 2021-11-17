@@ -15,6 +15,8 @@ jest.mock('react-native', () => ({
       trackImpression: jest.fn(),
       trackGoal: jest.fn(),
       trackCampaign: jest.fn(),
+      getProfileAttributes: jest.fn(),
+      checkAudienceMembership: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -331,6 +333,37 @@ describe('PiwikProSdk', () => {
         url,
         undefined
       );
+    });
+  });
+
+  describe('#getProfileAttributes', () => {
+    it('calls getProfileAttributes from native SDK and returns attributes', async () => {
+      const profileAttributes: ProfileAttributes = { device_type: 'desktop' };
+      NativeModules.PiwikProSdk.getProfileAttributes.mockResolvedValue(
+        profileAttributes
+      );
+
+      const result = await PiwikProSdk.getProfileAttributes();
+
+      expect(result).toStrictEqual(profileAttributes);
+      expect(NativeModules.PiwikProSdk.getProfileAttributes).toHaveBeenCalled();
+    });
+  });
+
+  describe('#checkAudienceMembership', () => {
+    it('calls checkAudienceMembership from native SDK and returns status', async () => {
+      const audienceId = 'audience123';
+      const isMember = true;
+      NativeModules.PiwikProSdk.checkAudienceMembership.mockResolvedValue(
+        isMember
+      );
+
+      const result = await PiwikProSdk.checkAudienceMembership(audienceId);
+
+      expect(result).toStrictEqual(isMember);
+      expect(
+        NativeModules.PiwikProSdk.checkAudienceMembership
+      ).toHaveBeenCalledWith(audienceId);
     });
   });
 

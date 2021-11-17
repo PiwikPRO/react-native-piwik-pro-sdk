@@ -325,6 +325,40 @@ await PiwikProSdk.trackScreen(`your_screen_path`, { customDimensions });
 
 
 
+## Reading user profile attributes
+
+*Requires Audience Manager*
+
+It is possible to read the attributes of a given profile, however, with some limitations. Due to security reasons (to avoid personal data leakage), it is possible to read only attributes that were enabled for API access (whitelisted) in the Attributes section in the Audience Manager. You can get user profile attributes in the following manner:
+```js
+const attributes = await PiwikProSdk.getProfileAttributes();
+console.log(attributes);
+// {"device_type": "desktop", ...}
+```
+Returns:
+- `attributes: object` - dictionary of key-value pairs, where each pair represents the attribute name (key) and value. In case of error (for example when user profile does not yet exist), returns error message.
+
+
+
+## Checking audience membership
+
+*Requires Audience Manager*
+
+Audiences are allowed to check whether or not the user belongs to a specific group of users defined in the data manger panel based on analytics data and audience manager profile attributes. You can check if the user belongs to a given audience, for example, to show a special offer. To check it, use the `checkAudienceMembership` method:
+```js
+const audienceId = 'a83d4aac-faa6-4746-96eb-5ac110083f8e';
+const isMember = await PiwikProSdk.checkAudienceMembership(audienceId);
+console.log(isMember);
+// true
+```
+Parameters:
+- `audienceId: string` *(required)* - ID of the audience (Audience Manager -> Audiences).
+
+Returns:
+- `isMember: boolean` - value indicating whether user belongs to the audience with given ID or error message if an error occurred.
+
+
+
 ## Dispatching
 
 Tracked events are stored temporarily on the queue and dispatched in batches every 30 seconds (default setting). This behavior can be changed in the following way:

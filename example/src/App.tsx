@@ -24,8 +24,8 @@ export default function App() {
 
   const initializePiwikProSdk = async () => {
     await PiwikProSdk.init(
-      'https://staging-qa.piwik.pro/',
-      'beaa97a5-ff9f-45b2-b7d1-0b80ea8c7740'
+      'https://your.piwik.pro.server.com',
+      '01234567-89ab-cdef-0123-456789abcdef'
     )
       .then(() => setResult({ message: 'Success' }))
       .catch((error) => setResult({ message: 'Error', error }));
@@ -248,6 +248,27 @@ export default function App() {
   //   }
   // };
 
+  const getProfileAttributes = async () => {
+    try {
+      const profileAttributes = await PiwikProSdk.getProfileAttributes();
+      console.log(profileAttributes);
+      successMessage('profile attributes in console');
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
+  const checkAudienceMembership = async () => {
+    const audienceId = 'a83d4aac-faa6-4746-96eb-5ac110083f8e';
+
+    try {
+      const isMember = await PiwikProSdk.checkAudienceMembership(audienceId);
+      successMessage(`audience membership: ${isMember}`);
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -356,10 +377,25 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackCampaign}>
             <Text style={styles.buttonText}>Track campaign</Text>
+
           </TouchableOpacity> */}
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={getProfileAttributes}
+          >
+            <Text style={styles.buttonText}>Get profile attributes</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={checkAudienceMembership}
+          >
+            <Text style={styles.buttonText}>Check audience membership</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
-      <Text style={styles.message}>Result: {result.message}</Text>
+      <Text style={styles.message}>{result.message}</Text>
       {result.error && (
         <Text style={styles.message}>Error type: {result.error.message}</Text>
       )}

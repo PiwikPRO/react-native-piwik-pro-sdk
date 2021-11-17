@@ -96,6 +96,18 @@ type PiwikProSdkType = {
   trackCampaign(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
+   * Returns user profile attributes.
+   */
+  getProfileAttributes(): Promise<ProfileAttributes>;
+
+  /**
+   * Checks whether user belongs to a specific group of users defined in the data manger. Returns `true` if user
+   * belongs to the specified audience, `false` otherwise.
+   * @param audienceId ID of the audience
+   */
+  checkAudienceMembership(audienceId: string): Promise<boolean>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;
@@ -187,4 +199,8 @@ type TrackImpressionOptions = CommonEventOptions & {
 
 type TrackGoalOptions = CommonEventOptions & {
   revenue?: number;
+};
+
+type ProfileAttributes = {
+  [index: string]: string;
 };
