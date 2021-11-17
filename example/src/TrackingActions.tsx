@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from './piwikSdk';
+import { styles } from './styles';
+
 export default function TrackingActions(props: any) {
   const { successMessage, setResult, eventNum } = props;
   const customDimensions = {
@@ -199,13 +201,6 @@ export default function TrackingActions(props: any) {
     }
   };
 
-  // const successMessage = (message: string) => {
-  //   console.log(message);
-  // };
-  // const setResult = (tmp: any) => {
-  //   console.log(tmp);
-  // };
-
   return (
     <View style={styles.subContainer}>
       <TouchableOpacity style={styles.button} onPress={trackScreen}>
@@ -268,46 +263,3 @@ export default function TrackingActions(props: any) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollView: {
-    width: '100%',
-  },
-  subContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    marginTop: 5,
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-  button: {
-    elevation: 8,
-    backgroundColor: '#009688',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    marginBottom: 5,
-    width: '90%',
-  },
-  buttonText: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-  },
-  message: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-});
