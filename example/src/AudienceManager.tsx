@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from './piwikSdk';
 import { styles } from './styles';
 
@@ -28,14 +28,19 @@ export default function AudienceManager(props: any) {
   };
 
   return (
-    <View style={styles.subContainer}>
-      <TouchableOpacity style={styles.button} onPress={getProfileAttributes}>
-        <Text style={styles.buttonText}>Get profile attributes</Text>
-      </TouchableOpacity>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.subContainer}>
+        <TouchableOpacity style={styles.button} onPress={getProfileAttributes}>
+          <Text style={styles.buttonText}>Get profile attributes</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={checkAudienceMembership}>
-        <Text style={styles.buttonText}>Check audience membership</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={checkAudienceMembership}
+        >
+          <Text style={styles.buttonText}>Check audience membership</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }

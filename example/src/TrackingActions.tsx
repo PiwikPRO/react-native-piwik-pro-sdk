@@ -1,10 +1,13 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from './piwikSdk';
 import { styles } from './styles';
 
 export default function TrackingActions(props: any) {
-  const { successMessage, setResult, eventNum } = props;
+  // const { successMessage, setResult, eventNum } = props;
+  const setResult = (tmp: any) => tmp;
+  const successMessage = (tmp: any) => tmp;
+  const eventNum = 1;
   const customDimensions = {
     1: 'beta',
     2: 'gamma',
@@ -202,64 +205,69 @@ export default function TrackingActions(props: any) {
   };
 
   return (
-    <View style={styles.subContainer}>
-      <TouchableOpacity style={styles.button} onPress={trackScreen}>
-        <Text style={styles.buttonText}>Track screen</Text>
-      </TouchableOpacity>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.subContainer}>
+        <TouchableOpacity style={styles.button} onPress={trackScreen}>
+          <Text style={styles.buttonText}>Track screen</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={trackScreenWithCustomDimensions}
-      >
-        <Text style={styles.buttonText}>
-          Track screen with custom dimensions
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={trackScreenWithCustomDimensions}
+        >
+          <Text style={styles.buttonText}>
+            Track screen with custom dimensions
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={trackScreenWithCustomVariables}
-      >
-        <Text style={styles.buttonText}>
-          Track screen with custom variables
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={trackScreenWithCustomVariables}
+        >
+          <Text style={styles.buttonText}>
+            Track screen with custom variables
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackCustomEvent}>
-        <Text style={styles.buttonText}>Track custom event</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={trackCustomEvent}>
+          <Text style={styles.buttonText}>Track custom event</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackException}>
-        <Text style={styles.buttonText}>Track exception</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={trackException}>
+          <Text style={styles.buttonText}>Track exception</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackSocialInteraction}>
-        <Text style={styles.buttonText}>Track social interaction</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={trackSocialInteraction}
+        >
+          <Text style={styles.buttonText}>Track social interaction</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackDownload}>
-        <Text style={styles.buttonText}>Track download</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={trackDownload}>
+          <Text style={styles.buttonText}>Track download</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackOutlink}>
-        <Text style={styles.buttonText}>Track outlink</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={trackOutlink}>
+          <Text style={styles.buttonText}>Track outlink</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackSearch}>
-        <Text style={styles.buttonText}>Track search</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={trackSearch}>
+          <Text style={styles.buttonText}>Track search</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackImpression}>
-        <Text style={styles.buttonText}>Track impression</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={trackImpression}>
+          <Text style={styles.buttonText}>Track impression</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackGoal}>
-        <Text style={styles.buttonText}>Track goal</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={trackGoal}>
+          <Text style={styles.buttonText}>Track goal</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={trackCampaign}>
-        <Text style={styles.buttonText}>Track campaign</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.button} onPress={trackCampaign}>
+          <Text style={styles.buttonText}>Track campaign</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }

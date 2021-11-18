@@ -1,10 +1,19 @@
 import React from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import PiwikProSdk from './piwikSdk';
 import { styles } from './styles';
 
 export default function Settings(props: any) {
-  const { setResult, dispatchInterval, setDispatchInterval } = props;
+  // const { setResult, dispatchInterval, setDispatchInterval } = props;
+  const setResult = (tmp: any) => tmp;
+  const dispatchInterval = 1;
+  const setDispatchInterval = (tmp: any) => tmp;
   const [anonymizationEnabled, setAnonymizationEnabled] =
     React.useState<boolean>(true);
 
@@ -27,31 +36,36 @@ export default function Settings(props: any) {
   };
 
   return (
-    <View style={styles.subContainer}>
-      <TouchableOpacity style={styles.button} onPress={dispatchEvents}>
-        <Text style={styles.buttonText}>Dispatch events</Text>
-      </TouchableOpacity>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.subContainer}>
+        <TouchableOpacity style={styles.button} onPress={dispatchEvents}>
+          <Text style={styles.buttonText}>Dispatch events</Text>
+        </TouchableOpacity>
 
-      <TextInput
-        value={dispatchInterval.toString()}
-        onChangeText={(buttonText) =>
-          setDispatchInterval(parseInt(buttonText, 10) || 0)
-        }
-      />
+        <TextInput
+          value={dispatchInterval.toString()}
+          onChangeText={(buttonText) =>
+            setDispatchInterval(parseInt(buttonText, 10) || 0)
+          }
+        />
 
-      <TouchableOpacity style={styles.button} onPress={changeDispatchInterval}>
-        <Text style={styles.buttonText}>Set dispatch interval</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={changeDispatchInterval}
+        >
+          <Text style={styles.buttonText}>Set dispatch interval</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={toggleAnonymizationState}
-      >
-        <Text style={styles.buttonText}>
-          Toggle anonymization state, current:{' '}
-          {anonymizationEnabled ? 'enabled' : 'disabled'}
-        </Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={toggleAnonymizationState}
+        >
+          <Text style={styles.buttonText}>
+            Toggle anonymization state, current:{' '}
+            {anonymizationEnabled ? 'enabled' : 'disabled'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
