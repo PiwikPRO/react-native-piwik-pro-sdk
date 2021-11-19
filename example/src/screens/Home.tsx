@@ -19,14 +19,6 @@ export default function Home({ navigation }: Props) {
 
     const di = await PiwikProSdk.getDispatchInterval();
     dispatch(setDispatchInterval(di));
-    console.log('Dispatch interval:', di);
-
-    const includeDefaultCustomVariables = true; //TODO
-    await PiwikProSdk.setIncludeDefaultCustomVariables(
-      includeDefaultCustomVariables
-    );
-    const include = await PiwikProSdk.getIncludeDefaultCustomVariables();
-    console.log('Include default custom variables:', include);
   };
 
   return (

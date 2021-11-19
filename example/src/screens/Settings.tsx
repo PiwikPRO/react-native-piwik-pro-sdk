@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ScrollView,
   Text,
@@ -22,6 +22,24 @@ export default function Settings() {
   const dispatchInterval = useAppSelector(dispatchIntervalSelector);
   const [anonymizationEnabled, setAnonymizationEnabled] =
     React.useState<boolean>(true);
+  const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
+    React.useState<boolean>(true);
+
+  useEffect(() => {
+    const getAnonymizationState = async () => {
+      const currentAnonymizationState = await PiwikProSdk.isAnonymizationOn();
+      setAnonymizationEnabled(currentAnonymizationState);
+    };
+
+    const getIncludeDefaultCustomVariables = async () => {
+      const includeCustomVariables =
+        await PiwikProSdk.getIncludeDefaultCustomVariables();
+      setIncludeDefaultCustomVariables(includeCustomVariables);
+    };
+
+    getAnonymizationState();
+    getIncludeDefaultCustomVariables();
+  }, []);
 
   const dispatchEvents = async () => {
     try {
@@ -46,6 +64,19 @@ export default function Settings() {
       await PiwikProSdk.setAnonymizationState(!anonymizationEnabled);
       const currentAnonymizationState = await PiwikProSdk.isAnonymizationOn();
       setAnonymizationEnabled(currentAnonymizationState);
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const toggleIncludeDefaultCustomVariables = async () => {
+    try {
+      await PiwikProSdk.setIncludeDefaultCustomVariables(
+        !includeDefaultCustomVariables
+      );
+      const includeCustomVariables =
+        await PiwikProSdk.getIncludeDefaultCustomVariables();
+      setIncludeDefaultCustomVariables(includeCustomVariables);
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -79,6 +110,16 @@ export default function Settings() {
           <Text style={styles.buttonText}>
             Toggle anonymization state, current:{' '}
             {anonymizationEnabled ? 'enabled' : 'disabled'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={toggleIncludeDefaultCustomVariables}
+        >
+          <Text style={styles.buttonText}>
+            Toggle include default custom variables state, current:{' '}
+            {includeDefaultCustomVariables ? 'enabled' : 'disabled'}
           </Text>
         </TouchableOpacity>
       </View>
