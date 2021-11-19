@@ -9,6 +9,7 @@ import {
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
+  sdkInitializedSelector,
   setDispatchInterval,
   setError,
   setMessage,
@@ -20,11 +21,13 @@ export default function Settings() {
   const dispatch = useAppDispatch();
   const successMessage = (message: string) => dispatch(setMessage(message));
   const dispatchInterval = useAppSelector(dispatchIntervalSelector);
+  const sdkInitialized = useAppSelector(sdkInitializedSelector);
   const [anonymizationEnabled, setAnonymizationEnabled] =
     React.useState<boolean>(true);
   const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
     React.useState<boolean>(true);
   const [optOut, setOptOut] = React.useState<boolean>(false);
+  const [prefixingEnabled, setPrefixingEnabled] = React.useState<boolean>(true);
 
   useEffect(() => {
     const getAnonymizationState = async () => {
@@ -43,10 +46,18 @@ export default function Settings() {
       setOptOut(currentOptOutState);
     };
 
-    getAnonymizationState();
-    getIncludeDefaultCustomVariablesState();
-    getOptOutState();
-  }, []);
+    const getPrefixingState = async () => {
+      const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
+      setPrefixingEnabled(currentPrefixingState);
+    };
+
+    if (sdkInitialized) {
+      getAnonymizationState();
+      getIncludeDefaultCustomVariablesState();
+      getOptOutState();
+      getPrefixingState();
+    }
+  }, [sdkInitialized]);
 
   const dispatchEvents = async () => {
     try {
@@ -99,6 +110,16 @@ export default function Settings() {
     }
   };
 
+  const togglePrefixingState = async () => {
+    try {
+      await PiwikProSdk.setPrefixing(!prefixingEnabled);
+      const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
+      setPrefixingEnabled(currentPrefixingState);
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.subContainer}>
@@ -143,6 +164,13 @@ export default function Settings() {
         <TouchableOpacity style={styles.button} onPress={toggleOptOut}>
           <Text style={styles.buttonText}>
             Toggle opt out state, current: {optOut ? 'enabled' : 'disabled'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={togglePrefixingState}>
+          <Text style={styles.buttonText}>
+            Toggle prefixing state, current:{' '}
+            {prefixingEnabled ? 'enabled' : 'disabled'}
           </Text>
         </TouchableOpacity>
       </View>
