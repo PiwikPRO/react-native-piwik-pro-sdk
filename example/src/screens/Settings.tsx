@@ -24,6 +24,7 @@ export default function Settings() {
     React.useState<boolean>(true);
   const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
     React.useState<boolean>(true);
+  const [optOut, setOptOut] = React.useState<boolean>(false);
 
   useEffect(() => {
     const getAnonymizationState = async () => {
@@ -31,14 +32,20 @@ export default function Settings() {
       setAnonymizationEnabled(currentAnonymizationState);
     };
 
-    const getIncludeDefaultCustomVariables = async () => {
+    const getIncludeDefaultCustomVariablesState = async () => {
       const includeCustomVariables =
         await PiwikProSdk.getIncludeDefaultCustomVariables();
       setIncludeDefaultCustomVariables(includeCustomVariables);
     };
 
+    const getOptOutState = async () => {
+      const currentOptOutState = await PiwikProSdk.getOptOut();
+      setOptOut(currentOptOutState);
+    };
+
     getAnonymizationState();
-    getIncludeDefaultCustomVariables();
+    getIncludeDefaultCustomVariablesState();
+    getOptOutState();
   }, []);
 
   const dispatchEvents = async () => {
@@ -82,6 +89,16 @@ export default function Settings() {
     }
   };
 
+  const toggleOptOut = async () => {
+    try {
+      await PiwikProSdk.setOptOut(!optOut);
+      const currentOptOutState = await PiwikProSdk.getOptOut();
+      setOptOut(currentOptOutState);
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.subContainer}>
@@ -120,6 +137,12 @@ export default function Settings() {
           <Text style={styles.buttonText}>
             Toggle include default custom variables state, current:{' '}
             {includeDefaultCustomVariables ? 'enabled' : 'disabled'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={toggleOptOut}>
+          <Text style={styles.buttonText}>
+            Toggle opt out state, current: {optOut ? 'enabled' : 'disabled'}
           </Text>
         </TouchableOpacity>
       </View>
