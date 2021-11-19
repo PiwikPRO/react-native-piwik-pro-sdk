@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -35,6 +38,10 @@ export const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     alignSelf: 'center',
+  },
+  messageBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   message: {
     fontSize: 16,

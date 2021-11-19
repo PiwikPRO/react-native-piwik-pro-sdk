@@ -1,9 +1,9 @@
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import PiwikProSdk from './piwikSdk';
-import { eventNumSelector, setError, setMessage } from './store/appSlice';
-import { useAppDispatch, useAppSelector } from './store/hooks';
-import { styles } from './styles';
+import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import { eventNumSelector, setError, setMessage } from '../store/appSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { styles } from '../styles';
 
 export default function TrackingActions() {
   const eventNum = useAppSelector(eventNumSelector);

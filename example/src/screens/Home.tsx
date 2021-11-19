@@ -2,9 +2,9 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
-import { setDispatchInterval, setError, setMessage } from './store/appSlice';
-import { useAppDispatch } from './store/hooks';
-import { styles } from './styles';
+import { setDispatchInterval, setError, setMessage } from '../store/appSlice';
+import { useAppDispatch } from '../store/hooks';
+import { styles } from '../styles';
 
 export default function Home({ navigation }: Props) {
   const dispatch = useAppDispatch();

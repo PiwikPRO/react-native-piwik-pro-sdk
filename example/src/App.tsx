@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './Home';
-import Settings from './Settings';
-import AudienceManager from './AudienceManager';
-import TrackingActions from './TrackingActions';
+import Home from './screens/Home';
+import Settings from './screens/Settings';
+import AudienceManager from './screens/AudienceManager';
+import TrackingActions from './screens/TrackingActions';
 import { SafeAreaView, Text, View } from 'react-native';
 import { styles } from './styles';
 import { useAppSelector } from './store/hooks';
@@ -17,7 +17,7 @@ export default function App() {
   const message = useAppSelector(messageSelector);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeArea}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Home" component={Home} />
@@ -26,7 +26,7 @@ export default function App() {
           <Stack.Screen name="Settings" component={Settings} />
         </Stack.Navigator>
       </NavigationContainer>
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.messageBox}>
         <Text style={styles.message}>{message}</Text>
       </View>
     </SafeAreaView>

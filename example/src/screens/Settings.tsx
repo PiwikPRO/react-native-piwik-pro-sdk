@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import PiwikProSdk from './piwikSdk';
+import PiwikProSdk from 'react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
   setDispatchInterval,
   setError,
   setMessage,
-} from './store/appSlice';
-import { useAppDispatch, useAppSelector } from './store/hooks';
-import { styles } from './styles';
+} from '../store/appSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { styles } from '../styles';
 
 export default function Settings() {
   const dispatch = useAppDispatch();
