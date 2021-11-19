@@ -1,13 +1,15 @@
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from './piwikSdk';
+import { eventNumSelector, setError, setMessage } from './store/appSlice';
+import { useAppDispatch, useAppSelector } from './store/hooks';
 import { styles } from './styles';
 
-export default function TrackingActions(props: any) {
-  // const { successMessage, setResult, eventNum } = props;
-  const setResult = (tmp: any) => tmp;
-  const successMessage = (tmp: any) => tmp;
-  const eventNum = 1;
+export default function TrackingActions() {
+  const eventNum = useAppSelector(eventNumSelector);
+  const dispatch = useAppDispatch();
+  const successMessage = (message: string) => dispatch(setMessage(message));
+
   const customDimensions = {
     1: 'beta',
     2: 'gamma',
@@ -16,12 +18,13 @@ export default function TrackingActions(props: any) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const screenCustomVariables = { 5: { name: 'drink', value: 'water' } };
 
-  const trackScreen = () => {
-    PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, undefined)
-      .then(() => {
-        successMessage('track screen');
-      })
-      .catch((error) => setResult({ message: 'Error', error }));
+  const trackScreen = async () => {
+    try {
+      PiwikProSdk.trackScreen(`your_activity_path${eventNum}`);
+      successMessage('track screen');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
   };
 
   const trackScreenWithCustomDimensions = async () => {
@@ -30,11 +33,12 @@ export default function TrackingActions(props: any) {
       customDimensions,
     };
 
-    await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
-      .then(() => {
-        successMessage('track screen');
-      })
-      .catch((error) => setResult({ message: 'Error', error }));
+    try {
+      await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options);
+      successMessage('track screen');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
   };
 
   const trackScreenWithCustomVariables = async () => {
@@ -43,11 +47,12 @@ export default function TrackingActions(props: any) {
       visitCustomVariables,
     };
 
-    await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
-      .then(() => {
-        successMessage('track screen');
-      })
-      .catch((error) => setResult({ message: 'Error', error }));
+    try {
+      await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options);
+      successMessage('track screen');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
   };
 
   const trackCustomEvent = async () => {
@@ -67,7 +72,7 @@ export default function TrackingActions(props: any) {
       );
       successMessage('track custom event');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -80,7 +85,7 @@ export default function TrackingActions(props: any) {
       await PiwikProSdk.trackException(`exception_${eventNum}`, false, options);
       successMessage('track exception');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -99,7 +104,7 @@ export default function TrackingActions(props: any) {
       );
       successMessage('track social interaction');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -116,7 +121,7 @@ export default function TrackingActions(props: any) {
       );
       successMessage('track download');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -133,7 +138,7 @@ export default function TrackingActions(props: any) {
       );
       successMessage('track outlink');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -149,7 +154,7 @@ export default function TrackingActions(props: any) {
       await PiwikProSdk.trackSearch(`Space${eventNum}`, options);
       successMessage('track search');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -168,7 +173,7 @@ export default function TrackingActions(props: any) {
       );
       successMessage('track impression');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -183,7 +188,7 @@ export default function TrackingActions(props: any) {
       await PiwikProSdk.trackGoal(1, options);
       successMessage('track goal');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -200,7 +205,7 @@ export default function TrackingActions(props: any) {
       );
       successMessage('track campaign');
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 

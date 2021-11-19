@@ -1,18 +1,20 @@
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from './piwikSdk';
+import { setError, setMessage } from './store/appSlice';
+import { useAppDispatch } from './store/hooks';
 import { styles } from './styles';
 
-export default function AudienceManager(props: any) {
-  const { successMessage, setResult } = props;
+export default function AudienceManager() {
+  const dispatch = useAppDispatch();
 
   const getProfileAttributes = async () => {
     try {
       const profileAttributes = await PiwikProSdk.getProfileAttributes();
       console.log(profileAttributes);
-      successMessage('profile attributes in console');
+      dispatch(setMessage('profile attributes in console'));
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 
@@ -21,9 +23,9 @@ export default function AudienceManager(props: any) {
 
     try {
       const isMember = await PiwikProSdk.checkAudienceMembership(audienceId);
-      successMessage(`audience membership: ${isMember}`);
+      dispatch(setMessage(`audience membership: ${isMember}`));
     } catch (error) {
-      setResult({ message: 'Error', error: error as Error });
+      dispatch(setError((error as Error).message));
     }
   };
 

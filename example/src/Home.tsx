@@ -2,26 +2,23 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import { setDispatchInterval, setError, setMessage } from './store/appSlice';
+import { useAppDispatch } from './store/hooks';
 import { styles } from './styles';
 
 export default function Home({ navigation }: Props) {
-  const [result, setResult] = React.useState<{
-    message: String;
-    error?: Error;
-  }>({ message: 'Press any button' });
-  const [eventNum, setEventNum] = React.useState<number>(1);
-  const [dispatchInterval, setDispatchInterval] = React.useState<number>(0);
+  const dispatch = useAppDispatch();
 
   const initializePiwikProSdk = async () => {
     await PiwikProSdk.init(
       'https://your.piwik.pro.server.com',
       '01234567-89ab-cdef-0123-456789abcdef'
     )
-      .then(() => setResult({ message: 'Success' }))
-      .catch((error) => setResult({ message: 'Error', error }));
+      .then(() => dispatch(setMessage('Success')))
+      .catch((error) => dispatch(setError(error.message)));
 
     const di = await PiwikProSdk.getDispatchInterval();
-    setDispatchInterval(di);
+    dispatch(setDispatchInterval(di));
     console.log('Dispatch interval:', di);
 
     const includeDefaultCustomVariables = true; //TODO
@@ -30,11 +27,6 @@ export default function Home({ navigation }: Props) {
     );
     const include = await PiwikProSdk.getIncludeDefaultCustomVariables();
     console.log('Include default custom variables:', include);
-  };
-
-  const successMessage = (eventType: string) => {
-    setResult({ message: `Success: ${eventType} ${eventNum}` });
-    setEventNum(eventNum + 1);
   };
 
   return (
@@ -70,8 +62,10 @@ export default function Home({ navigation }: Props) {
 }
 
 type RootStackParamList = {
-  Home: undefined;
-  Settings: undefined;
+  'Home': undefined;
+  'Settings': undefined;
+  'Audience Manager': undefined;
+  'Tracking Actions': undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;

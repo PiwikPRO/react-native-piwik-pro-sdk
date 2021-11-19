@@ -8,11 +8,14 @@ import AudienceManager from './AudienceManager';
 import TrackingActions from './TrackingActions';
 import { SafeAreaView, Text, View } from 'react-native';
 import { styles } from './styles';
+import { useAppSelector } from './store/hooks';
+import { messageSelector } from './store/appSlice';
 
 const Stack = createNativeStackNavigator();
-const result = { message: 'Press any button', error: { message: 'No error' } };
 
 export default function App() {
+  const message = useAppSelector(messageSelector);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer>
@@ -24,10 +27,7 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={styles.message}>{result.message}</Text>
-        {result.error && (
-          <Text style={styles.message}>Error type: {result.error.message}</Text>
-        )}
+        <Text style={styles.message}>{message}</Text>
       </View>
     </SafeAreaView>
   );
