@@ -20,6 +20,9 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     setMessage: (state, action: PayloadAction<string>) => {
+      state.message = `${action.payload}`;
+    },
+    setEventMessage: (state, action: PayloadAction<string>) => {
       state.message = `${action.payload} ${state.eventNum}`;
       state.eventNum += 1;
     },
@@ -40,6 +43,7 @@ export const {
   setError,
   setDispatchInterval,
   setSdkInitializationState,
+  setEventMessage,
 } = appSlice.actions;
 
 export const messageSelector = (state: RootState) => state.app.message;

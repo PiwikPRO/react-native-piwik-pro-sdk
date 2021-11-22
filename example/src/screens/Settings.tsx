@@ -1,11 +1,5 @@
-import React, { useEffect } from 'react';
-import {
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
@@ -16,6 +10,7 @@ import {
 } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { styles } from '../styles';
+import { Input } from 'react-native-elements';
 
 export default function Settings() {
   const dispatch = useAppDispatch();
@@ -23,34 +18,13 @@ export default function Settings() {
   const dispatchInterval = useAppSelector(dispatchIntervalSelector);
   const sdkInitialized = useAppSelector(sdkInitializedSelector);
   const [anonymizationEnabled, setAnonymizationEnabled] =
-    React.useState<boolean>(true);
+    useState<boolean>(true);
   const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
-    React.useState<boolean>(true);
-  const [optOut, setOptOut] = React.useState<boolean>(false);
-  const [prefixingEnabled, setPrefixingEnabled] = React.useState<boolean>(true);
+    useState<boolean>(true);
+  const [optOut, setOptOut] = useState<boolean>(false);
+  const [prefixingEnabled, setPrefixingEnabled] = useState<boolean>(true);
 
   useEffect(() => {
-    const getAnonymizationState = async () => {
-      const currentAnonymizationState = await PiwikProSdk.isAnonymizationOn();
-      setAnonymizationEnabled(currentAnonymizationState);
-    };
-
-    const getIncludeDefaultCustomVariablesState = async () => {
-      const includeCustomVariables =
-        await PiwikProSdk.getIncludeDefaultCustomVariables();
-      setIncludeDefaultCustomVariables(includeCustomVariables);
-    };
-
-    const getOptOutState = async () => {
-      const currentOptOutState = await PiwikProSdk.getOptOut();
-      setOptOut(currentOptOutState);
-    };
-
-    const getPrefixingState = async () => {
-      const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
-      setPrefixingEnabled(currentPrefixingState);
-    };
-
     if (sdkInitialized) {
       getAnonymizationState();
       getIncludeDefaultCustomVariablesState();
@@ -58,6 +32,27 @@ export default function Settings() {
       getPrefixingState();
     }
   }, [sdkInitialized]);
+
+  const getAnonymizationState = async () => {
+    const currentAnonymizationState = await PiwikProSdk.isAnonymizationOn();
+    setAnonymizationEnabled(currentAnonymizationState);
+  };
+
+  const getIncludeDefaultCustomVariablesState = async () => {
+    const includeCustomVariables =
+      await PiwikProSdk.getIncludeDefaultCustomVariables();
+    setIncludeDefaultCustomVariables(includeCustomVariables);
+  };
+
+  const getOptOutState = async () => {
+    const currentOptOutState = await PiwikProSdk.getOptOut();
+    setOptOut(currentOptOutState);
+  };
+
+  const getPrefixingState = async () => {
+    const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
+    setPrefixingEnabled(currentPrefixingState);
+  };
 
   const dispatchEvents = async () => {
     try {
@@ -127,8 +122,13 @@ export default function Settings() {
           <Text style={styles.buttonText}>Dispatch events</Text>
         </TouchableOpacity>
 
-        <TextInput
+        <Input
           value={dispatchInterval.toString()}
+          containerStyle={styles.inputContainer}
+          inputStyle={styles.input}
+          label="Dispatch interval"
+          autoCompleteType={undefined}
+          keyboardType={'numeric'}
           onChangeText={(buttonText) =>
             dispatch(setDispatchInterval(parseInt(buttonText, 10) || 0))
           }

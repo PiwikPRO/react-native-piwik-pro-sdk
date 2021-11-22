@@ -10,6 +10,7 @@ import { SafeAreaView, Text, View } from 'react-native';
 import { styles } from './styles';
 import { useAppSelector } from './store/hooks';
 import { messageSelector } from './store/appSlice';
+import { Divider } from 'react-native-elements';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ export default function App() {
           <Stack.Screen name="Settings" component={Settings} />
         </Stack.Navigator>
       </NavigationContainer>
+      <Divider width={2} />
       <View style={styles.messageBox}>
         <Text style={styles.message}>{message}</Text>
       </View>

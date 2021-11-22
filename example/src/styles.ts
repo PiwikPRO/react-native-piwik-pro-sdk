@@ -48,4 +48,12 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
   },
+  inputContainer: {
+    width: '94%',
+    fontSize: 14,
+  },
+  input: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
 });

@@ -1,14 +1,15 @@
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
-import { eventNumSelector, setError, setMessage } from '../store/appSlice';
+import { eventNumSelector, setError, setEventMessage } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { styles } from '../styles';
 
 export default function TrackingActions() {
   const eventNum = useAppSelector(eventNumSelector);
   const dispatch = useAppDispatch();
-  const successMessage = (message: string) => dispatch(setMessage(message));
+  const successMessage = (message: string) =>
+    dispatch(setEventMessage(message));
 
   const customDimensions = {
     1: 'beta',
@@ -21,7 +22,7 @@ export default function TrackingActions() {
   const trackScreen = async () => {
     try {
       PiwikProSdk.trackScreen(`your_activity_path${eventNum}`);
-      successMessage('track screen');
+      successMessage('Track screen');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -35,7 +36,7 @@ export default function TrackingActions() {
 
     try {
       await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options);
-      successMessage('track screen');
+      successMessage('Track screen');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -49,7 +50,7 @@ export default function TrackingActions() {
 
     try {
       await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options);
-      successMessage('track screen');
+      successMessage('Track screen');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -70,7 +71,7 @@ export default function TrackingActions() {
         'custom_event_action',
         options
       );
-      successMessage('track custom event');
+      successMessage('Track custom event');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -83,7 +84,7 @@ export default function TrackingActions() {
 
     try {
       await PiwikProSdk.trackException(`exception_${eventNum}`, false, options);
-      successMessage('track exception');
+      successMessage('Track exception');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -102,7 +103,7 @@ export default function TrackingActions() {
         'Facebook',
         options
       );
-      successMessage('track social interaction');
+      successMessage('Track social interaction');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -119,7 +120,7 @@ export default function TrackingActions() {
         `http://your.server.com/bonusmap${eventNum}.zip`,
         options
       );
-      successMessage('track download');
+      successMessage('Track download');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -136,7 +137,7 @@ export default function TrackingActions() {
         `http://your.server.com/bonusmap${eventNum}.zip`,
         options
       );
-      successMessage('track outlink');
+      successMessage('Track outlink');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -152,7 +153,7 @@ export default function TrackingActions() {
 
     try {
       await PiwikProSdk.trackSearch(`Space${eventNum}`, options);
-      successMessage('track search');
+      successMessage('Track search');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -171,7 +172,7 @@ export default function TrackingActions() {
         `Some content impression${eventNum}`,
         options
       );
-      successMessage('track impression');
+      successMessage('Track impression');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -186,7 +187,7 @@ export default function TrackingActions() {
 
     try {
       await PiwikProSdk.trackGoal(1, options);
-      successMessage('track goal');
+      successMessage('Track goal');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -203,7 +204,7 @@ export default function TrackingActions() {
         `http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore${eventNum}`,
         options
       );
-      successMessage('track campaign');
+      successMessage('Track campaign');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }

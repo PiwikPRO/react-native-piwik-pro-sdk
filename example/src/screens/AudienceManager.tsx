@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Input } from 'react-native-elements';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
 import { setError, setMessage } from '../store/appSlice';
 import { useAppDispatch } from '../store/hooks';
@@ -7,20 +8,18 @@ import { styles } from '../styles';
 
 export default function AudienceManager() {
   const dispatch = useAppDispatch();
+  const [audienceId, setAudienceId] = useState<string>('');
 
   const getProfileAttributes = async () => {
     try {
       const profileAttributes = await PiwikProSdk.getProfileAttributes();
-      console.log(profileAttributes);
-      dispatch(setMessage('profile attributes in console'));
+      printProfileAttributes(profileAttributes);
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
   };
 
   const checkAudienceMembership = async () => {
-    const audienceId = 'a83d4aac-faa6-4746-96eb-5ac110083f8e';
-
     try {
       const isMember = await PiwikProSdk.checkAudienceMembership(audienceId);
       dispatch(setMessage(`audience membership: ${isMember}`));
@@ -29,12 +28,34 @@ export default function AudienceManager() {
     }
   };
 
+  const printProfileAttributes = (profileAttributes: ProfileAttributes) => {
+    let profileAttributesString = 'Profile attributes:';
+
+    Object.entries(profileAttributes).forEach(([key, value]) => {
+      profileAttributesString = profileAttributesString.concat(
+        `\n- ${key}: ${value}`
+      );
+    });
+
+    dispatch(setMessage(profileAttributesString));
+  };
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.subContainer}>
         <TouchableOpacity style={styles.button} onPress={getProfileAttributes}>
           <Text style={styles.buttonText}>Get profile attributes</Text>
         </TouchableOpacity>
+
+        <Input
+          value={audienceId}
+          containerStyle={styles.inputContainer}
+          inputStyle={styles.input}
+          label="Audience ID"
+          placeholder="Audience ID"
+          onChangeText={(buttonText) => setAudienceId(buttonText)}
+          autoCompleteType={undefined}
+        />
 
         <TouchableOpacity
           style={styles.button}
