@@ -6,7 +6,13 @@ import Home from './screens/Home';
 import Settings from './screens/Settings';
 import AudienceManager from './screens/AudienceManager';
 import TrackingActions from './screens/TrackingActions';
-import { SafeAreaView, Text, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  Text,
+  View,
+} from 'react-native';
 import { styles } from './styles';
 import { useAppSelector } from './store/hooks';
 import { messageSelector } from './store/appSlice';
@@ -19,18 +25,23 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Tracking Actions" component={TrackingActions} />
-          <Stack.Screen name="Audience Manager" component={AudienceManager} />
-          <Stack.Screen name="Settings" component={Settings} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      <Divider width={2} />
-      <View style={styles.messageBox}>
-        <Text style={styles.message}>{message}</Text>
-      </View>
+      <KeyboardAvoidingView
+        style={styles.safeArea}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Tracking Actions" component={TrackingActions} />
+            <Stack.Screen name="Audience Manager" component={AudienceManager} />
+            <Stack.Screen name="Settings" component={Settings} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        <Divider width={2} />
+        <View style={styles.messageBox}>
+          <Text style={styles.message}>{message}</Text>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
