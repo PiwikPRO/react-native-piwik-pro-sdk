@@ -8,7 +8,7 @@ Piwik PRO SDK for React Native
 npm install react-native-piwik-pro-sdk
 ```
 
-## Configuration
+### Configuration
 
 In order to set up the Piwik PRO tracker you have to call `init` method passing a server address and website ID (you can find it in `Administration` > `Sites & apps`):
 
@@ -17,11 +17,11 @@ import PiwikProSdk from "react-native-piwik-pro-sdk";
 
 // ...
 
-await PiwikProSdk.init(
-  'https://example.piwik.pro/',
-  '6565aa65-8f8f-4242-abc1-9876dcbaabcd'
-);
+await PiwikProSdk.init('https://your.piwik.pro.server.com', '01234567-89ab-cdef-0123-456789abcdef')
 ```
+Parameters:
+- `serverAddress: string` *(required)* - URL of your Piwik PRO server.
+- `websiteId: string` *(required)* - ID of your website or application.
 
 ***Note:*** Each tracking method is implemented as a Promise which will be rejected if the `PiwikProSdk` has not been initialized.
 
