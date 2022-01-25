@@ -126,7 +126,7 @@ export default function Settings() {
           value={dispatchInterval.toString()}
           containerStyle={styles.inputContainer}
           inputStyle={styles.input}
-          label="Dispatch interval"
+          label="Dispatch interval (in seconds)"
           autoCompleteType={undefined}
           keyboardType={'numeric'}
           onChangeText={(buttonText) =>

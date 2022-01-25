@@ -51,6 +51,7 @@ export const styles = StyleSheet.create({
   inputContainer: {
     width: '94%',
     fontSize: 14,
+    marginTop: 10,
   },
   input: {
     fontSize: 16,
