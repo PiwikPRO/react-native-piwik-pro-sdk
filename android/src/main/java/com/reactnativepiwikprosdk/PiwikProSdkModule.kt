@@ -264,6 +264,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun getUserId(promise: Promise) {
+    try {
+      val userId = getTracker().userId;
+      promise.resolve(userId)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

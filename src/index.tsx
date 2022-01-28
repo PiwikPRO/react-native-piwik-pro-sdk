@@ -121,6 +121,10 @@ async function setUserId(userId: string): Promise<void> {
   return await PiwikProNativeSdk.setUserId(userId);
 }
 
+async function getUserId(): Promise<string> {
+  return await PiwikProNativeSdk.getUserId();
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -193,6 +197,7 @@ const PiwikProSdk: PiwikProSdkType = {
   getProfileAttributes,
   checkAudienceMembership,
   setUserId,
+  getUserId,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

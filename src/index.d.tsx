@@ -114,6 +114,12 @@ type PiwikProSdkType = {
   setUserId(userId: string): Promise<void>;
 
   /**
+   * Returns the user ID
+   * @param userId user ID to set
+   */
+  getUserId(): Promise<string>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;
