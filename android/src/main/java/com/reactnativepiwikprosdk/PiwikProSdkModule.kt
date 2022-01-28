@@ -217,16 +217,6 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun setUserId(userId: String, promise: Promise) {
-    try {
-      getTracker().userId = userId;
-      promise.resolve(null)
-    } catch (exception: Exception) {
-      promise.reject(exception)
-    }
-  }
-
-  @ReactMethod
   fun getProfileAttributes(promise: Promise) {
     try {
       getTracker().audienceManagerGetProfileAttributes(object : OnGetProfileAttributes {
@@ -258,6 +248,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
           promise.reject(Exception(errorData))
         }
       })
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun setUserId(userId: String, promise: Promise) {
+    try {
+      getTracker().userId = userId;
+      promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
     }
