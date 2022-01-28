@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
@@ -11,6 +10,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { styles } from '../styles';
 import { Input } from 'react-native-elements';
+import { Button, ScrollViewContainer } from '../components';
 
 export default function Settings() {
   const dispatch = useAppDispatch();
@@ -116,64 +116,50 @@ export default function Settings() {
   };
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <View style={styles.subContainer}>
-        <TouchableOpacity style={styles.button} onPress={dispatchEvents}>
-          <Text style={styles.buttonText}>Dispatch events</Text>
-        </TouchableOpacity>
+    <ScrollViewContainer>
+      <Button onPress={dispatchEvents} text={'Dispatch events'} />
 
-        <Input
-          value={dispatchInterval.toString()}
-          containerStyle={styles.inputContainer}
-          inputStyle={styles.input}
-          label="Dispatch interval (in seconds)"
-          autoCompleteType={undefined}
-          keyboardType={'numeric'}
-          onChangeText={(buttonText) =>
-            dispatch(setDispatchInterval(parseInt(buttonText, 10) || 0))
-          }
-        />
+      <Input
+        value={dispatchInterval.toString()}
+        containerStyle={styles.inputContainer}
+        inputStyle={styles.input}
+        label="Dispatch interval (in seconds)"
+        autoCompleteType={undefined}
+        keyboardType={'numeric'}
+        onChangeText={(buttonText) =>
+          dispatch(setDispatchInterval(parseInt(buttonText, 10) || 0))
+        }
+      />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={changeDispatchInterval}
-        >
-          <Text style={styles.buttonText}>Set dispatch interval</Text>
-        </TouchableOpacity>
+      <Button onPress={changeDispatchInterval} text={'Set dispatch interval'} />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={toggleAnonymizationState}
-        >
-          <Text style={styles.buttonText}>
-            Toggle anonymization state, current:{' '}
-            {anonymizationEnabled ? 'enabled' : 'disabled'}
-          </Text>
-        </TouchableOpacity>
+      <Button
+        onPress={toggleAnonymizationState}
+        text={`Toggle anonymization state, current: ${
+          anonymizationEnabled ? 'enabled' : 'disabled'
+        }`}
+      />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={toggleIncludeDefaultCustomVariables}
-        >
-          <Text style={styles.buttonText}>
-            Toggle include default custom variables state, current:{' '}
-            {includeDefaultCustomVariables ? 'enabled' : 'disabled'}
-          </Text>
-        </TouchableOpacity>
+      <Button
+        onPress={toggleIncludeDefaultCustomVariables}
+        text={`Toggle include default custom variables state, current: ${
+          includeDefaultCustomVariables ? 'enabled' : 'disabled'
+        }`}
+      />
 
-        <TouchableOpacity style={styles.button} onPress={toggleOptOut}>
-          <Text style={styles.buttonText}>
-            Toggle opt out state, current: {optOut ? 'enabled' : 'disabled'}
-          </Text>
-        </TouchableOpacity>
+      <Button
+        onPress={toggleOptOut}
+        text={`Toggle opt out state, current: ${
+          optOut ? 'enabled' : 'disabled'
+        }`}
+      />
 
-        <TouchableOpacity style={styles.button} onPress={togglePrefixingState}>
-          <Text style={styles.buttonText}>
-            Toggle prefixing state, current:{' '}
-            {prefixingEnabled ? 'enabled' : 'disabled'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      <Button
+        onPress={togglePrefixingState}
+        text={`Toggle prefixing state, current: ${
+          prefixingEnabled ? 'enabled' : 'disabled'
+        }`}
+      />
+    </ScrollViewContainer>
   );
 }

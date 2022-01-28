@@ -10,8 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  ScrollView,
   Text,
-  View,
 } from 'react-native';
 import { styles } from './styles';
 import { useAppSelector } from './store/hooks';
@@ -39,9 +39,12 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
         <Divider width={2} />
-        <View style={styles.messageBox}>
+        <ScrollView
+          style={styles.messageBox}
+          contentContainerStyle={styles.messageBoxContent}
+        >
           <Text style={styles.message}>{message}</Text>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

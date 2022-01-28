@@ -40,6 +40,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   messageBox: {
+    maxHeight: 50,
+  },
+  messageBoxContent: {
     alignItems: 'center',
     justifyContent: 'center',
   },

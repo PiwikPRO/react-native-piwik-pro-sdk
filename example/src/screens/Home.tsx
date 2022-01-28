@@ -1,7 +1,7 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import { Button, ScrollViewContainer } from '../components';
 import {
   setDispatchInterval,
   setError,
@@ -9,7 +9,6 @@ import {
   setSdkInitializationState,
 } from '../store/appSlice';
 import { useAppDispatch } from '../store/hooks';
-import { styles } from '../styles';
 
 export default function Home({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -28,34 +27,27 @@ export default function Home({ navigation }: Props) {
   };
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <View style={styles.subContainer}>
-        <TouchableOpacity style={styles.button} onPress={initializePiwikProSdk}>
-          <Text style={styles.buttonText}>Initialize Piwik Pro SDK</Text>
-        </TouchableOpacity>
+    <ScrollViewContainer>
+      <Button
+        onPress={initializePiwikProSdk}
+        text={'Initialize Piwik Pro SDK'}
+      />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Tracking Actions')}
-        >
-          <Text style={styles.buttonText}>Tracking Actions</Text>
-        </TouchableOpacity>
+      <Button
+        onPress={() => navigation.navigate('Tracking Actions')}
+        text={'Tracking Actions'}
+      />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Audience Manager')}
-        >
-          <Text style={styles.buttonText}>Audience Manager</Text>
-        </TouchableOpacity>
+      <Button
+        onPress={() => navigation.navigate('Audience Manager')}
+        text={'Audience Manager'}
+      />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Settings')}
-        >
-          <Text style={styles.buttonText}>Settings</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      <Button
+        onPress={() => navigation.navigate('Settings')}
+        text={'Settings'}
+      />
+    </ScrollViewContainer>
   );
 }
 

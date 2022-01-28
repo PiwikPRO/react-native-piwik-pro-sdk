@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Input } from 'react-native-elements';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import { Button, ScrollViewContainer } from '../components';
 import { setError, setMessage } from '../store/appSlice';
 import { useAppDispatch } from '../store/hooks';
 import { styles } from '../styles';
@@ -41,29 +41,23 @@ export default function AudienceManager() {
   };
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <View style={styles.subContainer}>
-        <TouchableOpacity style={styles.button} onPress={getProfileAttributes}>
-          <Text style={styles.buttonText}>Get profile attributes</Text>
-        </TouchableOpacity>
+    <ScrollViewContainer>
+      <Button onPress={getProfileAttributes} text={'Get profile attributes'} />
 
-        <Input
-          value={audienceId}
-          containerStyle={styles.inputContainer}
-          inputStyle={styles.input}
-          label="Audience ID"
-          placeholder="Audience ID"
-          onChangeText={(buttonText) => setAudienceId(buttonText)}
-          autoCompleteType={undefined}
-        />
+      <Input
+        value={audienceId}
+        containerStyle={styles.inputContainer}
+        inputStyle={styles.input}
+        label="Audience ID"
+        placeholder="Audience ID"
+        onChangeText={(buttonText) => setAudienceId(buttonText)}
+        autoCompleteType={undefined}
+      />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={checkAudienceMembership}
-        >
-          <Text style={styles.buttonText}>Check audience membership</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      <Button
+        onPress={checkAudienceMembership}
+        text={'Check audience membership'}
+      />
+    </ScrollViewContainer>
   );
 }
