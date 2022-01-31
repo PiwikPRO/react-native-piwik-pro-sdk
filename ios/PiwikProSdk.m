@@ -218,6 +218,37 @@ RCT_REMAP_METHOD(trackGoal,
     }
 }
 
+RCT_REMAP_METHOD(trackEcommerce,
+                 trackEcommerceWithOrderId:(nonnull NSString*)orderId
+                 withGrandTotal:(nonnull NSNumber*)grandTotal
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        // [self applyCustomDimensions:options[@"customDimensions"]];
+        // [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        
+        [[PiwikTracker sharedInstance] sendTransaction:[PiwikTransaction transactionWithBlock:^(PiwikTransactionBuilder *builder) {
+            builder.identifier = @"transactionID";
+            builder.grandTotal = @5.0;
+            builder.subTotal = @4.0;
+            builder.tax = @0.5;
+            builder.shippingCost = @1.0;
+            builder.discount = @0.0;
+            [builder addItemWithSku:@"sku1" name:@"bonus" category:@"maps" price:@2.0 quantity:@1];
+        }]];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(trackCampaign,
                  trackCampaignWithUrl:(nonnull NSString*)url
                  withOptions:(NSDictionary*)options
