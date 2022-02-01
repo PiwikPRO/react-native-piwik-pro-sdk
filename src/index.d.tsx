@@ -115,7 +115,6 @@ type PiwikProSdkType = {
 
   /**
    * Returns the user ID
-   * @param userId user ID to set
    */
   getUserId(): Promise<string>;
 
@@ -124,6 +123,11 @@ type PiwikProSdkType = {
    * @param email non-null string representing email address
    */
   setUserEmail(email: string): Promise<void>;
+
+  /**
+   * Returns the user's email
+   */
+  getUserEmail(): Promise<string>;
 
   /**
    * Dispatches queued events.

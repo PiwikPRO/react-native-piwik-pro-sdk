@@ -129,6 +129,10 @@ async function setUserEmail(email: string): Promise<void> {
   return await PiwikProNativeSdk.setUserEmail(email);
 }
 
+async function getUserEmail(): Promise<string> {
+  return await PiwikProNativeSdk.getUserEmail();
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -203,6 +207,7 @@ const PiwikProSdk: PiwikProSdkType = {
   setUserId,
   getUserId,
   setUserEmail,
+  getUserEmail,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

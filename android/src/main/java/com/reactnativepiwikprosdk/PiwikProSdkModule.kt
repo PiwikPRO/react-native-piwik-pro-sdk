@@ -284,6 +284,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun getUserEmail(promise: Promise) {
+    try {
+      val email = getTracker().userMail
+      promise.resolve(email)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

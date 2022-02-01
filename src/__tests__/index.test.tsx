@@ -18,7 +18,9 @@ jest.mock('react-native', () => ({
       getProfileAttributes: jest.fn(),
       checkAudienceMembership: jest.fn(),
       setUserId: jest.fn(),
+      getUserId: jest.fn(),
       setUserEmail: jest.fn(),
+      getUserEmail: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -382,6 +384,16 @@ describe('PiwikProSdk', () => {
     });
   });
 
+  describe('#getUserId', () => {
+    it('calls getUserId from native SDK', async () => {
+      const userId = 'user_id_5';
+      NativeModules.PiwikProSdk.getUserId.mockResolvedValue(userId);
+      const result = await PiwikProSdk.getUserId();
+
+      expect(result).toStrictEqual(userId);
+    });
+  });
+
   describe('#setUserEmail', () => {
     it('calls setUserEmail from native SDK', async () => {
       const email = 'john@doe.com';
@@ -390,6 +402,16 @@ describe('PiwikProSdk', () => {
       expect(NativeModules.PiwikProSdk.setUserEmail).toHaveBeenCalledWith(
         email
       );
+    });
+  });
+
+  describe('#getUserEmail', () => {
+    it('calls getUserEmail from native SDK', async () => {
+      const userEmail = 'john@doe.com';
+      NativeModules.PiwikProSdk.getUserEmail.mockResolvedValue(userEmail);
+      const result = await PiwikProSdk.getUserEmail();
+
+      expect(result).toStrictEqual(userEmail);
     });
   });
 
