@@ -18,6 +18,7 @@ jest.mock('react-native', () => ({
       getProfileAttributes: jest.fn(),
       checkAudienceMembership: jest.fn(),
       setUserId: jest.fn(),
+      setUserEmail: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -378,6 +379,17 @@ describe('PiwikProSdk', () => {
       await PiwikProSdk.setUserId(userId);
 
       expect(NativeModules.PiwikProSdk.setUserId).toHaveBeenCalledWith(userId);
+    });
+  });
+
+  describe('#setUserEmail', () => {
+    it('calls setUserEmail from native SDK', async () => {
+      const email = 'john@doe.com';
+      await PiwikProSdk.setUserEmail(email);
+
+      expect(NativeModules.PiwikProSdk.setUserEmail).toHaveBeenCalledWith(
+        email
+      );
     });
   });
 
