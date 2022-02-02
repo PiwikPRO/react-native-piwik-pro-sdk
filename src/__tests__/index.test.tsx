@@ -27,6 +27,7 @@ jest.mock('react-native', () => ({
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
+      setDispatchGzip: jest.fn(),
       setIncludeDefaultCustomVariables: jest.fn(),
       getIncludeDefaultCustomVariables: jest.fn(),
       setAnonymizationState: jest.fn(),
@@ -504,6 +505,18 @@ describe('PiwikProSdk', () => {
       const result = await PiwikProSdk.getDispatchInterval();
 
       expect(result).toStrictEqual(5);
+    });
+  });
+
+  describe('#setDispatchGzip', () => {
+    it('calls setDispatchGzip from native SDK', async () => {
+      const gzipEnabled = true;
+
+      await PiwikProSdk.setDispatchGzip(gzipEnabled);
+
+      expect(NativeModules.PiwikProSdk.setDispatchGzip).toHaveBeenCalledWith(
+        gzipEnabled
+      );
     });
   });
 

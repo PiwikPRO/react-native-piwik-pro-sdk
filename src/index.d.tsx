@@ -171,6 +171,12 @@ type PiwikProSdkType = {
   getDispatchInterval(): Promise<number>;
 
   /**
+   * Manages the gzip request compression state.
+   * @gzipEnabled new gzip compression state
+   */
+  setDispatchGzip(gzipEnabled: boolean): Promise<number>;
+
+  /**
    * Sets flag that determines whether default custom variables should be
    * added to each tracking event.
    * @includeDefaultCustomVariable flag that determines whether to include default

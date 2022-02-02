@@ -30,6 +30,7 @@ export default function Settings() {
     useState<boolean>(true);
   const [optOut, setOptOut] = useState<boolean>(false);
   const [prefixingEnabled, setPrefixingEnabled] = useState<boolean>(true);
+  const [gzipCompression, setGzipCompression] = useState<boolean>(false);
 
   useEffect(() => {
     if (sdkInitialized) {
@@ -116,6 +117,15 @@ export default function Settings() {
     }
   };
 
+  const toggleGzipCompressionState = async () => {
+    try {
+      await PiwikProSdk.setDispatchGzip(!gzipCompression);
+      setGzipCompression(!gzipCompression);
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   const toggleIncludeDefaultCustomVariables = async () => {
     try {
       await PiwikProSdk.setIncludeDefaultCustomVariables(
@@ -174,6 +184,13 @@ export default function Settings() {
       />
 
       <Button onPress={changeSessionTimeout} text={'Set session timeout'} />
+
+      <Button
+        onPress={toggleGzipCompressionState}
+        text={`Toggle Gzip compression state, current: ${
+          gzipCompression ? 'enabled' : 'disabled'
+        }`}
+      />
 
       <Button
         onPress={toggleAnonymizationState}

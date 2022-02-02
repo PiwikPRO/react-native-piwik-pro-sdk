@@ -474,6 +474,24 @@ RCT_REMAP_METHOD(getDispatchInterval,
     }
 }
 
+RCT_REMAP_METHOD(setDispatchGzip,
+                 setDispatchGzipWithGzipEnabled:(BOOL)gzipEnabled
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [PiwikTracker sharedInstance].useGzip = gzipEnabled;
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(setIncludeDefaultCustomVariables,
                  withIncludeDefaultCustomVariables:(BOOL)includeDefaultCustomVariables
                  getDispatchIntervalWithResolver:(RCTPromiseResolveBlock)resolve

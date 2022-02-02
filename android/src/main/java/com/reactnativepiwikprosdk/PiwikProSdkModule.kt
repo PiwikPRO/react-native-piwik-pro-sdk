@@ -279,7 +279,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setUserId(userId: String, promise: Promise) {
     try {
-      getTracker().userId = userId;
+      getTracker().userId = userId
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -289,7 +289,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun getUserId(promise: Promise) {
     try {
-      val userId = getTracker().userId;
+      val userId = getTracker().userId
       promise.resolve(userId)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -337,6 +337,15 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun setDispatchGzip(gzipEnabled: Boolean, promise: Promise) {
+    try {
+      getTracker().setDispatchGzipped(gzipEnabled)
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

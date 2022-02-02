@@ -162,6 +162,10 @@ async function getDispatchInterval(): Promise<number> {
   return await PiwikProNativeSdk.getDispatchInterval();
 }
 
+async function setDispatchGzip(gzipEnabled: boolean): Promise<number> {
+  return await PiwikProNativeSdk.setDispatchGzip(gzipEnabled);
+}
+
 async function setIncludeDefaultCustomVariables(
   includeDefaultCustomVariables: boolean
 ): Promise<void> {
@@ -230,6 +234,7 @@ const PiwikProSdk: PiwikProSdkType = {
   dispatch,
   setDispatchInterval,
   getDispatchInterval,
+  setDispatchGzip,
   setIncludeDefaultCustomVariables,
   getIncludeDefaultCustomVariables,
   setAnonymizationState,

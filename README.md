@@ -495,6 +495,21 @@ Returns:
 
 
 
+### Gzip compression
+In case when more than one event is in the queue, data is sent in bulk (using POST method with JSON payload). It is possible to compress the data before dispatch by using `setDispatchGzip` method right after the app initialization. By default, requests to the server do not use compression:
+```js
+await PiwikProSdk.setDispatchGzip(true);
+```
+Parameters:
+- `gzipEnabled: boolean` *(required)* - flag that determines whether request gzip compression is enabled.
+
+To take advantage of compressed requests you have to configure HTTP server of the tracker. Use `mod_deflate` (on Apache) or `lua_zlib` (on Nginx). Helpful resources:
+- [lua_zlib](https://github.com/brimworks/lua-zlib)
+- [lua-nginx-module](https://github.com/openresty/lua-nginx-module/)
+- [inflate.lua samples](https://gist.github.com/davidcaste/05b2f9461ebe4a3bb3fc)
+
+
+
 ### Default custom variables
 
 SDK can automatically add information about the platform version, OS version and app version in custom variables with indexes 1-3. By default, this option is turned on. This can be changed via the `setIncludeDefaultCustomVars` method:
