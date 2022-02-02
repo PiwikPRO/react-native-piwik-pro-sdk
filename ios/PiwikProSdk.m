@@ -339,6 +339,24 @@ RCT_REMAP_METHOD(setUserEmail,
     }
 }
 
+
+RCT_REMAP_METHOD(getUserEmail,
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        NSString* email = [PiwikTracker sharedInstance].userEmail;
+        resolve(email);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(dispatch,
                  dispatchWithResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
