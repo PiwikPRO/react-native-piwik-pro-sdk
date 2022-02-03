@@ -9,6 +9,7 @@ interface AppState {
   userId: string;
   userEmail: string;
   sessionTimeout: number;
+  gzipCompression: boolean;
 }
 
 const initialState: AppState = {
@@ -19,6 +20,7 @@ const initialState: AppState = {
   userId: '',
   userEmail: '',
   sessionTimeout: 0,
+  gzipCompression: false,
 };
 
 export const appSlice = createSlice({
@@ -50,6 +52,9 @@ export const appSlice = createSlice({
     setSessionTimeout: (state, action: PayloadAction<number>) => {
       state.sessionTimeout = action.payload;
     },
+    setGzipCompression: (state, action: PayloadAction<boolean>) => {
+      state.gzipCompression = action.payload;
+    },
   },
 });
 
@@ -62,6 +67,7 @@ export const {
   setUserId,
   setUserEmail,
   setSessionTimeout,
+  setGzipCompression,
 } = appSlice.actions;
 
 export const messageSelector = (state: RootState) => state.app.message;
@@ -74,5 +80,7 @@ export const userIdSelector = (state: RootState) => state.app.userId;
 export const userEmailSelector = (state: RootState) => state.app.userEmail;
 export const sessionTimeoutSelector = (state: RootState) =>
   state.app.sessionTimeout;
+export const gzipCompressionSelector = (state: RootState) =>
+  state.app.gzipCompression;
 
 export default appSlice.reducer;

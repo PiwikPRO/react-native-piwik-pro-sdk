@@ -346,6 +346,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

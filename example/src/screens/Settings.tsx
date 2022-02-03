@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
+  gzipCompressionSelector,
   sdkInitializedSelector,
   sessionTimeoutSelector,
   setDispatchInterval,
   setError,
+  setGzipCompression,
   setMessage,
   setSessionTimeout,
   setUserEmail,
@@ -24,13 +26,13 @@ export default function Settings() {
   const userId = useAppSelector(userIdSelector);
   const userEmail = useAppSelector(userEmailSelector);
   const sessionTimeout = useAppSelector(sessionTimeoutSelector);
+  const gzipCompression = useAppSelector(gzipCompressionSelector);
   const [anonymizationEnabled, setAnonymizationEnabled] =
     useState<boolean>(true);
   const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
     useState<boolean>(true);
   const [optOut, setOptOut] = useState<boolean>(false);
   const [prefixingEnabled, setPrefixingEnabled] = useState<boolean>(true);
-  const [gzipCompression, setGzipCompression] = useState<boolean>(false);
 
   useEffect(() => {
     if (sdkInitialized) {
@@ -120,7 +122,7 @@ export default function Settings() {
   const toggleGzipCompressionState = async () => {
     try {
       await PiwikProSdk.setDispatchGzip(!gzipCompression);
-      setGzipCompression(!gzipCompression);
+      dispatch(setGzipCompression(!gzipCompression));
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
