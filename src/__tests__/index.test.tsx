@@ -16,6 +16,7 @@ jest.mock('react-native', () => ({
       trackGoal: jest.fn(),
       trackEcommerce: jest.fn(),
       trackCampaign: jest.fn(),
+      trackProfileAttributes: jest.fn(),
       getProfileAttributes: jest.fn(),
       checkAudienceMembership: jest.fn(),
       setUserId: jest.fn(),
@@ -375,6 +376,34 @@ describe('PiwikProSdk', () => {
         url,
         undefined
       );
+    });
+  });
+
+  describe('#trackProfileAttributes', () => {
+    it('calls trackProfileAttributes from native SDK properly when array is passed', async () => {
+      const profileAttributes: TrackProfileAttributes = [
+        { name: 'food', value: 'pizza' },
+        { name: 'color', value: 'green' },
+      ];
+
+      await PiwikProSdk.trackProfileAttributes(profileAttributes);
+
+      expect(
+        NativeModules.PiwikProSdk.trackProfileAttributes
+      ).toHaveBeenCalledWith(profileAttributes);
+    });
+
+    it('calls trackProfileAttributes from native SDK properly when single profile attribute is passed', async () => {
+      const profileAttributes: TrackProfileAttributes = {
+        name: 'food',
+        value: 'pizza',
+      };
+
+      await PiwikProSdk.trackProfileAttributes(profileAttributes);
+
+      expect(
+        NativeModules.PiwikProSdk.trackProfileAttributes
+      ).toHaveBeenCalledWith([profileAttributes]);
     });
   });
 
