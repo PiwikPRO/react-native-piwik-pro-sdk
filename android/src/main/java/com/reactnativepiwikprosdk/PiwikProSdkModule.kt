@@ -541,24 +541,4 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
     return items
   }
-
-//  private fun buildProfileAttributes(
-//    trackHelper: TrackHelper,
-//    profileAttributes: ReadableArray
-//  ): EcommerceItems {
-//    val items = EcommerceItems()
-//
-//    trackHelper.audienceManagerSetProfileAttribute("food", "pizza").add("color", "green").with(getTracker());
-//
-//    for (i in 0 until profileAttributes.size()) {
-//      val attribute = profileAttributes.getMap(i) as ReadableMap
-//      items.addItem(
-//        EcommerceItems.Item(itemValues.getString("sku")).name(itemValues.getString("name"))
-//          .category(itemValues.getString("category"))
-//          .price(itemValues.getInt("price")).quantity(itemValues.getInt("quantity"))
-//      )
-//    }
-//
-//    return items
-//  }
 }
