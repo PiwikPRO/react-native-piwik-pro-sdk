@@ -121,6 +121,10 @@ async function trackProfileAttributes(
   profileAttributes: TrackProfileAttributes
 ): Promise<void> {
   if (Array.isArray(profileAttributes)) {
+    if (!profileAttributes.length) {
+      throw new Error('Profile attributes cannot be an empty array');
+    }
+
     return await PiwikProNativeSdk.trackProfileAttributes(profileAttributes);
   }
 

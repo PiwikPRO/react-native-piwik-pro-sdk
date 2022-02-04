@@ -242,11 +242,6 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun trackProfileAttributes(profileAttributes: ReadableArray, promise: Promise) {
     try {
-      if (profileAttributes.size() == 0) {
-        promise.resolve(null)
-        return
-      }
-
       val trackHelper = TrackHelper.track()
       val firstAttribute = profileAttributes.getMap(0) as ReadableMap
       val profileAttributesEvent = trackHelper.audienceManagerSetProfileAttribute(
