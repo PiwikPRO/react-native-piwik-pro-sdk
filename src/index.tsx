@@ -155,6 +155,14 @@ async function getUserEmail(): Promise<string> {
   return await PiwikProNativeSdk.getUserEmail();
 }
 
+async function setVisitorId(visitorId: string): Promise<void> {
+  return await PiwikProNativeSdk.setVisitorId(visitorId);
+}
+
+async function getVisitorId(): Promise<string> {
+  return await PiwikProNativeSdk.getVisitorId();
+}
+
 async function setSessionTimeout(sessionTimeout: number): Promise<void> {
   return await PiwikProNativeSdk.setSessionTimeout(sessionTimeout);
 }
@@ -252,6 +260,8 @@ const PiwikProSdk: PiwikProSdkType = {
   getUserId,
   setUserEmail,
   getUserEmail,
+  setVisitorId,
+  getVisitorId,
   setSessionTimeout,
   getSessionTimeout,
   startNewSession,
