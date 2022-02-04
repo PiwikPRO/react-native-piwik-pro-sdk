@@ -241,26 +241,6 @@ export default function TrackingActions() {
     }
   };
 
-  const trackProfileAttributes = async () => {
-    const profileAttributes: TrackProfileAttributes = [
-      {
-        name: 'food',
-        value: 'pizza',
-      },
-      {
-        name: 'drink',
-        value: 'water',
-      },
-    ];
-
-    try {
-      await PiwikProSdk.trackProfileAttributes(profileAttributes);
-      successMessage('Track profile attributes');
-    } catch (error) {
-      dispatch(setError((error as Error).message));
-    }
-  };
-
   return (
     <ScrollViewContainer>
       <Button onPress={trackScreen} text={'Track screen'} />
@@ -297,11 +277,6 @@ export default function TrackingActions() {
       <Button onPress={trackEcommerce} text={'Track ecmommerce transaction'} />
 
       <Button onPress={trackCampaign} text={'Track campaign'} />
-
-      <Button
-        onPress={trackProfileAttributes}
-        text={'Track profile attributes'}
-      />
     </ScrollViewContainer>
   );
 }
