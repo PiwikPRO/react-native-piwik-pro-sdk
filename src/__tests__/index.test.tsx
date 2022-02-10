@@ -508,10 +508,10 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#getVisitorId', () => {
-    it('calls getUserEmail from native SDK', async () => {
+    it('calls getVisitorId from native SDK', async () => {
       const visitorId = '41c90f410ed00000';
-      NativeModules.PiwikProSdk.getUserEmail.mockResolvedValue(visitorId);
-      const result = await PiwikProSdk.getUserEmail();
+      NativeModules.PiwikProSdk.getVisitorId.mockResolvedValue(visitorId);
+      const result = await PiwikProSdk.getVisitorId();
 
       expect(result).toStrictEqual(visitorId);
     });
