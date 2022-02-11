@@ -193,6 +193,20 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackInteraction(contentName: String, options: ReadableMap?, promise: Promise) {
+    try {
+      val trackHelper = TrackHelper.track()
+
+      applyOptionalParameters(trackHelper, options)
+      trackHelper.interaction(contentName, "click").piece(options?.getString("piece"))
+        .target(options?.getString("target")).with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun trackGoal(goal: Int, options: ReadableMap?, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()

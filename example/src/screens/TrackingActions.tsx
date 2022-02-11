@@ -169,10 +169,29 @@ export default function TrackingActions() {
 
     try {
       await PiwikProSdk.trackImpression(
-        `Some content impression${eventNum}`,
+        `Some content impression ${eventNum}`,
         options
       );
-      successMessage('Track impression');
+      successMessage('Track content impression');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const trackInteraction = async () => {
+    const options: TrackInteractionOptions = {
+      visitCustomVariables,
+      piece: 'banner',
+      target: 'https://www.dn.se/',
+      customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackInteraction(
+        `Some content interaction ${eventNum}`,
+        options
+      );
+      successMessage('Track content interaction');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -270,7 +289,9 @@ export default function TrackingActions() {
 
       <Button onPress={trackSearch} text={'Track search'} />
 
-      <Button onPress={trackImpression} text={'Track impression'} />
+      <Button onPress={trackImpression} text={'Track content impression'} />
+
+      <Button onPress={trackInteraction} text={'Track content interaction'} />
 
       <Button onPress={trackGoal} text={'Track goal'} />
 

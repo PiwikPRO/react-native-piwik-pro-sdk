@@ -13,6 +13,7 @@ jest.mock('react-native', () => ({
       trackOutlink: jest.fn(),
       trackSearch: jest.fn(),
       trackImpression: jest.fn(),
+      trackInteraction: jest.fn(),
       trackGoal: jest.fn(),
       trackEcommerce: jest.fn(),
       trackCampaign: jest.fn(),
@@ -293,6 +294,24 @@ describe('PiwikProSdk', () => {
       expect(NativeModules.PiwikProSdk.trackImpression).toHaveBeenCalledWith(
         contentName,
         undefined
+      );
+    });
+  });
+
+  describe('#trackInteraction', () => {
+    it('should call trackInteraction from native SDK', async () => {
+      const contentName = 'Some content interaction';
+      const options: TrackInteractionOptions = {
+        ...commonEventOptions,
+        piece: 'banner',
+        target: 'https://www.dn.se/',
+      };
+
+      await PiwikProSdk.trackInteraction(contentName, options);
+
+      expect(NativeModules.PiwikProSdk.trackInteraction).toHaveBeenCalledWith(
+        contentName,
+        options
       );
     });
   });

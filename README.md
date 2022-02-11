@@ -227,6 +227,18 @@ const options = {
 };
 await PiwikProSdk.trackImpression('Some content impression', options);
 ```
+
+When the user interacts with the ad by tapping on it, you can also track it with a similar method:
+```js
+const options = {
+  piece: 'banner',
+  target: 'https://www.dn.se/',
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackInteraction('Some content interaction', options);
+```
+
 Parameters:
 - `contentName: string` *(required)* - name of the content, e.g. 'Ad Foo Bar'.
 - `options` - impression tracking options, object containing four properties (all of them are optional):
