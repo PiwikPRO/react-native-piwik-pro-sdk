@@ -39,6 +39,7 @@ jest.mock('react-native', () => ({
       setOptOut: jest.fn(),
       getOptOut: jest.fn(),
       setDryRun: jest.fn(),
+      getDryRun: jest.fn(),
       setPrefixing: jest.fn(),
       isPrefixingOn: jest.fn(),
     },
@@ -665,6 +666,16 @@ describe('PiwikProSdk', () => {
       await PiwikProSdk.setDryRun(dryRun);
 
       expect(NativeModules.PiwikProSdk.setDryRun).toHaveBeenCalledWith(dryRun);
+    });
+  });
+
+  describe('#getDryRun', () => {
+    it('should call getDryRun from native SDK', async () => {
+      const dryRun = true;
+      NativeModules.PiwikProSdk.getDryRun.mockResolvedValue(dryRun);
+      const result = await PiwikProSdk.getDryRun();
+
+      expect(result).toStrictEqual(dryRun);
     });
   });
 
