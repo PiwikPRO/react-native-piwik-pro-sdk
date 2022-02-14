@@ -13,7 +13,7 @@ import pro.piwik.sdk.extra.DownloadTracker.Extra.Custom
 import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
 import java.net.URL
-import java.util.ArrayList
+import java.util.*
 
 class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -490,9 +490,9 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setDryRun(dryRun: Boolean, promise: Promise) {
     try {
-      if(dryRun) {
+      if (dryRun) {
         getTracker().dryRunTarget = ArrayList()
-      } else{
+      } else {
         getTracker().dryRunTarget = null
       }
 
@@ -508,7 +508,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val dryRunTarget = getTracker().dryRunTarget
       var dryRun = false
 
-      if(dryRunTarget != null) {
+      if (dryRunTarget != null) {
         dryRun = true
       }
 
