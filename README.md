@@ -57,6 +57,8 @@ Returns:
 
 ### Tracking screen views
 
+*Requires Analytics*
+
 During a valid tracking session, you can track screen views which represent the content the user is viewing in the application. To track a screen you only need to provide the screen path. This path is internally translated by the SDK to an HTTP URL as the Piwik PRO server uses URLs for tracking views. Additionally, Piwik PRO SDK uses prefixes which are inserted in a generated URL for various types of action(s). For tracking screen views it will use a prefix `'screen'` by default, however, [automatic prefixing](#prefixing) can be disabled with the `setPrefixing(false)` option.
 
 ```js
@@ -77,6 +79,8 @@ Parameters:
 
 
 ### Tracking custom events
+
+*Requires Analytics*
 
 To collect data about the user’s interaction with the interactive components of the application, like a button presses or the use of a particular item in the game – use event method.
 
@@ -105,6 +109,8 @@ For more resources, please visit [documentation](https://help.piwik.pro/support/
 
 ### Tracking exceptions
 
+*Requires Analytics*
+
 Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` [prefix](#prefixing), and additionally the `'exception'` prefix if `isPrefixingOn()` option is enabled (`true`).
 
 Measure a caught exception by setting the exception field values on the tracker and sending the hit, as with this example:
@@ -126,6 +132,8 @@ Parameters:
 
 
 ### Tracking social interactions
+
+*Requires Analytics*
 
 Social interactions such as likes, shares and comments in various social networks can be tracked as below. This, again, is tracked in a similar way as with screen views but the `'social'` [prefix](#prefixing) is used when the default `isPrefixing()` option is enabled.
 
@@ -150,6 +158,8 @@ The generated URL corresponds to string, which includes the network, interaction
 
 ### Tracking downloads
 
+*Requires Analytics*
+
 You can track the downloads initiated by your application:
 
 ```js
@@ -173,7 +183,7 @@ All downloads can be viewed in the corresponding section in the analytics panel.
 
 ### Tracking outlinks
 
-Requires Analytics
+*Requires Analytics*
 
 For tracking outlinks to external websites or other apps opened from your application use the `trackOutlink` method:
 
@@ -193,6 +203,8 @@ Parameters:
 
 
 ### Tracking search operations
+
+*Requires Analytics*
 
 Tracking search operations allow the measurement of popular keywords used for various search operations performed inside your application. It can be done via the `trackSearch` method:
 
@@ -215,7 +227,9 @@ Parameters:
 
 
 
-### Tracking content impressions
+### Tracking content impressions and interactions
+
+*Requires Analytics*
 
 You can track an impression of an ad in your application as below.
 ```js
@@ -251,6 +265,8 @@ Parameters:
 
 ### Tracking goals
 
+*Requires Analytics*
+
 Goal tracking is used to measure and improve your business objectives. To track goals, you first need to configure them on the server in your web panel. Goals such as, for example, subscribing to a newsletter can be tracked as below with the goal ID that you will see on the server after configuring the goal and optional revenue. The currency for the revenue can be set in the Piwik PRO Analytics settings. You can read more about goals [here](https://help.piwik.pro/support/analytics/goals/).
 
 ```js
@@ -271,6 +287,8 @@ Parameters:
 
 
 ### Tracking ecommerce transactions
+
+*Requires Analytics*
 
 Ecommerce transactions (in-app purchases) can be tracked to help you improve your business strategy. To track a transaction you must provide two required values – the transaction identifier and grandTotal. Optionally, you can also provide values for subTotal, tax, shippingCost, discount and list of purchased items as in the example below.
 
@@ -315,6 +333,8 @@ Parameters:
 
 ### Tracking campaigns
 
+*Requires Analytics*
+
 [Tracking campaigns](https://piwik.pro/glossary/campaign-tracking/) URLs configured with the online [Campaign URL Builder](https://piwik.pro/url-builder-tool/) tool allow you to measure how different campaigns (for example with Facebook ads or direct emails) bring traffic to your application:
 
 ```js
@@ -335,6 +355,10 @@ Parameters:
 
 
 ### Tracking custom variables
+
+*The feature will soon be disabled. We recommend using [custom dimensions](#tracking-custom-dimensions) instead.*
+
+*Requires Analytics*
 
 A [custom variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. occurred for each custom variable. A custom variable is defined by a name – for example, 'User status' – and a value – for example, 'LoggedIn' or 'Anonymous'. It is required for names and values to be encoded in UTF-8.
 
@@ -367,6 +391,8 @@ where:
 
 ### Tracking custom dimensions
 
+*Requires Analytics*
+
 To track a custom key-value pair assigned to your users or screen views, use [custom dimensions](https://help.piwik.pro/support/analytics/custom-dimension/). Note that the custom value data is not sent by itself, but only with other tracking actions such as screen views, events or other tracking actions (see the documentation of other tracking methods), for example:
 
 ```js
@@ -385,7 +411,7 @@ await PiwikProSdk.trackScreen(`your_screen_path`, { customDimensions });
 
 *Requires Audience Manager*
 
-The Audience Manager stores visitors’ profiles which have data from a variety of sources. One of them can be a mobile application. It is possible to enrich the profiles with more attributes by passing any key-value pair e.g. gender: male, favourite food: Italian, etc. It is recommended to set additional user identifiers such as email or User ID which will allow the enrichment of existing profiles or merging of profiles rather than creating a new profile. For example, if the user visited the website, performed some actions, filled in a form with his email (his data was tracked and profile created in Audience Manager) and afterwards started using a mobile application, the existing profile will be enriched only if the email was set. Otherwise, a new profile will be created.
+The Audience Manager stores visitors’ profiles which have data from a variety of sources. One of them can be a mobile application. It is possible to enrich the profiles with more attributes by passing any key-value pair e.g. gender: male, favourite food: Italian, etc. It is recommended to set additional user identifiers such as [email](#user-email-address) or [user ID](#user-id) which will allow the enrichment of existing profiles or merging of profiles rather than creating a new profile. For example, if the user visited the website, performed some actions, filled in a form with his email (his data was tracked and profile created in Audience Manager) and afterwards started using a mobile application, the existing profile will be enriched only if the email was set. Otherwise, a new profile will be created.
 
 For sending profile attributes use `trackProfileAttributes` method:
 
