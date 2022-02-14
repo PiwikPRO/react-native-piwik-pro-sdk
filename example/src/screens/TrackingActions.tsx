@@ -262,42 +262,42 @@ export default function TrackingActions() {
 
   return (
     <ScrollViewContainer>
-      <Button onPress={trackScreen} text={'Track screen'} />
+      <Button onPress={trackScreen} text="Track screen" />
 
       <Button
         onPress={trackScreenWithCustomDimensions}
-        text={'Track screen with custom dimensions'}
+        text="Track screen with custom dimensions"
       />
 
       <Button
         onPress={trackScreenWithCustomVariables}
-        text={'Track screen with custom variables'}
+        text="Track screen with custom variables"
       />
 
-      <Button onPress={trackCustomEvent} text={'Track custom event'} />
+      <Button onPress={trackCustomEvent} text="Track custom event" />
 
-      <Button onPress={trackException} text={'Track exception'} />
+      <Button onPress={trackException} text="Track exception" />
 
       <Button
         onPress={trackSocialInteraction}
-        text={'Track social interaction'}
+        text="Track social interaction"
       />
 
-      <Button onPress={trackDownload} text={'Track download'} />
+      <Button onPress={trackDownload} text="Track download" />
 
-      <Button onPress={trackOutlink} text={'Track outlink'} />
+      <Button onPress={trackOutlink} text="Track outlink" />
 
-      <Button onPress={trackSearch} text={'Track search'} />
+      <Button onPress={trackSearch} text="Track search" />
 
-      <Button onPress={trackImpression} text={'Track content impression'} />
+      <Button onPress={trackImpression} text="Track content impression" />
 
-      <Button onPress={trackInteraction} text={'Track content interaction'} />
+      <Button onPress={trackInteraction} text="Track content interaction" />
 
-      <Button onPress={trackGoal} text={'Track goal'} />
+      <Button onPress={trackGoal} text="Track goal" />
 
-      <Button onPress={trackEcommerce} text={'Track ecmommerce transaction'} />
+      <Button onPress={trackEcommerce} text="Track ecmommerce transaction" />
 
-      <Button onPress={trackCampaign} text={'Track campaign'} />
+      <Button onPress={trackCampaign} text="Track campaign" />
     </ScrollViewContainer>
   );
 }
