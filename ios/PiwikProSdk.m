@@ -304,7 +304,7 @@ RCT_REMAP_METHOD(trackProfileAttributes,
         for (NSDictionary* attribute in profileAttributes) {
             [[PiwikTracker sharedInstance] sendProfileAttributeWithName:attribute[@"name"] value:attribute[@"value"]];
         }
-
+        
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
