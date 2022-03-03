@@ -111,9 +111,7 @@ For more resources, please visit [documentation](https://help.piwik.pro/support/
 
 *Requires Analytics*
 
-Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` [prefix](#prefixing), and additionally the `'exception'` prefix if `isPrefixingOn()` option is enabled (`true`).
-
-Measure a caught exception by setting the exception field values on the tracker and sending the hit, as with this example:
+Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` [prefix](#prefixing), and additionally the `'exception'` prefix if `isPrefixingOn()` option is enabled (`true`):
 
 ```js
 const options = {

@@ -93,13 +93,10 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     promise: Promise
   ) {
     try {
-      val tracker = getTracker()
       val trackHelper = TrackHelper.track()
-      val exceptionTracker =
-        trackHelper.exception(Exception(description)).description(description).fatal(isFatal)
 
       applyOptionalParameters(trackHelper, options)
-      exceptionTracker.with(tracker)
+      trackHelper.exception().description(description).fatal(isFatal).with(getTracker());
 
       promise.resolve(null)
     } catch (exception: Exception) {
