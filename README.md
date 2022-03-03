@@ -175,8 +175,6 @@ Parameters:
 
 All downloads can be viewed in the corresponding section in the analytics panel.
 
-***Note:*** Generated URLs may differ between Android and iOS.
-
 
 
 ### Tracking application installs

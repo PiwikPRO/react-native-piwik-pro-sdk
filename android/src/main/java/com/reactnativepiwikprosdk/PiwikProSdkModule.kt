@@ -7,9 +7,6 @@ import pro.piwik.sdk.Tracker
 import pro.piwik.sdk.Tracker.OnCheckAudienceMembership
 import pro.piwik.sdk.Tracker.OnGetProfileAttributes
 import pro.piwik.sdk.TrackerConfig
-import pro.piwik.sdk.extra.DownloadTracker
-import pro.piwik.sdk.extra.DownloadTracker.Extra
-import pro.piwik.sdk.extra.DownloadTracker.Extra.Custom
 import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
 import java.net.URL
@@ -96,7 +93,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.exception().description(description).fatal(isFatal).with(getTracker());
+      trackHelper.exception().description(description).fatal(isFatal).with(getTracker())
 
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -128,20 +125,11 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun trackDownload(url: String, options: ReadableMap?, promise: Promise) {
     try {
-      val tracker = getTracker()
       val trackHelper = TrackHelper.track()
-      val extra: Extra = object : Custom() {
-        override fun isIntensiveWork(): Boolean {
-          return false
-        }
-
-        override fun buildExtraIdentifier(): String? {
-          return url
-        }
-      }
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.download(DownloadTracker(tracker)).identifier(extra).force().with(tracker)
+      trackHelper.sendDownload(url).with(getTracker())
+
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
