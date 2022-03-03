@@ -17,7 +17,7 @@ import PiwikProSdk from "@piwikpro/react-native-piwik-pro-sdk";
 
 // ...
 
-await PiwikProSdk.init('https://your.piwik.pro.server.com', '01234567-89ab-cdef-0123-456789abcdef')
+await PiwikProSdk.init('https://your.piwik.pro.server.com', '01234567-89ab-cdef-0123-456789abcdef');
 ```
 Parameters:
 - `serverAddress: string` *(required)* – URL of your Piwik PRO server.
@@ -178,6 +178,20 @@ Parameters:
 All downloads can be viewed in the corresponding section in the analytics panel.
 
 ***Note:*** Generated URLs may differ between Android and iOS.
+
+
+
+### Tracking application installs
+
+*Requires Analytics*
+
+You can also track installations of your application. This event is sent to the server only once per application version therefore if you wish to track installs, then you can add it in your application code immediately after configuring the tracker.
+```js
+await PiwikProSdk.init('https://your.piwik.pro.server.com', '01234567-89ab-cdef-0123-456789abcdef');
+await PiwikProSdk.sendApplicationDownload();
+}
+```
+Application installation is only tracked during the first launch. In the case of the application being installed but not run, the app installation will not be tracked.
 
 
 

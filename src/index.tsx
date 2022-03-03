@@ -74,6 +74,10 @@ async function trackDownload(
   return await PiwikProNativeSdk.trackDownload(url, options);
 }
 
+async function trackApplicationDownload(): Promise<void> {
+  return await PiwikProNativeSdk.trackApplicationDownload();
+}
+
 async function trackOutlink(
   url: string,
   options?: CommonEventOptions
@@ -261,6 +265,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackException,
   trackSocialInteraction,
   trackDownload,
+  trackApplicationDownload,
   trackOutlink,
   trackSearch,
   trackImpression,

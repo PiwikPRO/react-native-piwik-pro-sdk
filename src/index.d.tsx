@@ -58,6 +58,11 @@ type PiwikProSdkType = {
   trackDownload(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
+   * Tracks application download.
+   */
+  trackApplicationDownload(): Promise<void>;
+
+  /**
    * Tracks outlink.
    * @url outlink target
    * @options outlink tracking options (customDimensions, visitCustomVariables)

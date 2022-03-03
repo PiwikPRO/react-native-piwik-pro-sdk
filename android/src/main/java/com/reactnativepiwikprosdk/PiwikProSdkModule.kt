@@ -152,6 +152,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackApplicationDownload(promise: Promise) {
+    try {
+      TrackHelper.track().sendApplicationDownload().with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun trackOutlink(url: String, options: ReadableMap?, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()
@@ -262,14 +272,14 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   fun trackProfileAttributes(profileAttributes: ReadableArray, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()
-      val firstAttribute = profileAttributes.getMap(0) as ReadableMap
+      val firstAttribute = profileAttributes.getMap(0)
       val profileAttributesEvent = trackHelper.audienceManagerSetProfileAttribute(
         firstAttribute.getString("name").toString(),
         firstAttribute.getString("value").toString()
       )
 
       for (i in 1 until profileAttributes.size()) {
-        val attribute = profileAttributes.getMap(i) as ReadableMap
+        val attribute = profileAttributes.getMap(i)
 
         profileAttributesEvent.add(
           attribute.getString("name").toString(),
@@ -611,7 +621,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
 
     for (i in 0 until itemsArray.size()) {
-      val itemValues = itemsArray.getMap(i) as ReadableMap
+      val itemValues = itemsArray.getMap(i)
       items.addItem(
         EcommerceItems.Item(itemValues.getString("sku")).name(itemValues.getString("name"))
           .category(itemValues.getString("category"))
