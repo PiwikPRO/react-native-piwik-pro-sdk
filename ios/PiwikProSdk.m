@@ -137,6 +137,23 @@ RCT_REMAP_METHOD(trackDownload,
     }
 }
 
+RCT_REMAP_METHOD(trackApplicationInstall,
+                 trackApplicationInstallWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [[PiwikTracker sharedInstance] sendApplicationDownload];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(trackOutlink,
                  trackOutlinkWithOutlink:(nonnull NSString*)outlink
                  withOptions:(NSDictionary*)options
@@ -214,7 +231,8 @@ RCT_REMAP_METHOD(trackInteraction,
     @try {
         [self applyOptionalParameters:options];
         
-        [[PiwikTracker sharedInstance] sendContentInteractionWithName:contentName piece:options[@"piece"] target:options[@"target"]];
+//        [[PiwikTracker sharedInstance] sendContentInteractionWithName:contentName piece:options[@"piece"] target:options[@"target"]];
+        [[PiwikTracker sharedInstance] sendContentInteractionWithName:contentName interaction:@"click" piece:options[@"piece"] target:options[@"target"]];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);

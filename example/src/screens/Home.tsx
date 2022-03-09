@@ -24,7 +24,7 @@ export default function Home({ navigation }: Props) {
     )
       .then(() => dispatch(setMessage('Success')))
       .catch((error) => dispatch(setError(error.message)));
-    await PiwikProSdk.trackApplicationDownload();
+    await PiwikProSdk.trackApplicationInstall();
 
     const dispatchInterval = await PiwikProSdk.getDispatchInterval();
     dispatch(setDispatchInterval(dispatchInterval));

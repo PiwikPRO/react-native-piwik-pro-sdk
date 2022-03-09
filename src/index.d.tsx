@@ -60,7 +60,7 @@ type PiwikProSdkType = {
   /**
    * Tracks application download.
    */
-  trackApplicationDownload(): Promise<void>;
+  trackApplicationInstall(): Promise<void>;
 
   /**
    * Tracks outlink.

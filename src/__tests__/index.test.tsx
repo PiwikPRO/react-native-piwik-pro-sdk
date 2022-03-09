@@ -12,7 +12,7 @@ jest.mock('react-native', () => ({
       trackException: jest.fn(),
       trackSocialInteraction: jest.fn(),
       trackDownload: jest.fn(),
-      trackApplicationDownload: jest.fn(),
+      trackApplicationInstall: jest.fn(),
       trackOutlink: jest.fn(),
       trackSearch: jest.fn(),
       trackImpression: jest.fn(),
@@ -224,12 +224,12 @@ describe('PiwikProSdk', () => {
     });
   });
 
-  describe('#trackApplicationDownload', () => {
-    it('should call trackApplicationDownload from native SDK', async () => {
-      await PiwikProSdk.trackApplicationDownload();
+  describe('#trackApplicationInstall', () => {
+    it('should call trackApplicationInstall from native SDK', async () => {
+      await PiwikProSdk.trackApplicationInstall();
 
       expect(
-        NativeModules.PiwikProSdk.trackApplicationDownload
+        NativeModules.PiwikProSdk.trackApplicationInstall
       ).toHaveBeenCalledTimes(1);
     });
   });
