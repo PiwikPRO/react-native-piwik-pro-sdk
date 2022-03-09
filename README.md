@@ -260,11 +260,12 @@ const options = {
   visitCustomVariables: 4: { name: 'food', value: 'pizza' },
   customDimensions: { 1: 'beta', 2: 'gamma', },
 };
-await PiwikProSdk.trackInteraction('Some content interaction', options);
+await PiwikProSdk.trackInteraction('Some content interaction', 'click', options);
 ```
 
 Parameters:
 - `contentName: string` *(required)* – name of the content, e.g. 'Ad Foo Bar'.
+- `interaction: string` *(required)* – type of the interaction, e.g. 'click'.
 - `options` – impression tracking options, object containing four properties (all of them are optional):
   - `piece: string` – actual content. For instance, path to the image, video, audio or any text.
   - `target: string` – the target of the content. For instance the URL of a landing page.

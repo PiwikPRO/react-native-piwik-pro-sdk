@@ -189,6 +189,7 @@ export default function TrackingActions() {
     try {
       await PiwikProSdk.trackInteraction(
         `Some content interaction ${eventNum}`,
+        'click',
         options
       );
       successMessage('Track content interaction');

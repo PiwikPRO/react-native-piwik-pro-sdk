@@ -89,10 +89,12 @@ type PiwikProSdkType = {
   /**
    * Tracks content interaction.
    * @contentName name of the content
+   * @interaction type of the interaction
    * @options search tracking options (piece, target, customDimensions, visitCustomVariables)
    */
   trackInteraction(
     contentName: string,
+    interaction: string,
     options?: TrackInteractionOptions
   ): Promise<void>;
 

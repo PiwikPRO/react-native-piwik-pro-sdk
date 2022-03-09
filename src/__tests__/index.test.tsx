@@ -320,16 +320,18 @@ describe('PiwikProSdk', () => {
   describe('#trackInteraction', () => {
     it('should call trackInteraction from native SDK', async () => {
       const contentName = 'Some content interaction';
+      const interaction = 'click';
       const options: TrackInteractionOptions = {
         ...commonEventOptions,
         piece: 'banner',
         target: 'https://www.dn.se/',
       };
 
-      await PiwikProSdk.trackInteraction(contentName, options);
+      await PiwikProSdk.trackInteraction(contentName, interaction, options);
 
       expect(NativeModules.PiwikProSdk.trackInteraction).toHaveBeenCalledWith(
         contentName,
+        interaction,
         options
       );
     });

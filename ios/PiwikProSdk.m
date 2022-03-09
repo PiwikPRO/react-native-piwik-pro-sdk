@@ -219,6 +219,7 @@ RCT_REMAP_METHOD(trackImpression,
 
 RCT_REMAP_METHOD(trackInteraction,
                  trackInteractionWithContentName:(nonnull NSString*)contentName
+                 withInteraction:(nonnull NSString*)interaction
                  withOptions:(NSDictionary*)options
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
@@ -231,8 +232,7 @@ RCT_REMAP_METHOD(trackInteraction,
     @try {
         [self applyOptionalParameters:options];
         
-//        [[PiwikTracker sharedInstance] sendContentInteractionWithName:contentName piece:options[@"piece"] target:options[@"target"]];
-        [[PiwikTracker sharedInstance] sendContentInteractionWithName:contentName interaction:@"click" piece:options[@"piece"] target:options[@"target"]];
+        [[PiwikTracker sharedInstance] sendContentInteractionWithName:contentName interaction:interaction piece:options[@"piece"] target:options[@"target"]];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
