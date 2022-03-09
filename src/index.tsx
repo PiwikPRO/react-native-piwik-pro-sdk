@@ -108,7 +108,11 @@ async function trackInteraction(
   options?: TrackInteractionOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
-  return await PiwikProNativeSdk.trackInteraction(contentName, interaction, options);
+  return await PiwikProNativeSdk.trackInteraction(
+    contentName,
+    interaction,
+    options
+  );
 }
 
 async function trackGoal(
