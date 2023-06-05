@@ -1,5 +1,18 @@
 import { NativeModules } from 'react-native';
 import PiwikProSdk from '../';
+import type {
+  CommonEventOptions,
+  ProfileAttributes,
+  TrackCustomEventOptions,
+  TrackEcommerceOptions,
+  TrackGoalOptions,
+  TrackImpressionOptions,
+  TrackInteractionOptions,
+  TrackProfileAttributes,
+  TrackScreenOptions,
+  TrackSearchOptions,
+  TrackSocialInteractionOptions,
+} from '../types';
 
 const version = '0.0.1';
 

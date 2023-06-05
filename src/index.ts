@@ -1,9 +1,24 @@
 import { NativeModules, Platform } from 'react-native';
+import type {
+  CommonEventOptions,
+  PiwikProSdkType,
+  ProfileAttributes,
+  TrackCustomEventOptions,
+  TrackEcommerceOptions,
+  TrackGoalOptions,
+  TrackImpressionOptions,
+  TrackInteractionOptions,
+  TrackProfileAttributes,
+  TrackScreenOptions,
+  TrackSocialInteractionOptions,
+} from './types';
+
 import {
-  validateInt,
   validateCustomKeyValue,
+  validateInt,
   validateVisitorId,
 } from './util/validator';
+
 import { version } from './version';
 
 const LINKING_ERROR =
@@ -299,5 +314,7 @@ const PiwikProSdk: PiwikProSdkType = {
   setPrefixing,
   isPrefixingOn,
 };
+
+export type { PiwikProSdkType } from './types';
 
 export default PiwikProSdk;

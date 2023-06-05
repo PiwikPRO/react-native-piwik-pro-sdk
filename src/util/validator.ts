@@ -1,3 +1,5 @@
+import type { CustomDimensions, CustomVariables } from '../types';
+
 function validateInt(value: number) {
   if (!Number.isInteger(value)) {
     throw new Error('Parameter must be an integer number');
