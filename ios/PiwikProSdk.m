@@ -289,6 +289,28 @@ RCT_REMAP_METHOD(trackEcommerce,
     }
 }
 
+RCT_REMAP_METHOD(trackEcommerceProductDetailView,
+                 trackEcommerceProductDetailViewWithProducts:(nonnull NSArray*)products
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+
+    @try {
+        [self applyOptionalParameters:options];
+        EcommerceProducts *ecommerceProducts = [self buildEcommerceProducts:products];
+        [[PiwikTracker sharedInstance] ecommerceProductDetailView: ecommerceProducts];
+
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(trackCampaign,
                  trackCampaignWithUrl:(nonnull NSString*)url
                  withResolver:(RCTPromiseResolveBlock)resolve
@@ -805,6 +827,29 @@ RCT_REMAP_METHOD(isPrefixingOn,
     for (NSDictionary* itemValues in itemsArray) {
         [builder addItemWithSku:itemValues[@"sku"] name:itemValues[@"name"] category:itemValues[@"category"] price:itemValues[@"price"] quantity:itemValues[@"quantity"]];
     }
+}
+
+- (EcommerceProducts *)buildEcommerceProducts: (nonnull NSArray*) products {
+    EcommerceProducts *ecommerceProducts = [[EcommerceProducts alloc] init];
+    for (NSDictionary* product in products) {
+        NSMutableDictionary<NSNumber*, NSString*> *customDimensions = [NSMutableDictionary dictionary];
+        if ([product[@"customDimensions"] isKindOfClass: [NSDictionary class]]) {
+            NSDictionary *rawCustomDimensions = product[@"customDimensions"];
+            for (NSString* key in rawCustomDimensions) {
+                customDimensions[[NSNumber numberWithInt: key.intValue]] = rawCustomDimensions[key];
+            }
+        }
+
+        [ecommerceProducts addProductWithSku: product[@"sku"]
+                                        name: product[@"name"]
+                                    category: product[@"category"]
+                                       price: product[@"price"]
+                                    quantity: product[@"quantity"]
+                                       brand: product[@"brand"]
+                                     variant: product[@"variant"]
+                            customDimensions: customDimensions];
+    }
+    return ecommerceProducts;
 }
 
 @end

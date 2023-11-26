@@ -19,6 +19,7 @@ jest.mock('react-native', () => ({
       trackInteraction: jest.fn(),
       trackGoal: jest.fn(),
       trackEcommerce: jest.fn(),
+      trackEcommerceProductDetailView: jest.fn(),
       trackCampaign: jest.fn(),
       trackProfileAttributes: jest.fn(),
       getProfileAttributes: jest.fn(),
@@ -388,6 +389,25 @@ describe('PiwikProSdk', () => {
         grandTotal,
         options
       );
+    });
+  });
+
+  describe('#trackEcommerceProductDetailView', () => {
+    it('should call trackEcommerceProductDetailView from native SDK', async () => {
+      const options: CommonEventOptions = {
+        ...commonEventOptions,
+      };
+      const products: EcommerceProduct[] = [
+        {
+          sku: 'craft-311',
+        },
+      ];
+
+      await PiwikProSdk.trackEcommerceProductDetailView(products, options);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceProductDetailView
+      ).toHaveBeenCalledWith(products, options);
     });
   });
 

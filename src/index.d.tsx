@@ -105,13 +105,24 @@ type PiwikProSdkType = {
 
   /**
    * Tracks ecommerce transaction.
-   * @contentName searched query that was used in the app
-   * @options search tracking options (category, count, customDimensions, visitCustomVariables)
+   * @orderId unique string identifying the order
+   * @grandTotal total amount of the order, in cents
+   * @options stracking options (subtotal, tax, shipping, discount, items)
    */
   trackEcommerce(
     orderId: string,
     grandTotal: number,
     options?: TrackEcommerceOptions
+  ): Promise<void>;
+
+  /**
+   * Tracks action of viewing product page.
+   * @products list of product representations
+   * @options ecommerce product detail view tracking options (customDimensions, visitCustomVariables)
+   */
+  trackEcommerceProductDetailView(
+    products: EcommerceProduct[],
+    options?: CommonEventOptions
   ): Promise<void>;
 
   /**
@@ -325,6 +336,17 @@ type EcommerceItem = {
   category: string;
   price: number;
   quantity: number;
+};
+
+type EcommerceProduct = {
+  sku: string;
+  name?: string;
+  category?: string[];
+  price?: string;
+  quantity?: number;
+  brand?: string;
+  variant?: string;
+  customDimensions?: CustomDimensions;
 };
 
 type TrackEcommerceOptions = CommonEventOptions & {

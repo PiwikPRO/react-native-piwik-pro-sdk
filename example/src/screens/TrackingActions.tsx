@@ -246,6 +246,35 @@ export default function TrackingActions() {
     }
   };
 
+  const trackEcommerceProductDetailsView = async () => {
+    const options: CommonEventOptions = {
+      visitCustomVariables,
+      customDimensions,
+    };
+    const product: EcommerceProduct[] = [
+      {
+        sku: 'craft-311',
+        name: 'Unicorn Iron on Patch',
+        category: ['Crafts & Sewing', 'Toys', 'Comsmetics'],
+        price: '49,9089',
+        quantity: 3,
+        brand: 'DMZ',
+        variant: 'blue',
+        customDimensions: {
+          1: 'coupon-2020',
+          2: '20%',
+        },
+      },
+    ];
+
+    try {
+      await PiwikProSdk.trackEcommerceProductDetailView(product, options);
+      successMessage('Track ecommerce product details view');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   const trackCampaign = async () => {
     try {
       await PiwikProSdk.trackCampaign(
@@ -292,7 +321,12 @@ export default function TrackingActions() {
 
       <Button onPress={trackGoal} text="Track goal" />
 
-      <Button onPress={trackEcommerce} text="Track ecmommerce transaction" />
+      <Button onPress={trackEcommerce} text="Track ecommerce transaction" />
+
+      <Button
+        onPress={trackEcommerceProductDetailsView}
+        text="Track ecommerce product details view"
+      />
 
       <Button onPress={trackCampaign} text="Track campaign" />
     </ScrollViewContainer>

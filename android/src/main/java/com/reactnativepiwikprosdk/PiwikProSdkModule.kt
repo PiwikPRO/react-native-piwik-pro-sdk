@@ -9,6 +9,7 @@ import pro.piwik.sdk.Tracker.OnGetProfileAttributes
 import pro.piwik.sdk.TrackerConfig
 import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
+import pro.piwik.sdk.extra.EcommerceProducts
 import java.net.URL
 import java.util.*
 
@@ -245,6 +246,21 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
         .discount(options?.getInt("discount"))
         .items(items)
         .with(getTracker())
+
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun trackEcommerceProductDetailView(products: ReadableArray, options: ReadableMap?, promise: Promise) {
+    try {
+      val products = buildEcommerceProducts(products)
+      val trackHelper = TrackHelper.track()
+
+      applyOptionalParameters(trackHelper, options)
+      trackHelper.ecommerceProductDetailView(products).with(getTracker())
 
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -627,5 +643,46 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
 
     return items
+  }
+
+  private fun buildEcommerceProducts(
+    productsArray: ReadableArray?
+  ): EcommerceProducts {
+    val products = EcommerceProducts()
+
+    if (productsArray == null) {
+      return products
+    }
+
+    for (i in 0 until productsArray.size()) {
+      val productValues = productsArray.getMap(i)
+      if (productValues != null) {
+        val sku = productValues.getString("sku") as String
+        val category = (productValues.getArray("category") as? List<String>)?.toTypedArray() ?: arrayOf<String>()
+        val price = productValues.getString("price") as? String ?: "0"
+        val quantity = productValues.getInt("quantity") as? Int ?: 1
+        val name = productValues.getString("name") as? String
+        val brand = productValues.getString("brand") as? String
+        val variant = productValues.getString("variant") as? String
+        val customDimensions = mutableMapOf<Int, String>()
+
+        productValues.getMap("customDimensions")?.entryIterator?.forEach {
+          customDimensions[it.key.toInt()] = it.value.toString()
+        }
+
+        val ecommerceProduct =
+          EcommerceProducts.Product(sku)
+            .name(name)
+            .category(category)
+            .price(price)
+            .quantity(quantity)
+            .brand(brand)
+            .variant(variant)
+            .customDimensions(customDimensions)
+        products.addProduct(ecommerceProduct)
+      }
+    }
+
+    return products
   }
 }

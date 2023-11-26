@@ -23,6 +23,19 @@ function validateCustomKeyValue(
   });
 }
 
+function validateEcommerceProductCustomKeyValue(products: EcommerceProduct[]) {
+  products.forEach((product) => {
+    let customDimensions = product.customDimensions;
+    if (!customDimensions) {
+      return;
+    }
+    if (Object.keys(customDimensions).length > 20) {
+      throw new Error('Max 20 product custom dimensions, 20 is max ID.');
+    }
+    validateCustomKeyValue(customDimensions);
+  });
+}
+
 function validateVisitorId(visitorId: string) {
   if (!/^[0-9a-f]{16}$/.test(visitorId)) {
     throw new Error(
@@ -31,4 +44,9 @@ function validateVisitorId(visitorId: string) {
   }
 }
 
-export { validateInt, validateCustomKeyValue, validateVisitorId };
+export {
+  validateInt,
+  validateCustomKeyValue,
+  validateVisitorId,
+  validateEcommerceProductCustomKeyValue,
+};

@@ -1,5 +1,8 @@
 import { validateInt, validateVisitorId } from '../../util/validator';
-import { validateCustomKeyValue } from '../../util/validator';
+import {
+  validateCustomKeyValue,
+  validateEcommerceProductCustomKeyValue,
+} from '../../util/validator';
 
 describe('#validateInt', () => {
   test('should not throw any exception when called with an integer', () => {
@@ -35,6 +38,65 @@ describe('#validateCustomKeyValue', () => {
   test('should throw an error when called with a float key less than one', () => {
     expect(() => validateCustomKeyValue({ 1: 'blue', 0.2: 'green' })).toThrow(
       new Error('ID (key) must be an integer')
+    );
+  });
+});
+
+describe('#validateEcommerceProductCustomKeyValue', () => {
+  test('should not throw any exception when called with less than 20 custom dimensions', () => {
+    let products: EcommerceProduct[] = [
+      {
+        sku: 'craft-311',
+        customDimensions: {
+          1: 'coupon-2020',
+          2: '20%',
+        },
+      },
+      {
+        sku: 'craft-3111',
+        customDimensions: {
+          1: 'coupon-2020',
+          2: '20%',
+          3: '34344334$##$#$%',
+        },
+      },
+    ];
+    expect(() =>
+      validateEcommerceProductCustomKeyValue(products)
+    ).not.toThrow();
+  });
+
+  test('should throw an error when called with more than 20 custom dimensions', () => {
+    let products: EcommerceProduct[] = [
+      {
+        sku: 'craft-311',
+        customDimensions: {
+          1: 'coupon-2020',
+          2: '20%',
+          3: '20%',
+          4: '20%',
+          5: '20%',
+          6: '20%',
+          7: '20%',
+          8: '20%',
+          9: '20%',
+          10: '20%',
+          11: '20%',
+          12: '20%',
+          13: '20%',
+          14: '20%',
+          15: '20%',
+          16: '20%',
+          17: '20%',
+          18: '20%',
+          19: '20%',
+          20: '20%',
+          21: '20%',
+        },
+      },
+    ];
+    expect(() => validateEcommerceProductCustomKeyValue(products)).toThrow(
+      new Error('Max 20 product custom dimensions, 20 is max ID.')
     );
   });
 });
