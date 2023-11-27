@@ -20,6 +20,7 @@ jest.mock('react-native', () => ({
       trackGoal: jest.fn(),
       trackEcommerce: jest.fn(),
       trackEcommerceProductDetailView: jest.fn(),
+      trackEcommerceCartUpdate: jest.fn(),
       trackCampaign: jest.fn(),
       trackProfileAttributes: jest.fn(),
       getProfileAttributes: jest.fn(),
@@ -61,6 +62,22 @@ const commonEventOptions: CommonEventOptions = {
   customDimensions: { 1: 'pizza' },
   visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
 };
+
+const ecommerceProduct: EcommerceProduct[] = [
+  {
+    sku: 'craft-311',
+    name: 'Unicorn Iron on Patch',
+    category: ['Crafts & Sewing', 'Toys', 'Comsmetics'],
+    price: '49,9089',
+    quantity: 3,
+    brand: 'DMZ',
+    variant: 'blue',
+    customDimensions: {
+      1: 'coupon-2020',
+      2: '20%',
+    },
+  },
+];
 
 describe('PiwikProSdk', () => {
   beforeEach(() => {
@@ -397,17 +414,34 @@ describe('PiwikProSdk', () => {
       const options: CommonEventOptions = {
         ...commonEventOptions,
       };
-      const products: EcommerceProduct[] = [
-        {
-          sku: 'craft-311',
-        },
-      ];
 
-      await PiwikProSdk.trackEcommerceProductDetailView(products, options);
+      await PiwikProSdk.trackEcommerceProductDetailView(
+        ecommerceProduct,
+        options
+      );
 
       expect(
         NativeModules.PiwikProSdk.trackEcommerceProductDetailView
-      ).toHaveBeenCalledWith(products, options);
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
+    });
+  });
+
+  describe('#trackEcommerceCartUpdate', () => {
+    it('should call trackEcommerceCartUpdate from native SDK', async () => {
+      const options: CommonEventOptions = {
+        ...commonEventOptions,
+      };
+      let grandTotal: String = '10000';
+
+      await PiwikProSdk.trackEcommerceCartUpdate(
+        ecommerceProduct,
+        grandTotal,
+        options
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceCartUpdate
+      ).toHaveBeenCalledWith(ecommerceProduct, grandTotal, options);
     });
   });
 
