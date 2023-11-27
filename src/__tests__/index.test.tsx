@@ -22,6 +22,7 @@ jest.mock('react-native', () => ({
       trackEcommerceProductDetailView: jest.fn(),
       trackEcommerceCartUpdate: jest.fn(),
       trackEcommerceAddToCart: jest.fn(),
+      trackEcommerceRemoveFromCart: jest.fn(),
       trackCampaign: jest.fn(),
       trackProfileAttributes: jest.fn(),
       getProfileAttributes: jest.fn(),
@@ -456,6 +457,20 @@ describe('PiwikProSdk', () => {
 
       expect(
         NativeModules.PiwikProSdk.trackEcommerceAddToCart
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
+    });
+  });
+
+  describe('#trackEcommerceRemoveFromCart', () => {
+    it('should call trackEcommerceRemoveFromCart from native SDK', async () => {
+      const options: CommonEventOptions = {
+        ...commonEventOptions,
+      };
+
+      await PiwikProSdk.trackEcommerceRemoveFromCart(ecommerceProduct, options);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceRemoveFromCart
       ).toHaveBeenCalledWith(ecommerceProduct, options);
     });
   });

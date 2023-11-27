@@ -166,6 +166,15 @@ async function trackEcommerceAddToCart(
   return await PiwikProNativeSdk.trackEcommerceAddToCart(products, options);
 }
 
+async function trackEcommerceRemoveFromCart(
+  products: EcommerceProduct[],
+  options?: CommonEventOptions
+): Promise<void> {
+  validateCustomKeyValues(options);
+  validateEcommerceProductCustomKeyValue(products);
+  return await PiwikProNativeSdk.trackEcommerceRemoveFromCart(products, options);
+}
+
 async function trackCampaign(url: string): Promise<void> {
   return await PiwikProNativeSdk.trackCampaign(url);
 }
@@ -311,6 +320,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackEcommerceProductDetailView,
   trackEcommerceCartUpdate,
   trackEcommerceAddToCart,
+  trackEcommerceRemoveFromCart,
   trackCampaign,
   trackProfileAttributes,
   getProfileAttributes,
