@@ -297,6 +297,20 @@ export default function TrackingActions() {
     }
   };
 
+  const trackEcommerceAddToCart = async () => {
+    const options: CommonEventOptions = {
+      visitCustomVariables,
+      customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct, options);
+      successMessage('Track ecommerce add to cart');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   const trackCampaign = async () => {
     try {
       await PiwikProSdk.trackCampaign(
@@ -353,6 +367,11 @@ export default function TrackingActions() {
       <Button
         onPress={trackEcommerceCartUpdate}
         text="Track ecommerce cart update"
+      />
+
+      <Button
+        onPress={trackEcommerceAddToCart}
+        text="Track ecommerce add to cart"
       />
 
       <Button onPress={trackCampaign} text="Track campaign" />

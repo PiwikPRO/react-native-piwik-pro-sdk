@@ -21,6 +21,7 @@ jest.mock('react-native', () => ({
       trackEcommerce: jest.fn(),
       trackEcommerceProductDetailView: jest.fn(),
       trackEcommerceCartUpdate: jest.fn(),
+      trackEcommerceAddToCart: jest.fn(),
       trackCampaign: jest.fn(),
       trackProfileAttributes: jest.fn(),
       getProfileAttributes: jest.fn(),
@@ -442,6 +443,20 @@ describe('PiwikProSdk', () => {
       expect(
         NativeModules.PiwikProSdk.trackEcommerceCartUpdate
       ).toHaveBeenCalledWith(ecommerceProduct, grandTotal, options);
+    });
+  });
+
+  describe('#trackEcommerceAddToCart', () => {
+    it('should call trackEcommerceAddToCart from native SDK', async () => {
+      const options: CommonEventOptions = {
+        ...commonEventOptions,
+      };
+
+      await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct, options);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceAddToCart
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
     });
   });
 
