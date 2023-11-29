@@ -318,6 +318,34 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackEcommerceOrder(orderId: String, grandTotal: String, products: ReadableArray, options: ReadableMap?, promise: Promise) {
+    if (grandTotal != null && orderId != null && products != null) {
+      try {
+        val products = buildEcommerceProducts(products)
+        val trackHelper = TrackHelper.track()
+        val subTotal = options?.getString("subTotal") ?: ""
+        val tax = options?.getString("tax") ?: ""
+        val shippingCost = options?.getString("shipping") ?: ""
+        val discount = options?.getString("discount") ?: ""
+
+        applyOptionalParameters(trackHelper, options)
+        trackHelper.ecommerceOrder(orderId, grandTotal, products)
+          .subTotal(subTotal)
+          .tax(tax)
+          .shipping(shippingCost)
+          .discount(discount)
+          .with(getTracker())
+
+        promise.resolve(null)
+      } catch (exception: Exception) {
+        promise.reject(exception)
+      }
+    } else {
+      promise.reject(Error("products', orderId and 'grandTotal' must not be empty."))
+    }
+  }
+
+  @ReactMethod
   fun trackCampaign(url: String, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()
@@ -707,7 +735,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val productValues = productsArray.getMap(i)
       if (productValues != null) {
         val sku = productValues.getString("sku") as String
-        val category = (productValues.getArray("category") as? List<String>)?.toTypedArray() ?: arrayOf<String>()
+        val category = (productValues.getArray("category")?.toArrayList()?.map { it.toString() } as? List<String>)?.toTypedArray() ?: arrayOf<String>()
         val price = productValues.getString("price") as? String ?: "0"
         val quantity = productValues.getInt("quantity") as? Int ?: 1
         val name = productValues.getString("name") as? String

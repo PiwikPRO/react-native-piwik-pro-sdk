@@ -20,7 +20,7 @@ export default function TrackingActions() {
     {
       sku: 'craft-311',
       name: 'Unicorn Iron on Patch',
-      category: ['Crafts & Sewing', 'Toys', 'Comsmetics'],
+      category: ['Crafts & Sewing', 'Toys', 'Cosmetics'],
       price: '49,9089',
       quantity: 3,
       brand: 'DMZ',
@@ -325,6 +325,29 @@ export default function TrackingActions() {
     }
   };
 
+  const trackEcommerceOrder = async () => {
+    const options: TrackEcommerceOrderOptions = {
+      visitCustomVariables,
+      customDimensions,
+      discount: '18',
+      shipping: '60',
+      subTotal: '120',
+      tax: '39.6',
+    };
+
+    try {
+      await PiwikProSdk.trackEcommerceOrder(
+        'order-3415',
+        '180.00',
+        ecommerceProduct,
+        options
+      );
+      successMessage('Track ecommerce order');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   const trackCampaign = async () => {
     try {
       await PiwikProSdk.trackCampaign(
@@ -392,6 +415,8 @@ export default function TrackingActions() {
         onPress={trackEcommerceRemoveFromCart}
         text="Track ecommerce remove from cart"
       />
+
+      <Button onPress={trackEcommerceOrder} text="Track ecommerce order" />
 
       <Button onPress={trackCampaign} text="Track campaign" />
     </ScrollViewContainer>
