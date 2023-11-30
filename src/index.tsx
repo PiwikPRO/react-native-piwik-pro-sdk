@@ -3,6 +3,7 @@ import {
   validateInt,
   validateCustomKeyValue,
   validateVisitorId,
+  validateEcommerceProductCustomKeyValue,
 } from './util/validator';
 import { version } from './version';
 
@@ -128,6 +129,18 @@ async function trackEcommerce(
   options?: TrackEcommerceOptions
 ): Promise<void> {
   return await PiwikProNativeSdk.trackEcommerce(orderId, grandTotal, options);
+}
+
+async function trackEcommerceProductDetailView(
+  products: EcommerceProduct[],
+  options?: CommonEventOptions
+): Promise<void> {
+  validateCustomKeyValues(options);
+  validateEcommerceProductCustomKeyValue(products);
+  return await PiwikProNativeSdk.trackEcommerceProductDetailView(
+    products,
+    options
+  );
 }
 
 async function trackCampaign(url: string): Promise<void> {
@@ -272,6 +285,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackInteraction,
   trackGoal,
   trackEcommerce,
+  trackEcommerceProductDetailView,
   trackCampaign,
   trackProfileAttributes,
   getProfileAttributes,
