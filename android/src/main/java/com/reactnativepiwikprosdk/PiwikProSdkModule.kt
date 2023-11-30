@@ -303,6 +303,21 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackEcommerceRemoveFromCart(products: ReadableArray, options: ReadableMap?, promise: Promise) {
+    try {
+      val products = buildEcommerceProducts(products)
+      val trackHelper = TrackHelper.track()
+
+      applyOptionalParameters(trackHelper, options)
+      trackHelper.ecommerceRemoveFromCart(products).with(getTracker())
+
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun trackCampaign(url: String, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()

@@ -148,6 +148,16 @@ type PiwikProSdkType = {
   ): Promise<void>;
 
   /**
+   * Tracks action of removing a product from a cart.
+   * @products list of product representations
+   * @options ecommerce remove from cart tracking options (customDimensions, visitCustomVariables)
+   */
+  trackEcommerceRemoveFromCart(
+    products: EcommerceProduct[],
+    options?: CommonEventOptions
+  ): Promise<void>;
+
+  /**
    * Tracks campaign.
    * @url campaign URL
    */
