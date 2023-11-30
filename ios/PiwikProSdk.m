@@ -334,6 +334,28 @@ RCT_REMAP_METHOD(trackEcommerceCartUpdate,
     }
 }
 
+RCT_REMAP_METHOD(trackEcommerceAddToCart,
+                 trackEcommerceAddToCartWithProducts:(nonnull NSArray*)products
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+
+    @try {
+        [self applyOptionalParameters:options];
+        EcommerceProducts *ecommerceProducts = [self buildEcommerceProducts:products];
+        [[PiwikTracker sharedInstance] ecommerceAddToCart: ecommerceProducts];
+
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(trackCampaign,
                  trackCampaignWithUrl:(nonnull NSString*)url
                  withResolver:(RCTPromiseResolveBlock)resolve

@@ -126,14 +126,24 @@ type PiwikProSdkType = {
   ): Promise<void>;
 
   /**
-   * Tracks current state of a cart..
+   * Tracks current state of a cart.
    * @products list of product representations
    * @grandTotal The total value of items in a cart
-   * @options ecommerce product detail view tracking options (customDimensions, visitCustomVariables)
+   * @options ecommerce cart update tracking options (customDimensions, visitCustomVariables)
    */
   trackEcommerceCartUpdate(
     products: EcommerceProduct[],
     grandTotal: String,
+    options?: CommonEventOptions
+  ): Promise<void>;
+
+  /**
+   * Tracks action of adding products to a cart.
+   * @products list of product representations
+   * @options ecommerce add to cart tracking options (customDimensions, visitCustomVariables)
+   */
+  trackEcommerceAddToCart(
+    products: EcommerceProduct[],
     options?: CommonEventOptions
   ): Promise<void>;
 

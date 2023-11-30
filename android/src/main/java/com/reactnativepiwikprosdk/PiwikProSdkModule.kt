@@ -268,7 +268,6 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
-
   @ReactMethod
   fun trackEcommerceCartUpdate(products: ReadableArray, grandTotal: String, options: ReadableMap?, promise: Promise) {
     if (grandTotal != null && products != null) {
@@ -285,6 +284,21 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       }
     } else {
       promise.reject(Error("products' and 'grandTotal' must not be empty."))
+    }
+  }
+
+  @ReactMethod
+  fun trackEcommerceAddToCart(products: ReadableArray, options: ReadableMap?, promise: Promise) {
+    try {
+      val products = buildEcommerceProducts(products)
+      val trackHelper = TrackHelper.track()
+
+      applyOptionalParameters(trackHelper, options)
+      trackHelper.ecommerceAddToCart(products).with(getTracker())
+
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
     }
   }
 
