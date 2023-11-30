@@ -1,3 +1,9 @@
+import type { 
+  CustomDimensions, 
+  CustomVariables ,
+  EcommerceProduct
+} from '../types';
+
 function validateInt(value: number) {
   if (!Number.isInteger(value)) {
     throw new Error('Parameter must be an integer number');

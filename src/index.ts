@@ -1,4 +1,20 @@
 import { NativeModules, Platform } from 'react-native';
+import type {
+  CommonEventOptions,
+  PiwikProSdkType,
+  ProfileAttributes,
+  TrackCustomEventOptions,
+  TrackEcommerceOptions,
+  TrackGoalOptions,
+  TrackImpressionOptions,
+  TrackInteractionOptions,
+  TrackProfileAttributes,
+  TrackScreenOptions,
+  TrackSocialInteractionOptions,
+  EcommerceProduct,
+  TrackEcommerceOrderOptions
+} from './types';
+
 import {
   validateInt,
   validateCustomKeyValue,
@@ -369,4 +385,5 @@ const PiwikProSdk: PiwikProSdkType = {
   isPrefixingOn,
 };
 
+export type { PiwikProSdkType } from './types';
 export default PiwikProSdk;

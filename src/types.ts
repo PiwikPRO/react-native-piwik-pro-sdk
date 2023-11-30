@@ -1,4 +1,4 @@
-type PiwikProSdkType = {
+export type PiwikProSdkType = {
   /**
    * Initializes Piwik Pro SDK. It's recommended to initialize
    * Piwik PRO SDK only once for the entire application.
@@ -326,57 +326,57 @@ type PiwikProSdkType = {
   isPrefixingOn(): Promise<boolean>;
 };
 
-type CustomDimensions = {
+export type CustomDimensions = {
   [index: number]: string;
 };
 
-type CustomVariable = {
+export type CustomVariable = {
   name: string;
   value: string;
 };
 
-type CustomVariables = {
+export type CustomVariables = {
   [index: number]: CustomVariable;
 };
 
-type CommonEventOptions = {
+export type CommonEventOptions = {
   customDimensions?: CustomDimensions;
   visitCustomVariables?: CustomVariables;
 };
 
-type TrackScreenOptions = CommonEventOptions & {
+export type TrackScreenOptions = CommonEventOptions & {
   title?: string;
   screenCustomVariables?: CustomVariables;
 };
 
-type TrackCustomEventOptions = CommonEventOptions & {
+export type TrackCustomEventOptions = CommonEventOptions & {
   name?: string;
   value?: number;
   path?: string;
 };
 
-type TrackSocialInteractionOptions = CommonEventOptions & {};
+export type TrackSocialInteractionOptions = CommonEventOptions & {};
 
-type TrackSearchOptions = CommonEventOptions & {
+export type TrackSearchOptions = CommonEventOptions & {
   category?: string;
   count?: number;
 };
 
-type TrackImpressionOptions = CommonEventOptions & {
+export type TrackImpressionOptions = CommonEventOptions & {
   piece?: string;
   target?: string;
 };
 
-type TrackInteractionOptions = CommonEventOptions & {
+export type TrackInteractionOptions = CommonEventOptions & {
   piece?: string;
   target?: string;
 };
 
-type TrackGoalOptions = CommonEventOptions & {
+export type TrackGoalOptions = CommonEventOptions & {
   revenue?: number;
 };
 
-type EcommerceItem = {
+export type EcommerceItem = {
   sku: string;
   name: string;
   category: string;
@@ -384,7 +384,7 @@ type EcommerceItem = {
   quantity: number;
 };
 
-type EcommerceProduct = {
+export type EcommerceProduct = {
   sku: string;
   name?: string;
   category?: string[];
@@ -395,7 +395,7 @@ type EcommerceProduct = {
   customDimensions?: CustomDimensions;
 };
 
-type TrackEcommerceOptions = CommonEventOptions & {
+export type TrackEcommerceOptions = CommonEventOptions & {
   subTotal?: number;
   tax?: number;
   shipping?: number;
@@ -403,20 +403,20 @@ type TrackEcommerceOptions = CommonEventOptions & {
   items?: EcommerceItem[];
 };
 
-type TrackEcommerceOrderOptions = CommonEventOptions & {
+export type TrackEcommerceOrderOptions = CommonEventOptions & {
   subTotal?: string;
   tax?: string;
   shipping?: string;
   discount?: string;
 };
 
-type ProfileAttributes = {
+export type ProfileAttributes = {
   [index: string]: string;
 };
 
-type TrackProfileAttribute = {
+export type TrackProfileAttribute = {
   name: string;
   value: string;
 };
 
-type TrackProfileAttributes = TrackProfileAttribute | TrackProfileAttribute[];
+export type TrackProfileAttributes = TrackProfileAttribute | TrackProfileAttribute[];
