@@ -16,6 +16,21 @@ export default function TrackingActions() {
   };
   const visitCustomVariables = { 4: { name: 'food', value: 'pizza' } };
   const screenCustomVariables = { 5: { name: 'drink', value: 'water' } };
+  const ecommerceProduct: EcommerceProduct[] = [
+    {
+      sku: 'craft-311',
+      name: 'Unicorn Iron on Patch',
+      category: ['Crafts & Sewing', 'Toys', 'Comsmetics'],
+      price: '49,9089',
+      quantity: 3,
+      brand: 'DMZ',
+      variant: 'blue',
+      customDimensions: {
+        1: 'coupon-2020',
+        2: '20%',
+      },
+    },
+  ];
 
   const trackScreen = async () => {
     try {
@@ -251,25 +266,32 @@ export default function TrackingActions() {
       visitCustomVariables,
       customDimensions,
     };
-    const product: EcommerceProduct[] = [
-      {
-        sku: 'craft-311',
-        name: 'Unicorn Iron on Patch',
-        category: ['Crafts & Sewing', 'Toys', 'Comsmetics'],
-        price: '49,9089',
-        quantity: 3,
-        brand: 'DMZ',
-        variant: 'blue',
-        customDimensions: {
-          1: 'coupon-2020',
-          2: '20%',
-        },
-      },
-    ];
 
     try {
-      await PiwikProSdk.trackEcommerceProductDetailView(product, options);
+      await PiwikProSdk.trackEcommerceProductDetailView(
+        ecommerceProduct,
+        options
+      );
       successMessage('Track ecommerce product details view');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const trackEcommerceCartUpdate = async () => {
+    const options: CommonEventOptions = {
+      visitCustomVariables,
+      customDimensions,
+    };
+    let grandTotal: String = '10000';
+
+    try {
+      await PiwikProSdk.trackEcommerceCartUpdate(
+        ecommerceProduct,
+        grandTotal,
+        options
+      );
+      successMessage('Track ecommerce cart update');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -326,6 +348,11 @@ export default function TrackingActions() {
       <Button
         onPress={trackEcommerceProductDetailsView}
         text="Track ecommerce product details view"
+      />
+
+      <Button
+        onPress={trackEcommerceCartUpdate}
+        text="Track ecommerce cart update"
       />
 
       <Button onPress={trackCampaign} text="Track campaign" />
