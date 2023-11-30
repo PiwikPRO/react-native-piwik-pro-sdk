@@ -2,6 +2,8 @@
 
 * Added support for native iOS SDK version 1.2.1
 * Added support for native Android SDK version 1.2.0
+* Fixed type exporting issue
+* Kotlin version number changed to 1.6
 
 ## 1.0.9
 

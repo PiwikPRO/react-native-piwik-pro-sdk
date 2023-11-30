@@ -1,5 +1,20 @@
 import { NativeModules } from 'react-native';
-import PiwikProSdk from '../';
+import PiwikProSdk from '..';
+import type {
+  CommonEventOptions,
+  ProfileAttributes,
+  TrackCustomEventOptions,
+  TrackEcommerceOptions,
+  TrackGoalOptions,
+  TrackImpressionOptions,
+  TrackInteractionOptions,
+  TrackProfileAttributes,
+  TrackScreenOptions,
+  TrackSearchOptions,
+  TrackSocialInteractionOptions,
+  EcommerceProduct,
+  TrackEcommerceOrderOptions
+} from '../types';
 
 const version = '0.0.1';
 
@@ -464,7 +479,7 @@ describe('PiwikProSdk', () => {
 
   describe('#trackEcommerceRemoveFromCart', () => {
     it('should call trackEcommerceRemoveFromCart from native SDK', async () => {
-      const options: TrackEcommerceOrderOptions = {
+      const options: CommonEventOptions = {
         ...commonEventOptions,
       };
 
@@ -480,7 +495,7 @@ describe('PiwikProSdk', () => {
     it('should call trackEcommerceOrder from native SDK', async () => {
       const orderId = 'transaction';
       const grandTotal = '650';
-      const options: CommonEventOptions = {
+      const options: TrackEcommerceOrderOptions = {
         ...commonEventOptions,
       };
 
