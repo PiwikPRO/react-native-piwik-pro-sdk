@@ -479,7 +479,7 @@ describe('PiwikProSdk', () => {
 
   describe('#trackEcommerceRemoveFromCart', () => {
     it('should call trackEcommerceRemoveFromCart from native SDK', async () => {
-      const options: TrackEcommerceOrderOptions = {
+      const options: CommonEventOptions = {
         ...commonEventOptions,
       };
 
@@ -495,7 +495,7 @@ describe('PiwikProSdk', () => {
     it('should call trackEcommerceOrder from native SDK', async () => {
       const orderId = 'transaction';
       const grandTotal = '650';
-      const options: CommonEventOptions = {
+      const options: TrackEcommerceOrderOptions = {
         ...commonEventOptions,
       };
 
