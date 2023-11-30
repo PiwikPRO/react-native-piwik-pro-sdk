@@ -172,7 +172,26 @@ async function trackEcommerceRemoveFromCart(
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
-  return await PiwikProNativeSdk.trackEcommerceRemoveFromCart(products, options);
+  return await PiwikProNativeSdk.trackEcommerceRemoveFromCart(
+    products,
+    options
+  );
+}
+
+async function trackEcommerceOrder(
+  orderId: string,
+  grandTotal: string,
+  products: EcommerceProduct[],
+  options?: TrackEcommerceOrderOptions
+): Promise<void> {
+  validateCustomKeyValues(options);
+  validateEcommerceProductCustomKeyValue(products);
+  return await PiwikProNativeSdk.trackEcommerceOrder(
+    orderId,
+    grandTotal,
+    products,
+    options
+  );
 }
 
 async function trackCampaign(url: string): Promise<void> {
@@ -321,6 +340,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackEcommerceCartUpdate,
   trackEcommerceAddToCart,
   trackEcommerceRemoveFromCart,
+  trackEcommerceOrder,
   trackCampaign,
   trackProfileAttributes,
   getProfileAttributes,

@@ -107,7 +107,7 @@ type PiwikProSdkType = {
    * Tracks ecommerce transaction.
    * @orderId unique string identifying the order
    * @grandTotal total amount of the order, in cents
-   * @options stracking options (subtotal, tax, shipping, discount, items)
+   * @options tracking options (subtotal, tax, shipping, discount, items)
    */
   trackEcommerce(
     orderId: string,
@@ -155,6 +155,20 @@ type PiwikProSdkType = {
   trackEcommerceRemoveFromCart(
     products: EcommerceProduct[],
     options?: CommonEventOptions
+  ): Promise<void>;
+
+  /**
+   * Tracks conversion (including products and payment details).
+   * @orderId unique identifier of an order
+   * @grandTotal the total value of items in a cart
+   * @products list of product representations
+   * @options tracking options (subtotal, tax, shipping, discount)
+   */
+  trackEcommerceOrder(
+    orderId: string,
+    grandTotal: string,
+    products: EcommerceProduct[],
+    options?: TrackEcommerceOrderOptions
   ): Promise<void>;
 
   /**
@@ -387,6 +401,13 @@ type TrackEcommerceOptions = CommonEventOptions & {
   shipping?: number;
   discount?: number;
   items?: EcommerceItem[];
+};
+
+type TrackEcommerceOrderOptions = CommonEventOptions & {
+  subTotal?: string;
+  tax?: string;
+  shipping?: string;
+  discount?: string;
 };
 
 type ProfileAttributes = {
