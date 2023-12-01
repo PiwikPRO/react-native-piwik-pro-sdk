@@ -47,10 +47,6 @@ jobs:
         run: npm --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
       - name: 'Prepare build'
         run: npm run prepare
-      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.REACT_NATIVE_SDK_PIWIKPRO_CI_RW }}
       - name: 'Commit Bump to ${{ steps.get_version.outputs.VERSION }}'
         env:
           GITHUB_TOKEN: ${{ secrets.REACT_NATIVE_SDK_PIWIKPRO_CI_RW }}
