@@ -19,3 +19,5 @@
 
 * Added support for native iOS SDK version 1.1.8
 * Added support for native Android SDK version 1.1.10
+
+Minor update to documentation.
