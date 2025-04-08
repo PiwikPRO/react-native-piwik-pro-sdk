@@ -147,7 +147,17 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun trackApplicationInstall(promise: Promise) {
     try {
-      TrackHelper.track().sendApplicationDownload().with(getTracker())
+      TrackHelper.track().applicationInstall().with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun trackApplicationUpdate(promise: Promise) {
+    try {
+      TrackHelper.track().applicationUpdate().with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)

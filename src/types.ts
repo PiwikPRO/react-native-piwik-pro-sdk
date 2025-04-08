@@ -56,9 +56,16 @@ export type PiwikProSdkType = {
   trackDownload(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
-   * Tracks application download.
+   * Track installation application.
+   * The event can be sent only once for each installation of the application.
    */
   trackApplicationInstall(): Promise<void>;
+
+  /**
+   * Track application update.
+   * The event can be sent once per app version.
+   */
+  trackApplicationUpdate(): Promise<void>;
 
   /**
    * Tracks outlink.

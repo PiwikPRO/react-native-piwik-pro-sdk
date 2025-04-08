@@ -28,6 +28,7 @@ jest.mock('react-native', () => ({
       trackSocialInteraction: jest.fn(),
       trackDownload: jest.fn(),
       trackApplicationInstall: jest.fn(),
+      trackApplicationUpdate: jest.fn(),
       trackOutlink: jest.fn(),
       trackSearch: jest.fn(),
       trackImpression: jest.fn(),
@@ -261,6 +262,16 @@ describe('PiwikProSdk', () => {
 
       expect(
         NativeModules.PiwikProSdk.trackApplicationInstall
+      ).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('#trackApplicationUpdate', () => {
+    it('should call trackApplicationUpdate from native SDK', async () => {
+      await PiwikProSdk.trackApplicationUpdate();
+
+      expect(
+        NativeModules.PiwikProSdk.trackApplicationUpdate
       ).toHaveBeenCalledTimes(1);
     });
   });

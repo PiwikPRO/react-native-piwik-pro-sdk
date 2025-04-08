@@ -359,6 +359,24 @@ export default function TrackingActions() {
     }
   };
 
+  const trackApplicationInstall = async () => {
+    try {
+      await PiwikProSdk.trackApplicationInstall();
+      successMessage('Track application install');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const trackApplicationUpdate = async () => {
+    try {
+      await PiwikProSdk.trackApplicationUpdate();
+      successMessage('Track application update');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollViewContainer>
       <Button onPress={trackScreen} text="Track screen" />
@@ -419,6 +437,10 @@ export default function TrackingActions() {
       <Button onPress={trackEcommerceOrder} text="Track ecommerce order" />
 
       <Button onPress={trackCampaign} text="Track campaign" />
+
+      <Button onPress={trackApplicationInstall} text="Track application install" />
+
+      <Button onPress={trackApplicationUpdate} text="Track application update" />
     </ScrollViewContainer>
   );
 }
