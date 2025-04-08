@@ -216,6 +216,7 @@ export default function TrackingActions() {
     const options: TrackGoalOptions = {
       visitCustomVariables,
       revenue: 30,
+      currencyCode: 'USD',
       // customDimensions,
     };
 
@@ -262,9 +263,10 @@ export default function TrackingActions() {
   };
 
   const trackEcommerceProductDetailsView = async () => {
-    const options: CommonEventOptions = {
+    const options: EcommerceOptions = {
       visitCustomVariables,
       customDimensions,
+      currencyCode: 'EUR'
     };
 
     try {
@@ -279,72 +281,76 @@ export default function TrackingActions() {
   };
 
   const trackEcommerceCartUpdate = async () => {
-    const options: CommonEventOptions = {
-      visitCustomVariables,
-      customDimensions,
+    const options: EcommerceOptions = {
+        visitCustomVariables,
+        customDimensions,
+        currencyCode: 'EUR'
     };
-    let grandTotal: String = '10000';
+    const grandTotal = '10000';
 
     try {
-      await PiwikProSdk.trackEcommerceCartUpdate(
-        ecommerceProduct,
-        grandTotal,
-        options
-      );
-      successMessage('Track ecommerce cart update');
+        await PiwikProSdk.trackEcommerceCartUpdate(
+            ecommerceProduct,
+            grandTotal,
+            options
+        );
+        successMessage('Track ecommerce cart update');
     } catch (error) {
-      dispatch(setError((error as Error).message));
+        dispatch(setError((error as Error).message));
     }
   };
 
   const trackEcommerceAddToCart = async () => {
-    const options: CommonEventOptions = {
-      visitCustomVariables,
-      customDimensions,
+    const options: EcommerceOptions = {
+        visitCustomVariables,
+        customDimensions,
+        currencyCode: 'EUR'
     };
 
     try {
-      await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct, options);
-      successMessage('Track ecommerce add to cart');
+        await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct, options);
+        successMessage('Track ecommerce add to cart');
     } catch (error) {
-      dispatch(setError((error as Error).message));
+        dispatch(setError((error as Error).message));
     }
   };
 
   const trackEcommerceRemoveFromCart = async () => {
-    const options: CommonEventOptions = {
-      visitCustomVariables,
-      customDimensions,
+    const options: EcommerceOptions = {
+        visitCustomVariables,
+        customDimensions,
+        currencyCode: 'EUR'
     };
 
     try {
-      await PiwikProSdk.trackEcommerceRemoveFromCart(ecommerceProduct, options);
-      successMessage('Track ecommerce remove from cart');
+        await PiwikProSdk.trackEcommerceRemoveFromCart(ecommerceProduct, options);
+        successMessage('Track ecommerce remove from cart');
     } catch (error) {
-      dispatch(setError((error as Error).message));
+        dispatch(setError((error as Error).message));
     }
   };
 
   const trackEcommerceOrder = async () => {
     const options: TrackEcommerceOrderOptions = {
-      visitCustomVariables,
-      customDimensions,
-      discount: '18',
-      shipping: '60',
-      subTotal: '120',
-      tax: '39.6',
+        visitCustomVariables,
+        customDimensions,
+        discount: '18',
+        shipping: '60',
+        subTotal: '120',
+        tax: '39.6',
+        currencyCode: 'EUR'
     };
 
     try {
-      await PiwikProSdk.trackEcommerceOrder(
-        'order-3415',
-        '180.00',
-        ecommerceProduct,
-        options
-      );
-      successMessage('Track ecommerce order');
+        await PiwikProSdk.trackEcommerceOrder(
+            'order-3415',
+            '180.00',
+            ecommerceProduct,
+            options
+        );
+        successMessage('Track ecommerce order');
     } catch (error) {
-      dispatch(setError((error as Error).message));
+        dispatch(setError((error as Error).message));
     }
   };
 

@@ -13,7 +13,8 @@ import type {
   TrackSocialInteractionOptions,
   EcommerceProduct,
   TrackEcommerceOrderOptions,
-  SessionHash
+  SessionHash,
+  EcommerceOptions
 } from './types';
 
 import {
@@ -154,7 +155,7 @@ async function trackEcommerce(
 
 async function trackEcommerceProductDetailView(
   products: EcommerceProduct[],
-  options?: CommonEventOptions
+  options?: EcommerceOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
@@ -167,7 +168,7 @@ async function trackEcommerceProductDetailView(
 async function trackEcommerceCartUpdate(
   products: EcommerceProduct[],
   grandTotal: String,
-  options?: CommonEventOptions
+  options?: EcommerceOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
@@ -180,16 +181,19 @@ async function trackEcommerceCartUpdate(
 
 async function trackEcommerceAddToCart(
   products: EcommerceProduct[],
-  options?: CommonEventOptions
+  options?: EcommerceOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
-  return await PiwikProNativeSdk.trackEcommerceAddToCart(products, options);
+  return await PiwikProNativeSdk.trackEcommerceAddToCart(
+    products,
+    options
+  );
 }
 
 async function trackEcommerceRemoveFromCart(
   products: EcommerceProduct[],
-  options?: CommonEventOptions
+  options?: EcommerceOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);

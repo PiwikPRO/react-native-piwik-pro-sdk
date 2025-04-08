@@ -38,8 +38,6 @@ export default function Settings() {
   const [prefixingEnabled, setPrefixingEnabled] = useState<boolean>(true);
   const [dryRun, setDryRun] = useState<boolean>(false);
   const [currentSessionHash, setCurrentSessionHash] = useState<SessionHash>(SessionHash.NOT_SET);
-  const [userAgent, setUserAgent] = useState<string>('');
-
 
 
   useEffect(() => {
@@ -50,22 +48,12 @@ export default function Settings() {
       getPrefixingState();
       getDryRunState();
       getCurrentSessionHash();
-      getUserAgentState();
     }
   }, [sdkInitialized]);
 
   const getAnonymizationState = async () => {
     const currentAnonymizationState = await PiwikProSdk.isAnonymizationOn();
     setAnonymizationEnabled(currentAnonymizationState);
-  };
-
-  const getUserAgentState = async () => {
-    try {
-      const currentUserAgent = await PiwikProSdk.getUserAgent();
-      setUserAgent(currentUserAgent);
-    } catch (error) {
-      dispatch(setError((error as Error).message));
-    }
   };
 
   const getIncludeDefaultCustomVariablesState = async () => {

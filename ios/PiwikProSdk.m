@@ -269,7 +269,7 @@ RCT_REMAP_METHOD(trackGoal,
     @try {
         [self applyOptionalParameters:options];
         
-        [[PiwikTracker sharedInstance] sendGoalWithID:goal revenue:options[@"revenue"]];
+        [[PiwikTracker sharedInstance] sendGoalWithID:goal revenue:options[@"revenue"] currencyCode:options[@"currencyCode"]];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
@@ -320,8 +320,8 @@ RCT_REMAP_METHOD(trackEcommerceProductDetailView,
     @try {
         [self applyOptionalParameters:options];
         EcommerceProducts *ecommerceProducts = [self buildEcommerceProducts:products];
-        [[PiwikTracker sharedInstance] ecommerceProductDetailView: ecommerceProducts];
-
+        [[PiwikTracker sharedInstance] ecommerceProductDetailView:ecommerceProducts
+                                                    currencyCode: options[@"currencyCode"]];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
@@ -343,7 +343,8 @@ RCT_REMAP_METHOD(trackEcommerceCartUpdate,
     @try {
         [self applyOptionalParameters:options];
         EcommerceProducts *ecommerceProducts = [self buildEcommerceProducts:products];
-        [[PiwikTracker sharedInstance] ecommerceCartUpdate: ecommerceProducts grandTotal: grandTotal];
+        [[PiwikTracker sharedInstance] ecommerceCartUpdate: ecommerceProducts grandTotal: grandTotal
+                                              currencyCode: options[@"currencyCode"]];
 
         resolve(nil);
     } @catch (NSException *exception) {
@@ -364,8 +365,9 @@ RCT_REMAP_METHOD(trackEcommerceAddToCart,
 
     @try {
         [self applyOptionalParameters:options];
-        EcommerceProducts *ecommerceProducts = [self buildEcommerceProducts:products];
-        [[PiwikTracker sharedInstance] ecommerceAddToCart: ecommerceProducts];
+        EcommerceProducts *ecommerceProducts = [self buildEcommerceProducts:products ];
+        [[PiwikTracker sharedInstance] ecommerceAddToCart: ecommerceProducts
+                                             currencyCode: options[@"currencyCode"]];
 
         resolve(nil);
     } @catch (NSException *exception) {
@@ -387,7 +389,8 @@ RCT_REMAP_METHOD(trackEcommerceRemoveFromCart,
     @try {
         [self applyOptionalParameters:options];
         EcommerceProducts *ecommerceProducts = [self buildEcommerceProducts:products];
-        [[PiwikTracker sharedInstance] ecommerceRemoveFromCart: ecommerceProducts];
+        [[PiwikTracker sharedInstance] ecommerceRemoveFromCart: ecommerceProducts
+                                                  currencyCode: options[@"currencyCode"]];
 
         resolve(nil);
     } @catch (NSException *exception) {
@@ -417,7 +420,8 @@ RCT_REMAP_METHOD(trackEcommerceOrder,
                                              subTotal:options[@"subTotal"]
                                                   tax:options[@"tax"]
                                              shipping:options[@"shipping"]
-                                             discount:options[@"discount"]];
+                                             discount:options[@"discount"]
+                                         currencyCode:options[@"currencyCode"]];
 
         resolve(nil);
     } @catch (NSException *exception) {

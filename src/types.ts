@@ -106,7 +106,19 @@ export type PiwikProSdkType = {
   /**
    * Tracks goal.
    * @goal tracking request will trigger a conversion for the goal of the website being tracked with given ID
-   * @options goal tracking options (revenue, customDimensions, visitCustomVariables)
+   * @options goal tracking options (revenue, currencyCode,customDimensions, visitCustomVariables)
+   *
+   * @example
+   * // Track a goal with revenue in USD
+   * await PiwikProSdk.trackGoal('goal1', {
+   *   revenue: 99.99,
+   *   currencyCode: 'USD'
+   * });
+   * 
+   * // Track a goal without revenue
+   * await PiwikProSdk.trackGoal('goal2', {
+   *   customDimensions: { 1: 'Premium' }
+   * });
    */
   trackGoal(goal: string, options?: TrackGoalOptions): Promise<void>;
 
@@ -419,8 +431,15 @@ export type TrackInteractionOptions = CommonEventOptions & {
   target?: string;
 };
 
+/**
+ * Options for tracking a goal conversion.
+ * @property {number} [revenue] - Optional monetary value associated with the goal conversion (e.g., 99.99).
+ * @property {string} [currencyCode] - Optional ISO 4217 currency code for the revenue (e.g., 'USD', 'EUR', 'PLN').
+ *                                     If not provided, the default currency set in the Piwik PRO panel will be used.
+ */
 export type TrackGoalOptions = CommonEventOptions & {
   revenue?: number;
+  currencyCode?: string;
 };
 
 export type EcommerceItem = {
@@ -450,11 +469,43 @@ export type TrackEcommerceOptions = CommonEventOptions & {
   items?: EcommerceItem[];
 };
 
+/**
+ * Options for tracking an ecommerce order.
+ * 
+ * @property {string} [subTotal] - Total value of items in a cart without shipping.
+ * @property {string} [tax] - Total tax amount.
+ * @property {string} [shipping] - Total shipping cost.
+ * @property {string} [discount] - Total discount.
+ * @property {string} [currencyCode] - Currency of the values in ISO 4217 format. If not provided, uses currency from app settings.
+ * 
+ * @example
+ * ```typescript
+ * const options: TrackEcommerceOrderOptions = {
+ *   subTotal: '120.00',
+ *   tax: '10.00',
+ *   shipping: '5.00',
+ *   discount: '25.00',
+ *   currencyCode: 'EUR',
+ *   visitCustomVariables: { 1: { name: 'payment', value: 'credit-card' } },
+ *   customDimensions: { 1: 'premium' }
+ * };
+ * ```
+ */
 export type TrackEcommerceOrderOptions = CommonEventOptions & {
   subTotal?: string;
   tax?: string;
   shipping?: string;
   discount?: string;
+  currencyCode?: string;
+};
+
+/**
+ * Common options for tracking ecommerce events.
+ * @property {string} [currencyCode] - Optional ISO 4217 currency code (e.g., 'USD', 'EUR', 'PLN').
+ *                                   If not provided, the default currency set in the Piwik PRO panel will be used.
+ */
+export type EcommerceOptions = CommonEventOptions & {
+  currencyCode?: string;
 };
 
 export type ProfileAttributes = {

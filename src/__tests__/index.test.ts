@@ -13,7 +13,8 @@ import type {
   TrackSearchOptions,
   TrackSocialInteractionOptions,
   EcommerceProduct,
-  TrackEcommerceOrderOptions
+  TrackEcommerceOrderOptions,
+  EcommerceOptions
 } from '../types';
 
 const version = '0.0.1';
@@ -385,11 +386,27 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackGoal', () => {
-    it('should call trackGoal from native SDK', async () => {
+    it('should call trackGoal from native SDK with currency code', async () => {
       const goal = '27ecc5e3-8ae0-40c3-964b-5bd8ee3da059';
       const options: TrackGoalOptions = {
         ...commonEventOptions,
         revenue: 3,
+        currencyCode: 'USD'
+      };
+
+      await PiwikProSdk.trackGoal(goal, options);
+
+      expect(NativeModules.PiwikProSdk.trackGoal).toHaveBeenCalledWith(
+        goal,
+        options
+      );
+    });
+
+    it('should call trackGoal from native SDK without currency code', async () => {
+      const goal = '27ecc5e3-8ae0-40c3-964b-5bd8ee3da059';
+      const options: TrackGoalOptions = {
+        ...commonEventOptions,
+        revenue: 3
       };
 
       await PiwikProSdk.trackGoal(goal, options);
@@ -444,6 +461,22 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceProductDetailView', () => {
+    it('should call trackEcommerceProductDetailView with currency code', async () => {
+      const options: EcommerceOptions = {
+        ...commonEventOptions,
+        currencyCode: 'EUR'
+      };
+
+      await PiwikProSdk.trackEcommerceProductDetailView(
+        ecommerceProduct,
+        options
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceProductDetailView
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
+    });
+
     it('should call trackEcommerceProductDetailView from native SDK', async () => {
       const options: CommonEventOptions = {
         ...commonEventOptions,
@@ -461,11 +494,40 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceCartUpdate', () => {
-    it('should call trackEcommerceCartUpdate from native SDK', async () => {
-      const options: CommonEventOptions = {
+    const grandTotal = '99.99';
+
+    it('should call trackEcommerceCartUpdate with currency code', async () => {
+      const options: EcommerceOptions = {
         ...commonEventOptions,
+        currencyCode: 'EUR'
       };
-      let grandTotal: String = '10000';
+
+      await PiwikProSdk.trackEcommerceCartUpdate(
+        ecommerceProduct,
+        grandTotal,
+        options
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceCartUpdate
+      ).toHaveBeenCalledWith(ecommerceProduct, grandTotal, options);
+    });
+
+    it('should call trackEcommerceCartUpdate from native SDK without options', async () => {
+      await PiwikProSdk.trackEcommerceCartUpdate(
+        ecommerceProduct,
+        grandTotal
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceCartUpdate
+      ).toHaveBeenCalledWith(ecommerceProduct, grandTotal, undefined);
+    });
+
+    it('should call trackEcommerceCartUpdate with common options but no currency code', async () => {
+      const options: CommonEventOptions = {
+        ...commonEventOptions
+      };
 
       await PiwikProSdk.trackEcommerceCartUpdate(
         ecommerceProduct,
@@ -480,9 +542,30 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceAddToCart', () => {
-    it('should call trackEcommerceAddToCart from native SDK', async () => {
-      const options: CommonEventOptions = {
+    it('should call trackEcommerceAddToCart with currency code', async () => {
+      const options: EcommerceOptions = {
         ...commonEventOptions,
+        currencyCode: 'EUR'
+      };
+
+      await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct, options);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceAddToCart
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
+    });
+
+    it('should call trackEcommerceAddToCart from native SDK without options', async () => {
+      await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceAddToCart
+      ).toHaveBeenCalledWith(ecommerceProduct, undefined);
+    });
+
+    it('should call trackEcommerceAddToCart with common options but no currency code', async () => {
+      const options: CommonEventOptions = {
+        ...commonEventOptions
       };
 
       await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct, options);
@@ -494,9 +577,30 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceRemoveFromCart', () => {
-    it('should call trackEcommerceRemoveFromCart from native SDK', async () => {
-      const options: CommonEventOptions = {
+    it('should call trackEcommerceRemoveFromCart with currency code', async () => {
+      const options: EcommerceOptions = {
         ...commonEventOptions,
+        currencyCode: 'EUR'
+      };
+
+      await PiwikProSdk.trackEcommerceRemoveFromCart(ecommerceProduct, options);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceRemoveFromCart
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
+    });
+
+    it('should call trackEcommerceRemoveFromCart from native SDK without options', async () => {
+      await PiwikProSdk.trackEcommerceRemoveFromCart(ecommerceProduct);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceRemoveFromCart
+      ).toHaveBeenCalledWith(ecommerceProduct, undefined);
+    });
+
+    it('should call trackEcommerceRemoveFromCart with common options but no currency code', async () => {
+      const options: CommonEventOptions = {
+        ...commonEventOptions
       };
 
       await PiwikProSdk.trackEcommerceRemoveFromCart(ecommerceProduct, options);
@@ -508,11 +612,42 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceOrder', () => {
-    it('should call trackEcommerceOrder from native SDK', async () => {
-      const orderId = 'transaction';
-      const grandTotal = '650';
+    const orderId = 'transaction';
+    const grandTotal = '650';
+
+    it('should call trackEcommerceOrder with currency code', async () => {
       const options: TrackEcommerceOrderOptions = {
         ...commonEventOptions,
+        currencyCode: 'EUR'
+      };
+
+      await PiwikProSdk.trackEcommerceOrder(
+        orderId,
+        grandTotal,
+        ecommerceProduct,
+        options
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceOrder
+      ).toHaveBeenCalledWith(orderId, grandTotal, ecommerceProduct, options);
+    });
+
+    it('should call trackEcommerceOrder from native SDK without options', async () => {
+      await PiwikProSdk.trackEcommerceOrder(
+        orderId,
+        grandTotal,
+        ecommerceProduct
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceOrder
+      ).toHaveBeenCalledWith(orderId, grandTotal, ecommerceProduct, undefined);
+    });
+
+    it('should call trackEcommerceOrder with common options but no currency code', async () => {
+      const options: CommonEventOptions = {
+        ...commonEventOptions
       };
 
       await PiwikProSdk.trackEcommerceOrder(
@@ -995,4 +1130,3 @@ describe('PiwikProSdk', () => {
     });
   });
 });
-
