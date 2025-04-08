@@ -66,6 +66,7 @@ jest.mock('react-native', () => ({
       getDryRun: jest.fn(),
       setPrefixing: jest.fn(),
       isPrefixingOn: jest.fn(),
+      setVisitorIDLifetime: jest.fn(),
     },
   },
   Platform: {
@@ -837,4 +838,26 @@ describe('PiwikProSdk', () => {
       expect(result).toStrictEqual(true);
     });
   });
+
+  describe('#setVisitorIDLifetime', () => {
+    it('should call setVisitorIDLifetime from native SDK', async () => {
+      await PiwikProSdk.setVisitorIDLifetime(5);
+
+      expect(
+        NativeModules.PiwikProSdk.setVisitorIDLifetime
+      ).toHaveBeenCalledWith(5);
+    });
+
+    it('should throw an error if setVisitorIDLifetime was called with float number', async () => {
+      await expect(() => PiwikProSdk.setVisitorIDLifetime(5.1)).rejects.toThrow(
+        new Error('Parameter must be an integer number')
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.setVisitorIDLifetime
+      ).not.toHaveBeenCalled();
+    });
+  });
+  
 });
+

@@ -273,6 +273,17 @@ export type PiwikProSdkType = {
   getDispatchInterval(): Promise<number>;
 
   /**
+   * Sets visitor ID lifetime (in seconds). 
+   * The `visitorIDLifetime` parameter determines the length of time, in seconds, that the visitor ID can be used before it expires and is considered invalid.
+   * When a visitor ID expires, a new visitor ID is generated and all parameters related to the user's activity, e.g. the time of the first event sent, are deleted.
+   * In the tracker, this simulates the behavior of the new visitor.
+   * If the value of this parameter is less or equal to 0, the visitorID has the expiry time disabled.
+   * The default value of this parameter is 0.
+   * When the SDK is upgraded to a newer version, the creation time of the visitorID is the time of the first initialisation of the SDK after the upgrade.
+   */
+  setVisitorIDLifetime(visitorIDLifetime: number): Promise<void>;
+
+  /**
    * Sets flag that determines whether default custom variables should be
    * added to each tracking event.
    * @includeDefaultCustomVariable flag that determines whether to include default

@@ -540,6 +540,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun setVisitorIDLifetime(visitorIDLifetime: Int, promise: Promise) {
+    try {
+      getTracker().visitorIDLifetime = visitorIDLifetime.toLong() * 1000
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun getDispatchInterval(promise: Promise) {
     try {
       val dispatchInterval = getTracker().dispatchInterval.toInt() / 1000

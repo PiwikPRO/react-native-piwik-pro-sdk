@@ -4,7 +4,9 @@ import {
   dispatchIntervalSelector,
   sdkInitializedSelector,
   sessionTimeoutSelector,
+  visitorIdLifetimeSelector,
   setDispatchInterval,
+  setVisitorIdLifetime,
   setError,
   setMessage,
   setSessionTimeout,
@@ -22,6 +24,7 @@ export default function Settings() {
   const dispatch = useAppDispatch();
   const successMessage = (message: string) => dispatch(setMessage(message));
   const dispatchInterval = useAppSelector(dispatchIntervalSelector);
+  const visitorIdLifetime = useAppSelector(visitorIdLifetimeSelector);
   const sdkInitialized = useAppSelector(sdkInitializedSelector);
   const userId = useAppSelector(userIdSelector);
   const userEmail = useAppSelector(userEmailSelector);
@@ -187,6 +190,15 @@ export default function Settings() {
     }
   };
 
+  const changeVisitorIdLifetime = async () => {
+    try {
+      await PiwikProSdk.setVisitorIDLifetime(visitorIdLifetime);
+      successMessage('Visitor ID lifetime changed successfully');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollViewContainer>
       <Button onPress={dispatchEvents} text="Dispatch events" />
@@ -273,6 +285,17 @@ export default function Settings() {
         onChangeText={(buttonText) => dispatch(setVisitorId(buttonText))}
       />
       <Button onPress={changeVisitorId} text="Set visitor ID" />
+
+      <Input
+        value={visitorIdLifetime.toString()}
+        label="Visitor ID lifetime (in seconds)"
+        placeholder="Visitor ID lifetime (in seconds)"
+        keyboardType="numeric"
+        onChangeText={(buttonText) =>
+          dispatch(setVisitorIdLifetime(parseInt(buttonText, 10) || 0))
+        }
+      />
+      <Button onPress={changeVisitorIdLifetime} text="Set visitor ID lifetime" />
     </ScrollViewContainer>
   );
 }

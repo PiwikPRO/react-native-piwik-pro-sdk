@@ -290,6 +290,11 @@ async function getDispatchInterval(): Promise<number> {
   return await PiwikProNativeSdk.getDispatchInterval();
 }
 
+async function setVisitorIDLifetime(visitorIDLifetime: number): Promise<void> {
+  validateInt(visitorIDLifetime);
+  return await PiwikProNativeSdk.setVisitorIDLifetime(visitorIDLifetime);
+}
+
 async function setIncludeDefaultCustomVariables(
   includeDefaultCustomVariables: boolean
 ): Promise<void> {
@@ -378,6 +383,7 @@ const PiwikProSdk: PiwikProSdkType = {
   dispatch,
   setDispatchInterval,
   getDispatchInterval,
+  setVisitorIDLifetime,
   setIncludeDefaultCustomVariables,
   getIncludeDefaultCustomVariables,
   setAnonymizationState,
