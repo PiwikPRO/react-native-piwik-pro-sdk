@@ -10,6 +10,7 @@ import pro.piwik.sdk.TrackerConfig
 import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
 import pro.piwik.sdk.extra.EcommerceProducts
+import pro.piwik.sdk.extra.SessionHash
 import java.net.URL
 import java.util.*
 
@@ -665,6 +666,55 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       val prefixingEnabled = getTracker().isPrefixing
       promise.resolve(prefixingEnabled)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun setVisitorIdFromDeepLink(deeplink: String, promise: Promise) {
+    try {
+      val result = getTracker().setVisitorIdFromDeepLink(deeplink)
+      promise.resolve(result)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getUserAgent(promise: Promise) {
+    try {
+      val userAgent = getTracker().userAgent
+      promise.resolve(userAgent)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun setSessionHash(sessionHash: Int, promise: Promise) {
+    try {
+      val hash = when (sessionHash) {
+        0 -> SessionHash.DISABLED
+        1 -> SessionHash.ENABLED
+        else -> SessionHash.NOT_SET
+      }
+      getTracker().sessionHash = hash
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getSessionHash(promise: Promise) {
+    try {
+      val sessionHash = when (getTracker().sessionHash) {
+        SessionHash.DISABLED -> 0
+        SessionHash.ENABLED -> 1
+        else -> 2
+      }
+      promise.resolve(sessionHash)
     } catch (exception: Exception) {
       promise.reject(exception)
     }

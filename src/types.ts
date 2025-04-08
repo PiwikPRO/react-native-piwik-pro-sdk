@@ -342,6 +342,35 @@ export type PiwikProSdkType = {
    * Returns current prefixing state.
    */
   isPrefixingOn(): Promise<boolean>;
+
+  /**
+   * Sets a custom app URL containing pk_vid parameter
+   * Return true if the visitor ID is successfully set, false otherwise or when it is nothing to set
+   * @deepLink deep link
+   */
+  setVisitorIdFromDeepLink(deepLink: string): Promise<boolean>;
+
+  /**
+   * Returns internal user agent used for data transmission between the Piwik Pro SDK and the Tracker.
+   */
+  getUserAgent(): Promise<string>;
+
+  /**
+   * Provides on-demand control of the SessionHash feature.
+   * 'sh' parameter will be set to 0 when DISABLED
+   * 'sh' parameter will be set to 1 when ENABLED
+   * 'sh' parameter will not be set when NOT_SET. Processing service will default to the current value from the Privacy tab in global or app settings.
+   * Default value is set to disabled.
+   * PIWIK PRO SDK will persist the parameter and hold the state next time the SDK is initialised.
+   * @sessionHash sessionHash Session hash mode (DISABLED = 0, ENABLED = 1, NOT_SET = 2)
+   */
+  setSessionHash(sessionHash: SessionHash): Promise<void>;
+
+  /**
+   * Gets the current session hash state.
+   * Returns the current session hash mode (DISABLED = 0, ENABLED = 1, NOT_SET = 2)
+   */
+  getSessionHash(): Promise<SessionHash>;
 };
 
 export type CustomDimensions = {
@@ -438,3 +467,9 @@ export type TrackProfileAttribute = {
 };
 
 export type TrackProfileAttributes = TrackProfileAttribute | TrackProfileAttribute[];
+
+export enum SessionHash {
+  DISABLED = 0,
+  ENABLED = 1,
+  NOT_SET = 2
+}

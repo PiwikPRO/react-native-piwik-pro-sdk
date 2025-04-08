@@ -12,7 +12,8 @@ import type {
   TrackScreenOptions,
   TrackSocialInteractionOptions,
   EcommerceProduct,
-  TrackEcommerceOrderOptions
+  TrackEcommerceOrderOptions,
+  SessionHash
 } from './types';
 
 import {
@@ -303,6 +304,22 @@ async function setIncludeDefaultCustomVariables(
   );
 }
 
+async function setVisitorIdFromDeepLink(deepLink: string): Promise<boolean> {
+  return await PiwikProNativeSdk.setVisitorIdFromDeepLink(deepLink);
+}
+
+async function getUserAgent(): Promise<string> {
+  return await PiwikProNativeSdk.getUserAgent();
+}
+
+async function setSessionHash(sessionHash: SessionHash): Promise<void> {
+  return await PiwikProNativeSdk.setSessionHash(sessionHash);
+}
+
+async function getSessionHash(): Promise<SessionHash> {
+  return await PiwikProNativeSdk.getSessionHash();
+}
+
 async function getIncludeDefaultCustomVariables(): Promise<boolean> {
   return await PiwikProNativeSdk.getIncludeDefaultCustomVariables();
 }
@@ -394,7 +411,12 @@ const PiwikProSdk: PiwikProSdkType = {
   getDryRun,
   setPrefixing,
   isPrefixingOn,
+  setVisitorIdFromDeepLink,
+  getUserAgent,
+  setSessionHash,
+  getSessionHash,
 };
 
+export { SessionHash } from './types';
 export type { PiwikProSdkType } from './types';
 export default PiwikProSdk;

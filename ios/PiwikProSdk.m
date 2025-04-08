@@ -914,6 +914,76 @@ RCT_REMAP_METHOD(isPrefixingOn,
     }
 }
 
+RCT_REMAP_METHOD(setVisitorIdFromDeepLink,
+                 setVisitorIdFromDeepLinkWithDeepLink:(nonnull NSString*)deepLink
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+      [[PiwikTracker sharedInstance] setVisitorIdFromDeepLink: deepLink];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(getUserAgent,
+                 getUserAgentWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+      NSString* userAgent = [PiwikTracker sharedInstance].userAgent;
+        resolve(userAgent);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(setSessionHash,
+                 setSessionHashWithSessionHash:(NSInteger)sessionHash
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [[PiwikTracker sharedInstance] setSessionHash:sessionHash];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(getSessionHash,
+                 getSessionHashWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        NSInteger sessionHash = [[PiwikTracker sharedInstance] sessionHash];
+        resolve(@(sessionHash));
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 - (void)applyCustomDimensions:(nullable NSDictionary*)customDimensions {
     if (customDimensions == nil) {
         return;

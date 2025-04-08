@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PiwikProSdk from '@piwikpro/react-native-piwik-pro-sdk';
+import PiwikProSdk, { SessionHash } from '@piwikpro/react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
   sdkInitializedSelector,
@@ -37,6 +37,10 @@ export default function Settings() {
   const [optOut, setOptOut] = useState<boolean>(false);
   const [prefixingEnabled, setPrefixingEnabled] = useState<boolean>(true);
   const [dryRun, setDryRun] = useState<boolean>(false);
+  const [currentSessionHash, setCurrentSessionHash] = useState<SessionHash>(SessionHash.NOT_SET);
+  const [userAgent, setUserAgent] = useState<string>('');
+
+
 
   useEffect(() => {
     if (sdkInitialized) {
@@ -45,12 +49,23 @@ export default function Settings() {
       getOptOutState();
       getPrefixingState();
       getDryRunState();
+      getCurrentSessionHash();
+      getUserAgentState();
     }
   }, [sdkInitialized]);
 
   const getAnonymizationState = async () => {
     const currentAnonymizationState = await PiwikProSdk.isAnonymizationOn();
     setAnonymizationEnabled(currentAnonymizationState);
+  };
+
+  const getUserAgentState = async () => {
+    try {
+      const currentUserAgent = await PiwikProSdk.getUserAgent();
+      setUserAgent(currentUserAgent);
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
   };
 
   const getIncludeDefaultCustomVariablesState = async () => {
@@ -199,6 +214,26 @@ export default function Settings() {
     }
   };
 
+  const changeSessionHash = async (newHash: SessionHash) => {
+    try {
+      await PiwikProSdk.setSessionHash(newHash);
+      const currentHash = await PiwikProSdk.getSessionHash();
+      setCurrentSessionHash(currentHash);
+      successMessage('Session hash changed successfully');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const getCurrentSessionHash = async () => {
+    try {
+      const hash = await PiwikProSdk.getSessionHash();
+      setCurrentSessionHash(hash);
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollViewContainer>
       <Button onPress={dispatchEvents} text="Dispatch events" />
@@ -296,6 +331,26 @@ export default function Settings() {
         }
       />
       <Button onPress={changeVisitorIdLifetime} text="Set visitor ID lifetime" />
+        
+      <Button
+        onPress={() => changeSessionHash(SessionHash.DISABLED)}
+        text={`Set Session Hash to DISABLED ${
+          currentSessionHash === SessionHash.DISABLED ? '(current)' : ''
+        }`}
+      />
+      <Button
+        onPress={() => changeSessionHash(SessionHash.ENABLED)}
+        text={`Set Session Hash to ENABLED ${
+          currentSessionHash === SessionHash.ENABLED ? '(current)' : ''
+        }`}
+      />
+      <Button
+        onPress={() => changeSessionHash(SessionHash.NOT_SET)}
+        text={`Set Session Hash to NOT_SET ${
+          currentSessionHash === SessionHash.NOT_SET ? '(current)' : ''
+        }`}
+      />
+
     </ScrollViewContainer>
   );
 }
