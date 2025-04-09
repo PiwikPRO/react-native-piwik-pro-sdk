@@ -79,7 +79,7 @@ export type PiwikProSdkType = {
    * @keyword searched query that was used in the app
    * @options search tracking options (category, count, customDimensions, visitCustomVariables)
    */
-  trackSearch(keyword: string, options?: TrackScreenOptions): Promise<void>;
+  trackSearch(keyword: string, options?: TrackSearchOptions): Promise<void>;
 
   /**
    * Tracks content impression.

@@ -15,6 +15,7 @@ import type {
   TrackEcommerceOrderOptions,
   SessionHash,
   EcommerceOptions,
+  TrackSearchOptions,
 } from './types';
 
 import {
@@ -110,7 +111,7 @@ async function trackOutlink(
 
 async function trackSearch(
   keyword: string,
-  options?: TrackScreenOptions
+  options?: TrackSearchOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackSearch(keyword, options);
