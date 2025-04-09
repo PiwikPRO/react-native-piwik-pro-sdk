@@ -37,8 +37,9 @@ export default function Settings() {
   const [optOut, setOptOut] = useState<boolean>(false);
   const [prefixingEnabled, setPrefixingEnabled] = useState<boolean>(true);
   const [dryRun, setDryRun] = useState<boolean>(false);
-  const [currentSessionHash, setCurrentSessionHash] = useState<SessionHash>(SessionHash.NOT_SET);
-
+  const [currentSessionHash, setCurrentSessionHash] = useState<SessionHash>(
+    SessionHash.NOT_SET
+  );
 
   useEffect(() => {
     if (sdkInitialized) {
@@ -318,8 +319,11 @@ export default function Settings() {
           dispatch(setVisitorIdLifetime(parseInt(buttonText, 10) || 0))
         }
       />
-      <Button onPress={changeVisitorIdLifetime} text="Set visitor ID lifetime" />
-        
+      <Button
+        onPress={changeVisitorIdLifetime}
+        text="Set visitor ID lifetime"
+      />
+
       <Button
         onPress={() => changeSessionHash(SessionHash.DISABLED)}
         text={`Set Session Hash to DISABLED ${
@@ -338,7 +342,6 @@ export default function Settings() {
           currentSessionHash === SessionHash.NOT_SET ? '(current)' : ''
         }`}
       />
-
     </ScrollViewContainer>
   );
 }

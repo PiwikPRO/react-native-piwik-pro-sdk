@@ -114,7 +114,7 @@ export type PiwikProSdkType = {
    *   revenue: 99.99,
    *   currencyCode: 'USD'
    * });
-   * 
+   *
    * // Track a goal without revenue
    * await PiwikProSdk.trackGoal('goal2', {
    *   customDimensions: { 1: 'Premium' }
@@ -285,7 +285,7 @@ export type PiwikProSdkType = {
   getDispatchInterval(): Promise<number>;
 
   /**
-   * Sets visitor ID lifetime (in seconds). 
+   * Sets visitor ID lifetime (in seconds).
    * The `visitorIDLifetime` parameter determines the length of time, in seconds, that the visitor ID can be used before it expires and is considered invalid.
    * When a visitor ID expires, a new visitor ID is generated and all parameters related to the user's activity, e.g. the time of the first event sent, are deleted.
    * In the tracker, this simulates the behavior of the new visitor.
@@ -471,13 +471,13 @@ export type TrackEcommerceOptions = CommonEventOptions & {
 
 /**
  * Options for tracking an ecommerce order.
- * 
+ *
  * @property {string} [subTotal] - Total value of items in a cart without shipping.
  * @property {string} [tax] - Total tax amount.
  * @property {string} [shipping] - Total shipping cost.
  * @property {string} [discount] - Total discount.
  * @property {string} [currencyCode] - Currency of the values in ISO 4217 format. If not provided, uses currency from app settings.
- * 
+ *
  * @example
  * ```typescript
  * const options: TrackEcommerceOrderOptions = {
@@ -517,10 +517,12 @@ export type TrackProfileAttribute = {
   value: string;
 };
 
-export type TrackProfileAttributes = TrackProfileAttribute | TrackProfileAttribute[];
+export type TrackProfileAttributes =
+  | TrackProfileAttribute
+  | TrackProfileAttribute[];
 
 export enum SessionHash {
   DISABLED = 0,
   ENABLED = 1,
-  NOT_SET = 2
+  NOT_SET = 2,
 }

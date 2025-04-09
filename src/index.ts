@@ -14,7 +14,7 @@ import type {
   EcommerceProduct,
   TrackEcommerceOrderOptions,
   SessionHash,
-  EcommerceOptions
+  EcommerceOptions,
 } from './types';
 
 import {
@@ -185,10 +185,7 @@ async function trackEcommerceAddToCart(
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
-  return await PiwikProNativeSdk.trackEcommerceAddToCart(
-    products,
-    options
-  );
+  return await PiwikProNativeSdk.trackEcommerceAddToCart(products, options);
 }
 
 async function trackEcommerceRemoveFromCart(

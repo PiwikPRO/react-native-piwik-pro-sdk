@@ -1,7 +1,7 @@
-import type { 
-  CustomDimensions, 
-  CustomVariables ,
-  EcommerceProduct
+import type {
+  CustomDimensions,
+  CustomVariables,
+  EcommerceProduct,
 } from '../types';
 
 function validateInt(value: number) {
