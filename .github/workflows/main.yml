@@ -62,13 +62,20 @@ jobs:
           branch: "bump-${{ steps.get_version.outputs.VERSION }}"
           base: "master"
           delete-branch: true
-      - name: Merge Pull Request
+      - name: Wait for PR Approval and Merge
         if: steps.cpr.outputs.pull-request-number
-        uses: juliangruber/merge-pull-request-action@v1
-        with:
-          github-token: ${{ github.token }}
-          number: ${{ steps.cpr.outputs.pull-request-number }}
-          method: merge
+        run: |
+          while true; do
+            PR_STATUS=$(gh pr view ${{ steps.cpr.outputs.pull-request-number }} --json reviewDecision -q .reviewDecision)
+            if [ "$PR_STATUS" = "APPROVED" ]; then
+              gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --merge --admin --auto
+              break
+            fi
+            echo "Waiting for PR approval..."
+            sleep 60
+          done
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: 'Release'
         run: npm run release-ci
         env:
