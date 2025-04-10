@@ -68,7 +68,7 @@ jobs:
           while true; do
             PR_STATUS=$(gh pr view ${{ steps.cpr.outputs.pull-request-number }} --json reviewDecision -q .reviewDecision)
             if [ "$PR_STATUS" = "APPROVED" ]; then
-              gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --merge --admin --auto
+              gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --merge --admin
               break
             fi
             echo "Waiting for PR approval..."
