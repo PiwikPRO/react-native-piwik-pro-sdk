@@ -52,6 +52,7 @@ jobs:
       - name: 'Prepare build'
         run: npm run prepare
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ github.token }}
@@ -61,12 +62,13 @@ jobs:
           branch: "bump-${{ steps.get_version.outputs.VERSION }}"
           base: "master"
           delete-branch: true
-      - name: Enable Pull Request Automerge
-        run: |
-          PR_NUMBER=$(gh pr list --json number --jq '.[0].number')
-          gh pr merge $PR_NUMBER --auto --merge
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Merge Pull Request
+        if: steps.cpr.outputs.pull-request-number
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ github.token }}
+          number: ${{ steps.cpr.outputs.pull-request-number }}
+          method: merge
       - name: 'Release'
         run: npm run release-ci
         env:
