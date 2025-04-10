@@ -62,21 +62,29 @@ jobs:
           branch: "bump-${{ steps.get_version.outputs.VERSION }}"
           base: "master"
           delete-branch: true
-      - name: Wait for PR Approval and Merge
+      - name: Wait for PR to be merged
         if: steps.cpr.outputs.pull-request-number
         run: |
+          echo "Pull Request #${{ steps.cpr.outputs.pull-request-number }} has been created."
+          echo "Please review, approve and merge the PR manually."
+          
           while true; do
-            PR_STATUS=$(gh pr view ${{ steps.cpr.outputs.pull-request-number }} --json reviewDecision -q .reviewDecision)
-            if [ "$PR_STATUS" = "APPROVED" ]; then
-              gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --merge
+            PR_STATE=$(gh pr view ${{ steps.cpr.outputs.pull-request-number }} --json state -q .state)
+            if [ "$PR_STATE" = "MERGED" ]; then
+              echo "PR has been merged successfully!"
               break
+            elif [ "$PR_STATE" = "CLOSED" ]; then
+              echo "PR was closed without merging. Exiting..."
+              exit 1
             fi
-            echo "Waiting for PR approval..."
+            echo "Waiting for PR to be merged... (checking again in 60 seconds)"
             sleep 60
           done
         env:
-          GITHUB_TOKEN: ${{ secrets.REACT_NATIVE_SDK_PIWIKPRO_CI_RWV2 }}
-      - name: 'Release'
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Release
+        if: steps.cpr.outputs.pull-request-number
         run: npm run release-ci
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
