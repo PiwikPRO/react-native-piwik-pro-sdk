@@ -24,11 +24,14 @@ jobs:
     needs: tests
     permissions:
       contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Get the version
         id: get_version
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+        run: |
+          version=${GITHUB_REF/refs\/tags\//}
+          echo "VERSION=$version" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -47,16 +50,22 @@ jobs:
         run: npm --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
       - name: 'Prepare build'
         run: npm run prepare
-      - name: 'Commit Bump to ${{ steps.get_version.outputs.VERSION }}'
-        env:
-          GITHUB_TOKEN: ${{ secrets.REACT_NATIVE_SDK_PIWIKPRO_CI_RW }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.REACT_NATIVE_SDK_PIWIKPRO_CI_RW }}
+          commit-message: "Bump to ${{ steps.get_version.outputs.VERSION }}"
+          title: "Bump to ${{ steps.get_version.outputs.VERSION }}"
+          body: "Automated version bump to ${{ steps.get_version.outputs.VERSION }}"
+          branch: "bump-${{ steps.get_version.outputs.VERSION }}"
+          base: "master"
+          delete-branch: true
+      - name: Enable Pull Request Automerge
         run: |
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
-          git add .
-          git status
-          git commit -m "Bump to ${{ steps.get_version.outputs.VERSION }}"
-          git push origin HEAD:master
+          PR_NUMBER=$(gh pr list --json number --jq '.[0].number')
+          gh pr merge $PR_NUMBER --auto --merge
+        env:
+          GH_TOKEN: ${{ secrets.REACT_NATIVE_SDK_PIWIKPRO_CI_RW }}
       - name: 'Release'
         run: npm run release-ci
         env:
