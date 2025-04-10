@@ -3,9 +3,7 @@ import {
   validateCustomKeyValue,
   validateEcommerceProductCustomKeyValue,
 } from '../../util/validator';
-import type {
-  EcommerceProduct
-} from '../../types';
+import type { EcommerceProduct } from '../../types';
 
 describe('#validateInt', () => {
   test('should not throw any exception when called with an integer', () => {

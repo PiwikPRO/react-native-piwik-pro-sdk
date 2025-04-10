@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
-import PiwikProSdk from '..';
+import PiwikProSdk, { SessionHash } from '..';
 import type {
   CommonEventOptions,
   ProfileAttributes,
@@ -13,7 +13,8 @@ import type {
   TrackSearchOptions,
   TrackSocialInteractionOptions,
   EcommerceProduct,
-  TrackEcommerceOrderOptions
+  TrackEcommerceOrderOptions,
+  EcommerceOptions,
 } from '../types';
 
 const version = '0.0.1';
@@ -28,6 +29,7 @@ jest.mock('react-native', () => ({
       trackSocialInteraction: jest.fn(),
       trackDownload: jest.fn(),
       trackApplicationInstall: jest.fn(),
+      trackApplicationUpdate: jest.fn(),
       trackOutlink: jest.fn(),
       trackSearch: jest.fn(),
       trackImpression: jest.fn(),
@@ -65,6 +67,11 @@ jest.mock('react-native', () => ({
       getDryRun: jest.fn(),
       setPrefixing: jest.fn(),
       isPrefixingOn: jest.fn(),
+      setVisitorIDLifetime: jest.fn(),
+      setVisitorIdFromDeepLink: jest.fn(),
+      getUserAgent: jest.fn(),
+      setSessionHash: jest.fn(),
+      getSessionHash: jest.fn(),
     },
   },
   Platform: {
@@ -265,6 +272,16 @@ describe('PiwikProSdk', () => {
     });
   });
 
+  describe('#trackApplicationUpdate', () => {
+    it('should call trackApplicationUpdate from native SDK', async () => {
+      await PiwikProSdk.trackApplicationUpdate();
+
+      expect(
+        NativeModules.PiwikProSdk.trackApplicationUpdate
+      ).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('#trackOutlink', () => {
     it('should call trackOutlink from native SDK', async () => {
       const url = 'http://your.server.com/bonusmap.zip';
@@ -369,7 +386,23 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackGoal', () => {
-    it('should call trackGoal from native SDK', async () => {
+    it('should call trackGoal from native SDK with currency code', async () => {
+      const goal = '27ecc5e3-8ae0-40c3-964b-5bd8ee3da059';
+      const options: TrackGoalOptions = {
+        ...commonEventOptions,
+        revenue: 3,
+        currencyCode: 'USD',
+      };
+
+      await PiwikProSdk.trackGoal(goal, options);
+
+      expect(NativeModules.PiwikProSdk.trackGoal).toHaveBeenCalledWith(
+        goal,
+        options
+      );
+    });
+
+    it('should call trackGoal from native SDK without currency code', async () => {
       const goal = '27ecc5e3-8ae0-40c3-964b-5bd8ee3da059';
       const options: TrackGoalOptions = {
         ...commonEventOptions,
@@ -428,6 +461,22 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceProductDetailView', () => {
+    it('should call trackEcommerceProductDetailView with currency code', async () => {
+      const options: EcommerceOptions = {
+        ...commonEventOptions,
+        currencyCode: 'EUR',
+      };
+
+      await PiwikProSdk.trackEcommerceProductDetailView(
+        ecommerceProduct,
+        options
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceProductDetailView
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
+    });
+
     it('should call trackEcommerceProductDetailView from native SDK', async () => {
       const options: CommonEventOptions = {
         ...commonEventOptions,
@@ -445,11 +494,37 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceCartUpdate', () => {
-    it('should call trackEcommerceCartUpdate from native SDK', async () => {
+    const grandTotal = '99.99';
+
+    it('should call trackEcommerceCartUpdate with currency code', async () => {
+      const options: EcommerceOptions = {
+        ...commonEventOptions,
+        currencyCode: 'EUR',
+      };
+
+      await PiwikProSdk.trackEcommerceCartUpdate(
+        ecommerceProduct,
+        grandTotal,
+        options
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceCartUpdate
+      ).toHaveBeenCalledWith(ecommerceProduct, grandTotal, options);
+    });
+
+    it('should call trackEcommerceCartUpdate from native SDK without options', async () => {
+      await PiwikProSdk.trackEcommerceCartUpdate(ecommerceProduct, grandTotal);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceCartUpdate
+      ).toHaveBeenCalledWith(ecommerceProduct, grandTotal, undefined);
+    });
+
+    it('should call trackEcommerceCartUpdate with common options but no currency code', async () => {
       const options: CommonEventOptions = {
         ...commonEventOptions,
       };
-      let grandTotal: String = '10000';
 
       await PiwikProSdk.trackEcommerceCartUpdate(
         ecommerceProduct,
@@ -464,7 +539,28 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceAddToCart', () => {
-    it('should call trackEcommerceAddToCart from native SDK', async () => {
+    it('should call trackEcommerceAddToCart with currency code', async () => {
+      const options: EcommerceOptions = {
+        ...commonEventOptions,
+        currencyCode: 'EUR',
+      };
+
+      await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct, options);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceAddToCart
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
+    });
+
+    it('should call trackEcommerceAddToCart from native SDK without options', async () => {
+      await PiwikProSdk.trackEcommerceAddToCart(ecommerceProduct);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceAddToCart
+      ).toHaveBeenCalledWith(ecommerceProduct, undefined);
+    });
+
+    it('should call trackEcommerceAddToCart with common options but no currency code', async () => {
       const options: CommonEventOptions = {
         ...commonEventOptions,
       };
@@ -478,7 +574,28 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceRemoveFromCart', () => {
-    it('should call trackEcommerceRemoveFromCart from native SDK', async () => {
+    it('should call trackEcommerceRemoveFromCart with currency code', async () => {
+      const options: EcommerceOptions = {
+        ...commonEventOptions,
+        currencyCode: 'EUR',
+      };
+
+      await PiwikProSdk.trackEcommerceRemoveFromCart(ecommerceProduct, options);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceRemoveFromCart
+      ).toHaveBeenCalledWith(ecommerceProduct, options);
+    });
+
+    it('should call trackEcommerceRemoveFromCart from native SDK without options', async () => {
+      await PiwikProSdk.trackEcommerceRemoveFromCart(ecommerceProduct);
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceRemoveFromCart
+      ).toHaveBeenCalledWith(ecommerceProduct, undefined);
+    });
+
+    it('should call trackEcommerceRemoveFromCart with common options but no currency code', async () => {
       const options: CommonEventOptions = {
         ...commonEventOptions,
       };
@@ -492,10 +609,41 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerceOrder', () => {
-    it('should call trackEcommerceOrder from native SDK', async () => {
-      const orderId = 'transaction';
-      const grandTotal = '650';
+    const orderId = 'transaction';
+    const grandTotal = '650';
+
+    it('should call trackEcommerceOrder with currency code', async () => {
       const options: TrackEcommerceOrderOptions = {
+        ...commonEventOptions,
+        currencyCode: 'EUR',
+      };
+
+      await PiwikProSdk.trackEcommerceOrder(
+        orderId,
+        grandTotal,
+        ecommerceProduct,
+        options
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceOrder
+      ).toHaveBeenCalledWith(orderId, grandTotal, ecommerceProduct, options);
+    });
+
+    it('should call trackEcommerceOrder from native SDK without options', async () => {
+      await PiwikProSdk.trackEcommerceOrder(
+        orderId,
+        grandTotal,
+        ecommerceProduct
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackEcommerceOrder
+      ).toHaveBeenCalledWith(orderId, grandTotal, ecommerceProduct, undefined);
+    });
+
+    it('should call trackEcommerceOrder with common options but no currency code', async () => {
+      const options: CommonEventOptions = {
         ...commonEventOptions,
       };
 
@@ -824,6 +972,192 @@ describe('PiwikProSdk', () => {
       const result = await PiwikProSdk.isPrefixingOn();
 
       expect(result).toStrictEqual(true);
+    });
+  });
+
+  describe('#setVisitorIDLifetime', () => {
+    it('should call setVisitorIDLifetime from native SDK', async () => {
+      await PiwikProSdk.setVisitorIDLifetime(5);
+
+      expect(
+        NativeModules.PiwikProSdk.setVisitorIDLifetime
+      ).toHaveBeenCalledWith(5);
+    });
+
+    it('should throw an error if setVisitorIDLifetime was called with float number', async () => {
+      await expect(() => PiwikProSdk.setVisitorIDLifetime(5.1)).rejects.toThrow(
+        new Error('Parameter must be an integer number')
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.setVisitorIDLifetime
+      ).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('#setVisitorIdFromDeepLink', () => {
+    it('should call setVisitorIdFromDeepLink from native SDK and return true when visitor ID is set', async () => {
+      const deepLink = 'https://example.com?pk_vid=41c90f410ed00000';
+      NativeModules.PiwikProSdk.setVisitorIdFromDeepLink.mockResolvedValue(
+        true
+      );
+
+      const result = await PiwikProSdk.setVisitorIdFromDeepLink(deepLink);
+
+      expect(result).toBe(true);
+      expect(
+        NativeModules.PiwikProSdk.setVisitorIdFromDeepLink
+      ).toHaveBeenCalledWith(deepLink);
+    });
+
+    it('should call setVisitorIdFromDeepLink from native SDK and return false when no visitor ID is found', async () => {
+      const deepLink = 'https://example.com';
+      NativeModules.PiwikProSdk.setVisitorIdFromDeepLink.mockResolvedValue(
+        false
+      );
+
+      const result = await PiwikProSdk.setVisitorIdFromDeepLink(deepLink);
+
+      expect(result).toBe(false);
+      expect(
+        NativeModules.PiwikProSdk.setVisitorIdFromDeepLink
+      ).toHaveBeenCalledWith(deepLink);
+    });
+
+    it('should throw an error when setVisitorIdFromDeepLink fails', async () => {
+      const deepLink = 'https://example.com?pk_vid=123456789';
+      const error = new Error('Failed to set visitor ID');
+      NativeModules.PiwikProSdk.setVisitorIdFromDeepLink.mockRejectedValue(
+        error
+      );
+
+      await expect(
+        PiwikProSdk.setVisitorIdFromDeepLink(deepLink)
+      ).rejects.toThrow(error);
+      expect(
+        NativeModules.PiwikProSdk.setVisitorIdFromDeepLink
+      ).toHaveBeenCalledWith(deepLink);
+    });
+  });
+
+  describe('#getUserAgent', () => {
+    it('should call getUserAgent from native SDK and return the user agent string', async () => {
+      const mockUserAgent = 'Mozilla/5.0 (React Native) PiwikPro/1.0.0';
+      NativeModules.PiwikProSdk.getUserAgent.mockResolvedValue(mockUserAgent);
+
+      const result = await PiwikProSdk.getUserAgent();
+
+      expect(result).toBe(mockUserAgent);
+      expect(NativeModules.PiwikProSdk.getUserAgent).toHaveBeenCalled();
+    });
+
+    it('should throw an error when getUserAgent fails', async () => {
+      const error = new Error('Failed to get user agent');
+      NativeModules.PiwikProSdk.getUserAgent.mockRejectedValue(error);
+
+      await expect(PiwikProSdk.getUserAgent()).rejects.toThrow(error);
+      expect(NativeModules.PiwikProSdk.getUserAgent).toHaveBeenCalled();
+    });
+
+    it('should return empty string when no user agent is set', async () => {
+      NativeModules.PiwikProSdk.getUserAgent.mockResolvedValue('');
+
+      const result = await PiwikProSdk.getUserAgent();
+
+      expect(result).toBe('');
+      expect(NativeModules.PiwikProSdk.getUserAgent).toHaveBeenCalled();
+    });
+  });
+
+  describe('#setSessionHash', () => {
+    it('should call setSessionHash with DISABLED value', async () => {
+      await PiwikProSdk.setSessionHash(SessionHash.DISABLED);
+
+      expect(NativeModules.PiwikProSdk.setSessionHash).toHaveBeenCalledWith(
+        SessionHash.DISABLED
+      );
+    });
+
+    it('should call setSessionHash with ENABLED value', async () => {
+      await PiwikProSdk.setSessionHash(SessionHash.ENABLED);
+
+      expect(NativeModules.PiwikProSdk.setSessionHash).toHaveBeenCalledWith(
+        SessionHash.ENABLED
+      );
+    });
+
+    it('should call setSessionHash with NOT_SET value', async () => {
+      await PiwikProSdk.setSessionHash(SessionHash.NOT_SET);
+
+      expect(NativeModules.PiwikProSdk.setSessionHash).toHaveBeenCalledWith(
+        SessionHash.NOT_SET
+      );
+    });
+
+    it('should throw an error when setSessionHash fails', async () => {
+      const error = new Error('Failed to set session hash');
+      NativeModules.PiwikProSdk.setSessionHash.mockRejectedValue(error);
+
+      await expect(
+        PiwikProSdk.setSessionHash(SessionHash.ENABLED)
+      ).rejects.toThrow(error);
+      expect(NativeModules.PiwikProSdk.setSessionHash).toHaveBeenCalledWith(
+        SessionHash.ENABLED
+      );
+    });
+
+    it('should resolve successfully when setSessionHash succeeds', async () => {
+      NativeModules.PiwikProSdk.setSessionHash.mockResolvedValue(undefined);
+
+      await expect(
+        PiwikProSdk.setSessionHash(SessionHash.ENABLED)
+      ).resolves.toBeUndefined();
+      expect(NativeModules.PiwikProSdk.setSessionHash).toHaveBeenCalledWith(
+        SessionHash.ENABLED
+      );
+    });
+  });
+
+  describe('#getSessionHash', () => {
+    it('should return DISABLED when session hash is disabled', async () => {
+      NativeModules.PiwikProSdk.getSessionHash.mockResolvedValue(
+        SessionHash.DISABLED
+      );
+
+      const result = await PiwikProSdk.getSessionHash();
+
+      expect(result).toBe(SessionHash.DISABLED);
+      expect(NativeModules.PiwikProSdk.getSessionHash).toHaveBeenCalled();
+    });
+
+    it('should return ENABLED when session hash is enabled', async () => {
+      NativeModules.PiwikProSdk.getSessionHash.mockResolvedValue(
+        SessionHash.ENABLED
+      );
+
+      const result = await PiwikProSdk.getSessionHash();
+
+      expect(result).toBe(SessionHash.ENABLED);
+      expect(NativeModules.PiwikProSdk.getSessionHash).toHaveBeenCalled();
+    });
+
+    it('should return NOT_SET when session hash is not set', async () => {
+      NativeModules.PiwikProSdk.getSessionHash.mockResolvedValue(
+        SessionHash.NOT_SET
+      );
+
+      const result = await PiwikProSdk.getSessionHash();
+
+      expect(result).toBe(SessionHash.NOT_SET);
+      expect(NativeModules.PiwikProSdk.getSessionHash).toHaveBeenCalled();
+    });
+
+    it('should throw an error when getSessionHash fails', async () => {
+      const error = new Error('Failed to get session hash');
+      NativeModules.PiwikProSdk.getSessionHash.mockRejectedValue(error);
+
+      await expect(PiwikProSdk.getSessionHash()).rejects.toThrow(error);
+      expect(NativeModules.PiwikProSdk.getSessionHash).toHaveBeenCalled();
     });
   });
 });

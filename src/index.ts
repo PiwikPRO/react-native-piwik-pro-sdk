@@ -12,7 +12,10 @@ import type {
   TrackScreenOptions,
   TrackSocialInteractionOptions,
   EcommerceProduct,
-  TrackEcommerceOrderOptions
+  TrackEcommerceOrderOptions,
+  SessionHash,
+  EcommerceOptions,
+  TrackSearchOptions,
 } from './types';
 
 import {
@@ -94,6 +97,10 @@ async function trackApplicationInstall(): Promise<void> {
   return await PiwikProNativeSdk.trackApplicationInstall();
 }
 
+async function trackApplicationUpdate(): Promise<void> {
+  return await PiwikProNativeSdk.trackApplicationUpdate();
+}
+
 async function trackOutlink(
   url: string,
   options?: CommonEventOptions
@@ -104,7 +111,7 @@ async function trackOutlink(
 
 async function trackSearch(
   keyword: string,
-  options?: TrackScreenOptions
+  options?: TrackSearchOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackSearch(keyword, options);
@@ -149,7 +156,7 @@ async function trackEcommerce(
 
 async function trackEcommerceProductDetailView(
   products: EcommerceProduct[],
-  options?: CommonEventOptions
+  options?: EcommerceOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
@@ -162,7 +169,7 @@ async function trackEcommerceProductDetailView(
 async function trackEcommerceCartUpdate(
   products: EcommerceProduct[],
   grandTotal: String,
-  options?: CommonEventOptions
+  options?: EcommerceOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
@@ -175,7 +182,7 @@ async function trackEcommerceCartUpdate(
 
 async function trackEcommerceAddToCart(
   products: EcommerceProduct[],
-  options?: CommonEventOptions
+  options?: EcommerceOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
@@ -184,7 +191,7 @@ async function trackEcommerceAddToCart(
 
 async function trackEcommerceRemoveFromCart(
   products: EcommerceProduct[],
-  options?: CommonEventOptions
+  options?: EcommerceOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
   validateEcommerceProductCustomKeyValue(products);
@@ -286,12 +293,33 @@ async function getDispatchInterval(): Promise<number> {
   return await PiwikProNativeSdk.getDispatchInterval();
 }
 
+async function setVisitorIDLifetime(visitorIDLifetime: number): Promise<void> {
+  validateInt(visitorIDLifetime);
+  return await PiwikProNativeSdk.setVisitorIDLifetime(visitorIDLifetime);
+}
+
 async function setIncludeDefaultCustomVariables(
   includeDefaultCustomVariables: boolean
 ): Promise<void> {
   return await PiwikProNativeSdk.setIncludeDefaultCustomVariables(
     includeDefaultCustomVariables
   );
+}
+
+async function setVisitorIdFromDeepLink(deepLink: string): Promise<boolean> {
+  return await PiwikProNativeSdk.setVisitorIdFromDeepLink(deepLink);
+}
+
+async function getUserAgent(): Promise<string> {
+  return await PiwikProNativeSdk.getUserAgent();
+}
+
+async function setSessionHash(sessionHash: SessionHash): Promise<void> {
+  return await PiwikProNativeSdk.setSessionHash(sessionHash);
+}
+
+async function getSessionHash(): Promise<SessionHash> {
+  return await PiwikProNativeSdk.getSessionHash();
 }
 
 async function getIncludeDefaultCustomVariables(): Promise<boolean> {
@@ -346,6 +374,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackSocialInteraction,
   trackDownload,
   trackApplicationInstall,
+  trackApplicationUpdate,
   trackOutlink,
   trackSearch,
   trackImpression,
@@ -373,6 +402,7 @@ const PiwikProSdk: PiwikProSdkType = {
   dispatch,
   setDispatchInterval,
   getDispatchInterval,
+  setVisitorIDLifetime,
   setIncludeDefaultCustomVariables,
   getIncludeDefaultCustomVariables,
   setAnonymizationState,
@@ -383,7 +413,12 @@ const PiwikProSdk: PiwikProSdkType = {
   getDryRun,
   setPrefixing,
   isPrefixingOn,
+  setVisitorIdFromDeepLink,
+  getUserAgent,
+  setSessionHash,
+  getSessionHash,
 };
 
+export { SessionHash } from './types';
 export type { PiwikProSdkType } from './types';
 export default PiwikProSdk;

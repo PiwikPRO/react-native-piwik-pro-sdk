@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import PiwikProSdk from '@piwikpro/react-native-piwik-pro-sdk';
+import PiwikProSdk, { SessionHash } from '@piwikpro/react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
   sdkInitializedSelector,
   sessionTimeoutSelector,
+  visitorIdLifetimeSelector,
   setDispatchInterval,
+  setVisitorIdLifetime,
   setError,
   setMessage,
   setSessionTimeout,
@@ -22,6 +24,7 @@ export default function Settings() {
   const dispatch = useAppDispatch();
   const successMessage = (message: string) => dispatch(setMessage(message));
   const dispatchInterval = useAppSelector(dispatchIntervalSelector);
+  const visitorIdLifetime = useAppSelector(visitorIdLifetimeSelector);
   const sdkInitialized = useAppSelector(sdkInitializedSelector);
   const userId = useAppSelector(userIdSelector);
   const userEmail = useAppSelector(userEmailSelector);
@@ -34,6 +37,9 @@ export default function Settings() {
   const [optOut, setOptOut] = useState<boolean>(false);
   const [prefixingEnabled, setPrefixingEnabled] = useState<boolean>(true);
   const [dryRun, setDryRun] = useState<boolean>(false);
+  const [currentSessionHash, setCurrentSessionHash] = useState<SessionHash>(
+    SessionHash.NOT_SET
+  );
 
   useEffect(() => {
     if (sdkInitialized) {
@@ -42,6 +48,7 @@ export default function Settings() {
       getOptOutState();
       getPrefixingState();
       getDryRunState();
+      getCurrentSessionHash();
     }
   }, [sdkInitialized]);
 
@@ -187,6 +194,35 @@ export default function Settings() {
     }
   };
 
+  const changeVisitorIdLifetime = async () => {
+    try {
+      await PiwikProSdk.setVisitorIDLifetime(visitorIdLifetime);
+      successMessage('Visitor ID lifetime changed successfully');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const changeSessionHash = async (newHash: SessionHash) => {
+    try {
+      await PiwikProSdk.setSessionHash(newHash);
+      const currentHash = await PiwikProSdk.getSessionHash();
+      setCurrentSessionHash(currentHash);
+      successMessage('Session hash changed successfully');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const getCurrentSessionHash = async () => {
+    try {
+      const hash = await PiwikProSdk.getSessionHash();
+      setCurrentSessionHash(hash);
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollViewContainer>
       <Button onPress={dispatchEvents} text="Dispatch events" />
@@ -273,6 +309,39 @@ export default function Settings() {
         onChangeText={(buttonText) => dispatch(setVisitorId(buttonText))}
       />
       <Button onPress={changeVisitorId} text="Set visitor ID" />
+
+      <Input
+        value={visitorIdLifetime.toString()}
+        label="Visitor ID lifetime (in seconds)"
+        placeholder="Visitor ID lifetime (in seconds)"
+        keyboardType="numeric"
+        onChangeText={(buttonText) =>
+          dispatch(setVisitorIdLifetime(parseInt(buttonText, 10) || 0))
+        }
+      />
+      <Button
+        onPress={changeVisitorIdLifetime}
+        text="Set visitor ID lifetime"
+      />
+
+      <Button
+        onPress={() => changeSessionHash(SessionHash.DISABLED)}
+        text={`Set Session Hash to DISABLED ${
+          currentSessionHash === SessionHash.DISABLED ? '(current)' : ''
+        }`}
+      />
+      <Button
+        onPress={() => changeSessionHash(SessionHash.ENABLED)}
+        text={`Set Session Hash to ENABLED ${
+          currentSessionHash === SessionHash.ENABLED ? '(current)' : ''
+        }`}
+      />
+      <Button
+        onPress={() => changeSessionHash(SessionHash.NOT_SET)}
+        text={`Set Session Hash to NOT_SET ${
+          currentSessionHash === SessionHash.NOT_SET ? '(current)' : ''
+        }`}
+      />
     </ScrollViewContainer>
   );
 }

@@ -10,7 +10,7 @@ PODS:
     - React-jsi (= 0.64.4)
     - ReactCommon/turbomodule/core (= 0.64.4)
   - glog (0.3.5)
-  - PiwikPROSDK (1.2.1)
+  - PiwikPROSDK (2.1.0)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -204,8 +204,8 @@ PODS:
     - React-jsi (= 0.64.4)
     - React-perflogger (= 0.64.4)
   - React-jsinspector (0.64.4)
-  - react-native-piwik-pro-sdk (1.0.9):
-    - PiwikPROSDK (= 1.2.1)
+  - react-native-piwik-pro-sdk (1.1.0):
+    - PiwikPROSDK (= 2.1.0)
     - React-Core
   - react-native-safe-area-context (3.4.1):
     - React-Core
@@ -391,9 +391,9 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: fa8275d5086566e22a26ddc385ab5772e7f9b1bd
-  FBReactNativeSpec: 38a53537e3ddc3e3a850a18d1742735042e98d03
+  FBReactNativeSpec: 709203eecb7dc1f96825a603572c3aeb88086c65
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
-  PiwikPROSDK: f8261f12839d723c913d6ed973f3e66b737d58e9
+  PiwikPROSDK: 87668cccb14a800a1408455133566171f0d64d03
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: f85fa00af016059cf88b90b8f8ff9a6af9e4b6c3
   RCTTypeSafety: 5279aaf0fb1ad715cbbbbee32d5c98c72598bc9c
@@ -405,7 +405,7 @@ SPEC CHECKSUMS:
   React-jsi: 64f80675a66899bf0f4a58b8e3908966fa516234
   React-jsiexecutor: 8c077bef1c64430b6034f27df1000d194551e2eb
   React-jsinspector: d4f6973dd474357dbaaf6f52f31ffc713bf3e766
-  react-native-piwik-pro-sdk: 09d988eaa5106bef64f628716c44b711ef1c07f4
+  react-native-piwik-pro-sdk: c55ed6de758b48db77e28d871addad0e79aeafef
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   React-perflogger: 5a890ca0911669421b7611661e9b58f91c805f5c
   React-RCTActionSheet: bd180e0879f8424a73650c5c28fbef4f3b5b27fb
@@ -425,4 +425,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 2b1b963821268a28644056c139b79c8493795dca
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.16.2

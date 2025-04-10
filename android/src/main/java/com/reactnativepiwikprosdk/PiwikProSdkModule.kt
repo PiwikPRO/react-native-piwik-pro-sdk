@@ -10,6 +10,7 @@ import pro.piwik.sdk.TrackerConfig
 import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
 import pro.piwik.sdk.extra.EcommerceProducts
+import pro.piwik.sdk.extra.SessionHash
 import java.net.URL
 import java.util.*
 
@@ -147,7 +148,17 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun trackApplicationInstall(promise: Promise) {
     try {
-      TrackHelper.track().sendApplicationDownload().with(getTracker())
+      TrackHelper.track().applicationInstall().with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun trackApplicationUpdate(promise: Promise) {
+    try {
+      TrackHelper.track().applicationUpdate().with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -222,9 +233,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   fun trackGoal(goal: String, options: ReadableMap?, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()
-
       applyOptionalParameters(trackHelper, options)
-      trackHelper.goal(goal).revenue(options?.getDouble("revenue")?.toFloat()).with(getTracker())
+
+      val goalTracker = trackHelper.goal(goal)
+        .revenue(options?.getDouble("revenue")?.toFloat())
+
+      options?.getString("currencyCode")?.let { currencyCode ->
+        goalTracker.currencyCode(currencyCode)
+      }
+
+      goalTracker.with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -260,8 +278,13 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.ecommerceProductDetailView(products).with(getTracker())
+      val productDetailView = trackHelper.ecommerceProductDetailView(products)
 
+      options?.getString("currencyCode")?.let { currencyCode ->
+        productDetailView.currencyCode(currencyCode)
+      }
+
+      productDetailView.with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -276,7 +299,12 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
         val trackHelper = TrackHelper.track()
 
         applyOptionalParameters(trackHelper, options)
-        trackHelper.ecommerceCartUpdate(products, grandTotal).with(getTracker())
+        val cartUpdate = trackHelper.ecommerceCartUpdate(products, grandTotal)
+
+        options?.getString("currencyCode")?.let { currencyCode ->
+          cartUpdate.currencyCode(currencyCode)
+        }
+        cartUpdate.with(getTracker())
 
         promise.resolve(null)
       } catch (exception: Exception) {
@@ -294,7 +322,12 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.ecommerceAddToCart(products).with(getTracker())
+
+      val addToCart = trackHelper.ecommerceAddToCart(products)
+      options?.getString("currencyCode")?.let { currencyCode ->
+        addToCart.currencyCode(currencyCode)
+      }
+      addToCart.with(getTracker())
 
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -309,7 +342,12 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.ecommerceRemoveFromCart(products).with(getTracker())
+
+      val removeFromCart = trackHelper.ecommerceRemoveFromCart(products)
+      options?.getString("currencyCode")?.let { currencyCode ->
+        removeFromCart.currencyCode(currencyCode)
+      }
+      removeFromCart.with(getTracker())
 
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -329,12 +367,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
         val discount = options?.getString("discount") ?: ""
 
         applyOptionalParameters(trackHelper, options)
-        trackHelper.ecommerceOrder(orderId, grandTotal, products)
+        
+        val ecommerceOrder = trackHelper.ecommerceOrder(orderId, grandTotal, products)
           .subTotal(subTotal)
           .tax(tax)
           .shipping(shippingCost)
           .discount(discount)
-          .with(getTracker())
+        options?.getString("currencyCode")?.let { currencyCode ->
+          ecommerceOrder.currencyCode(currencyCode)
+        }
+        ecommerceOrder.with(getTracker())
 
         promise.resolve(null)
       } catch (exception: Exception) {
@@ -530,6 +572,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun setVisitorIDLifetime(visitorIDLifetime: Int, promise: Promise) {
+    try {
+      getTracker().visitorIDLifetime = visitorIDLifetime.toLong() * 1000
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun getDispatchInterval(promise: Promise) {
     try {
       val dispatchInterval = getTracker().dispatchInterval.toInt() / 1000
@@ -645,6 +697,55 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       val prefixingEnabled = getTracker().isPrefixing
       promise.resolve(prefixingEnabled)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun setVisitorIdFromDeepLink(deeplink: String, promise: Promise) {
+    try {
+      val result = getTracker().setVisitorIdFromDeepLink(deeplink)
+      promise.resolve(result)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getUserAgent(promise: Promise) {
+    try {
+      val userAgent = getTracker().userAgent
+      promise.resolve(userAgent)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun setSessionHash(sessionHash: Int, promise: Promise) {
+    try {
+      val hash = when (sessionHash) {
+        0 -> SessionHash.DISABLED
+        1 -> SessionHash.ENABLED
+        else -> SessionHash.NOT_SET
+      }
+      getTracker().sessionHash = hash
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getSessionHash(promise: Promise) {
+    try {
+      val sessionHash = when (getTracker().sessionHash) {
+        SessionHash.DISABLED -> 0
+        SessionHash.ENABLED -> 1
+        else -> 2
+      }
+      promise.resolve(sessionHash)
     } catch (exception: Exception) {
       promise.reject(exception)
     }

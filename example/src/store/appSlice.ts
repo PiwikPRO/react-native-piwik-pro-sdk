@@ -10,6 +10,7 @@ interface AppState {
   userEmail: string;
   sessionTimeout: number;
   visitorId: string;
+  visitorIdLifetime: number;
 }
 
 const initialState: AppState = {
@@ -21,6 +22,7 @@ const initialState: AppState = {
   userEmail: '',
   sessionTimeout: 0,
   visitorId: '',
+  visitorIdLifetime: 0,
 };
 
 export const appSlice = createSlice({
@@ -55,6 +57,9 @@ export const appSlice = createSlice({
     setVisitorId: (state, action: PayloadAction<string>) => {
       state.visitorId = action.payload;
     },
+    setVisitorIdLifetime: (state, action: PayloadAction<number>) => {
+      state.visitorIdLifetime = action.payload;
+    },
   },
 });
 
@@ -68,6 +73,7 @@ export const {
   setUserEmail,
   setSessionTimeout,
   setVisitorId,
+  setVisitorIdLifetime,
 } = appSlice.actions;
 
 export const messageSelector = (state: RootState) => state.app.message;
@@ -81,5 +87,7 @@ export const userEmailSelector = (state: RootState) => state.app.userEmail;
 export const sessionTimeoutSelector = (state: RootState) =>
   state.app.sessionTimeout;
 export const visitorIdSelector = (state: RootState) => state.app.visitorId;
+export const visitorIdLifetimeSelector = (state: RootState) =>
+  state.app.visitorIdLifetime;
 
 export default appSlice.reducer;

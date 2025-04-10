@@ -216,6 +216,7 @@ export default function TrackingActions() {
     const options: TrackGoalOptions = {
       visitCustomVariables,
       revenue: 30,
+      currencyCode: 'USD',
       // customDimensions,
     };
 
@@ -262,9 +263,10 @@ export default function TrackingActions() {
   };
 
   const trackEcommerceProductDetailsView = async () => {
-    const options: CommonEventOptions = {
+    const options: EcommerceOptions = {
       visitCustomVariables,
       customDimensions,
+      currencyCode: 'EUR',
     };
 
     try {
@@ -279,11 +281,12 @@ export default function TrackingActions() {
   };
 
   const trackEcommerceCartUpdate = async () => {
-    const options: CommonEventOptions = {
+    const options: EcommerceOptions = {
       visitCustomVariables,
       customDimensions,
+      currencyCode: 'EUR',
     };
-    let grandTotal: String = '10000';
+    const grandTotal = '10000';
 
     try {
       await PiwikProSdk.trackEcommerceCartUpdate(
@@ -298,9 +301,10 @@ export default function TrackingActions() {
   };
 
   const trackEcommerceAddToCart = async () => {
-    const options: CommonEventOptions = {
+    const options: EcommerceOptions = {
       visitCustomVariables,
       customDimensions,
+      currencyCode: 'EUR',
     };
 
     try {
@@ -312,9 +316,10 @@ export default function TrackingActions() {
   };
 
   const trackEcommerceRemoveFromCart = async () => {
-    const options: CommonEventOptions = {
+    const options: EcommerceOptions = {
       visitCustomVariables,
       customDimensions,
+      currencyCode: 'EUR',
     };
 
     try {
@@ -333,6 +338,7 @@ export default function TrackingActions() {
       shipping: '60',
       subTotal: '120',
       tax: '39.6',
+      currencyCode: 'EUR',
     };
 
     try {
@@ -354,6 +360,24 @@ export default function TrackingActions() {
         `http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore${eventNum}`
       );
       successMessage('Track campaign');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const trackApplicationInstall = async () => {
+    try {
+      await PiwikProSdk.trackApplicationInstall();
+      successMessage('Track application install');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const trackApplicationUpdate = async () => {
+    try {
+      await PiwikProSdk.trackApplicationUpdate();
+      successMessage('Track application update');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -419,6 +443,16 @@ export default function TrackingActions() {
       <Button onPress={trackEcommerceOrder} text="Track ecommerce order" />
 
       <Button onPress={trackCampaign} text="Track campaign" />
+
+      <Button
+        onPress={trackApplicationInstall}
+        text="Track application install"
+      />
+
+      <Button
+        onPress={trackApplicationUpdate}
+        text="Track application update"
+      />
     </ScrollViewContainer>
   );
 }

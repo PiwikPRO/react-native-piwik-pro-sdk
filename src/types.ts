@@ -56,9 +56,16 @@ export type PiwikProSdkType = {
   trackDownload(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
-   * Tracks application download.
+   * Track installation application.
+   * The event can be sent only once for each installation of the application.
    */
   trackApplicationInstall(): Promise<void>;
+
+  /**
+   * Track application update.
+   * The event can be sent once per app version.
+   */
+  trackApplicationUpdate(): Promise<void>;
 
   /**
    * Tracks outlink.
@@ -72,7 +79,7 @@ export type PiwikProSdkType = {
    * @keyword searched query that was used in the app
    * @options search tracking options (category, count, customDimensions, visitCustomVariables)
    */
-  trackSearch(keyword: string, options?: TrackScreenOptions): Promise<void>;
+  trackSearch(keyword: string, options?: TrackSearchOptions): Promise<void>;
 
   /**
    * Tracks content impression.
@@ -99,7 +106,19 @@ export type PiwikProSdkType = {
   /**
    * Tracks goal.
    * @goal tracking request will trigger a conversion for the goal of the website being tracked with given ID
-   * @options goal tracking options (revenue, customDimensions, visitCustomVariables)
+   * @options goal tracking options (revenue, currencyCode,customDimensions, visitCustomVariables)
+   *
+   * @example
+   * // Track a goal with revenue in USD
+   * await PiwikProSdk.trackGoal('goal1', {
+   *   revenue: 99.99,
+   *   currencyCode: 'USD'
+   * });
+   *
+   * // Track a goal without revenue
+   * await PiwikProSdk.trackGoal('goal2', {
+   *   customDimensions: { 1: 'Premium' }
+   * });
    */
   trackGoal(goal: string, options?: TrackGoalOptions): Promise<void>;
 
@@ -266,6 +285,17 @@ export type PiwikProSdkType = {
   getDispatchInterval(): Promise<number>;
 
   /**
+   * Sets visitor ID lifetime (in seconds).
+   * The `visitorIDLifetime` parameter determines the length of time, in seconds, that the visitor ID can be used before it expires and is considered invalid.
+   * When a visitor ID expires, a new visitor ID is generated and all parameters related to the user's activity, e.g. the time of the first event sent, are deleted.
+   * In the tracker, this simulates the behavior of the new visitor.
+   * If the value of this parameter is less or equal to 0, the visitorID has the expiry time disabled.
+   * The default value of this parameter is 0.
+   * When the SDK is upgraded to a newer version, the creation time of the visitorID is the time of the first initialisation of the SDK after the upgrade.
+   */
+  setVisitorIDLifetime(visitorIDLifetime: number): Promise<void>;
+
+  /**
    * Sets flag that determines whether default custom variables should be
    * added to each tracking event.
    * @includeDefaultCustomVariable flag that determines whether to include default
@@ -324,6 +354,35 @@ export type PiwikProSdkType = {
    * Returns current prefixing state.
    */
   isPrefixingOn(): Promise<boolean>;
+
+  /**
+   * Sets a custom app URL containing pk_vid parameter
+   * Return true if the visitor ID is successfully set, false otherwise or when it is nothing to set
+   * @deepLink deep link
+   */
+  setVisitorIdFromDeepLink(deepLink: string): Promise<boolean>;
+
+  /**
+   * Returns internal user agent used for data transmission between the Piwik Pro SDK and the Tracker.
+   */
+  getUserAgent(): Promise<string>;
+
+  /**
+   * Provides on-demand control of the SessionHash feature.
+   * 'sh' parameter will be set to 0 when DISABLED
+   * 'sh' parameter will be set to 1 when ENABLED
+   * 'sh' parameter will not be set when NOT_SET. Processing service will default to the current value from the Privacy tab in global or app settings.
+   * Default value is set to disabled.
+   * PIWIK PRO SDK will persist the parameter and hold the state next time the SDK is initialised.
+   * @sessionHash sessionHash Session hash mode (DISABLED = 0, ENABLED = 1, NOT_SET = 2)
+   */
+  setSessionHash(sessionHash: SessionHash): Promise<void>;
+
+  /**
+   * Gets the current session hash state.
+   * Returns the current session hash mode (DISABLED = 0, ENABLED = 1, NOT_SET = 2)
+   */
+  getSessionHash(): Promise<SessionHash>;
 };
 
 export type CustomDimensions = {
@@ -372,8 +431,15 @@ export type TrackInteractionOptions = CommonEventOptions & {
   target?: string;
 };
 
+/**
+ * Options for tracking a goal conversion.
+ * @property {number} [revenue] - Optional monetary value associated with the goal conversion (e.g., 99.99).
+ * @property {string} [currencyCode] - Optional ISO 4217 currency code for the revenue (e.g., 'USD', 'EUR', 'PLN').
+ *                                     If not provided, the default currency set in the Piwik PRO panel will be used.
+ */
 export type TrackGoalOptions = CommonEventOptions & {
   revenue?: number;
+  currencyCode?: string;
 };
 
 export type EcommerceItem = {
@@ -403,11 +469,43 @@ export type TrackEcommerceOptions = CommonEventOptions & {
   items?: EcommerceItem[];
 };
 
+/**
+ * Options for tracking an ecommerce order.
+ *
+ * @property {string} [subTotal] - Total value of items in a cart without shipping.
+ * @property {string} [tax] - Total tax amount.
+ * @property {string} [shipping] - Total shipping cost.
+ * @property {string} [discount] - Total discount.
+ * @property {string} [currencyCode] - Currency of the values in ISO 4217 format. If not provided, uses currency from app settings.
+ *
+ * @example
+ * ```typescript
+ * const options: TrackEcommerceOrderOptions = {
+ *   subTotal: '120.00',
+ *   tax: '10.00',
+ *   shipping: '5.00',
+ *   discount: '25.00',
+ *   currencyCode: 'EUR',
+ *   visitCustomVariables: { 1: { name: 'payment', value: 'credit-card' } },
+ *   customDimensions: { 1: 'premium' }
+ * };
+ * ```
+ */
 export type TrackEcommerceOrderOptions = CommonEventOptions & {
   subTotal?: string;
   tax?: string;
   shipping?: string;
   discount?: string;
+  currencyCode?: string;
+};
+
+/**
+ * Common options for tracking ecommerce events.
+ * @property {string} [currencyCode] - Optional ISO 4217 currency code (e.g., 'USD', 'EUR', 'PLN').
+ *                                   If not provided, the default currency set in the Piwik PRO panel will be used.
+ */
+export type EcommerceOptions = CommonEventOptions & {
+  currencyCode?: string;
 };
 
 export type ProfileAttributes = {
@@ -419,4 +517,12 @@ export type TrackProfileAttribute = {
   value: string;
 };
 
-export type TrackProfileAttributes = TrackProfileAttribute | TrackProfileAttribute[];
+export type TrackProfileAttributes =
+  | TrackProfileAttribute
+  | TrackProfileAttribute[];
+
+export enum SessionHash {
+  DISABLED = 0,
+  ENABLED = 1,
+  NOT_SET = 2,
+}
