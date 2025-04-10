@@ -68,14 +68,14 @@ jobs:
           while true; do
             PR_STATUS=$(gh pr view ${{ steps.cpr.outputs.pull-request-number }} --json reviewDecision -q .reviewDecision)
             if [ "$PR_STATUS" = "APPROVED" ]; then
-              gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --merge --admin
+              gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --merge
               break
             fi
             echo "Waiting for PR approval..."
             sleep 60
           done
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.REACT_NATIVE_SDK_PIWIKPRO_CI_RWV2 }}
       - name: 'Release'
         run: npm run release-ci
         env:
