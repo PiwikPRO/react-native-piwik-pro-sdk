@@ -343,6 +343,7 @@ describe('PiwikProSdk', () => {
         ...commonEventOptions,
         piece: 'banner',
         target: 'https://www.dn.se/',
+        url: 'https://example.com/impression-url',
       };
 
       await PiwikProSdk.trackImpression(contentName, options);
