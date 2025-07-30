@@ -83,6 +83,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - name: Checkout updated code after PR merge
+        if: steps.cpr.outputs.pull-request-number
+        run: |
+          git fetch origin master
+          git checkout master
+          git pull origin master
+          echo "Current package.json version:"
+          cat package.json | grep version
+
       - name: Release
         if: steps.cpr.outputs.pull-request-number
         run: npm run release-ci
