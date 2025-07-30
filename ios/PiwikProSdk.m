@@ -226,7 +226,7 @@ RCT_REMAP_METHOD(trackImpression,
     @try {
         [self applyOptionalParameters:options];
         
-        [[PiwikTracker sharedInstance] sendContentImpressionWithName:contentName piece:options[@"piece"] target:options[@"target"]];
+      [[PiwikTracker sharedInstance] sendContentImpressionWithName:contentName piece:options[@"piece"] target:options[@"target"] url:options[@"url"]];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);

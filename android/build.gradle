@@ -127,5 +127,5 @@ dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'pro.piwik:sdk-framework-android:2.1.0'
+  implementation 'com.github.PiwikPRO:sdk-framework-android:2.2.0'
 }

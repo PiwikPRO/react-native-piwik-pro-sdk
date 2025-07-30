@@ -1,3 +1,8 @@
+## 2.1.0
+
+* Added support for native iOS SDK version 2.1.1
+* Added support for native Android SDK version 2.2.0
+
 ## 2.0.0
 
 * Added support for native iOS SDK version 2.1.0

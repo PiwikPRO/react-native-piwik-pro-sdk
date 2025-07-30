@@ -84,7 +84,7 @@ export type PiwikProSdkType = {
   /**
    * Tracks content impression.
    * @contentName name of the content
-   * @options search tracking options (piece, target, customDimensions, visitCustomVariables)
+   * @options search tracking options (piece, target, url, customDimensions, visitCustomVariables)
    */
   trackImpression(
     contentName: string,
@@ -424,6 +424,7 @@ export type TrackSearchOptions = CommonEventOptions & {
 export type TrackImpressionOptions = CommonEventOptions & {
   piece?: string;
   target?: string;
+  url?: string;
 };
 
 export type TrackInteractionOptions = CommonEventOptions & {

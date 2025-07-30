@@ -203,7 +203,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
       applyOptionalParameters(trackHelper, options)
       trackHelper.impression(contentName).piece(options?.getString("piece"))
-        .target(options?.getString("target")).with(getTracker())
+        .target(options?.getString("target")).url(options?.getString("url")).with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)

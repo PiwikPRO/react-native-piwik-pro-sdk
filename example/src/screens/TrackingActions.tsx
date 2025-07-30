@@ -178,6 +178,7 @@ export default function TrackingActions() {
       visitCustomVariables,
       piece: 'banner',
       target: 'https://www.dn.se/',
+      url: 'https://example.com/impression-url',
       // customDimensions,
     };
 
