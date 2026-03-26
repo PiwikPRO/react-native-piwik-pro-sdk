@@ -1,7 +1,10 @@
-const rnPreset = require('react-native/jest-preset');
-
 module.exports = {
-  ...rnPreset,
+  transform: {
+    '^.+\\.(js|ts|tsx)$': 'babel-jest',
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)/)',
+  ],
   modulePathIgnorePatterns: [
     '<rootDir>/example/node_modules',
     '<rootDir>/lib/',
