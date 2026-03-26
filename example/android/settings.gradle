@@ -1,6 +1,10 @@
-rootProject.name = 'PiwikProSdkExample'
-apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
-include ':app'
+pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
+plugins { id("com.facebook.react.settings") }
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex -> ex.autolinkLibrariesFromCommand() }
 
-include ':reactnativepiwikprosdk'
-project(':reactnativepiwikprosdk').projectDir = new File(rootProject.projectDir, '../../android')
+rootProject.name = "PiwikProSdkExample"
+include(":app")
+includeBuild("../node_modules/@react-native/gradle-plugin")
+
+include(":reactnativepiwikprosdk")
+project(":reactnativepiwikprosdk").projectDir = new File(rootProject.projectDir, "../../android")

@@ -1,6 +1,5 @@
-import React from 'react';
+import { Text, TextInput, View } from 'react-native';
 import { styles } from '../styles';
-import { Input as RNInput } from 'react-native-elements';
 
 interface InputProps {
   onChangeText: (text: string) => void;
@@ -18,15 +17,17 @@ export function Input({
   placeholder,
 }: InputProps) {
   return (
-    <RNInput
-      value={value}
-      containerStyle={styles.inputContainer}
-      inputStyle={styles.input}
-      label={label}
-      autoCompleteType={undefined}
-      keyboardType={keyboardType}
-      onChangeText={onChangeText}
-      placeholder={placeholder}
-    />
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>{label}</Text>
+      <TextInput
+        value={value}
+        style={styles.input}
+        keyboardType={keyboardType}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        autoCorrect={false}
+        autoCapitalize="none"
+      />
+    </View>
   );
 }

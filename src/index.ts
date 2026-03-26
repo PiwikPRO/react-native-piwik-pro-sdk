@@ -420,5 +420,21 @@ const PiwikProSdk: PiwikProSdkType = {
 };
 
 export { SessionHash } from './types';
-export type { PiwikProSdkType } from './types';
+export type {
+  CommonEventOptions,
+  EcommerceOptions,
+  EcommerceProduct,
+  PiwikProSdkType,
+  ProfileAttributes,
+  TrackCustomEventOptions,
+  TrackEcommerceOptions,
+  TrackEcommerceOrderOptions,
+  TrackGoalOptions,
+  TrackImpressionOptions,
+  TrackInteractionOptions,
+  TrackProfileAttributes,
+  TrackScreenOptions,
+  TrackSearchOptions,
+  TrackSocialInteractionOptions,
+} from './types';
 export default PiwikProSdk;

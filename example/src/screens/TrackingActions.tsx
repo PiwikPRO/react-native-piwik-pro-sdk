@@ -1,5 +1,17 @@
-import React from 'react';
-import PiwikProSdk from '@piwikpro/react-native-piwik-pro-sdk';
+import PiwikProSdk, {
+  type CommonEventOptions,
+  type EcommerceOptions,
+  type EcommerceProduct,
+  type TrackCustomEventOptions,
+  type TrackEcommerceOptions,
+  type TrackEcommerceOrderOptions,
+  type TrackGoalOptions,
+  type TrackImpressionOptions,
+  type TrackInteractionOptions,
+  type TrackScreenOptions,
+  type TrackSearchOptions,
+  type TrackSocialInteractionOptions,
+} from '@piwikpro/react-native-piwik-pro-sdk';
 import { Button, ScrollViewContainer } from '../components';
 import { eventNumSelector, setError, setEventMessage } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
