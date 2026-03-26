@@ -27,6 +27,8 @@ jobs:
       pull-requests: write
       issues: write
     runs-on: ubuntu-latest
+    env:
+      HUSKY: '0'
     steps:
       - name: Get the version
         id: get_version
