@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PiwikProSdk, { SessionHash } from '@piwikpro/react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
@@ -50,6 +50,7 @@ export default function Settings() {
       getDryRunState();
       getCurrentSessionHash();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only re-fetch when SDK becomes initialized
   }, [sdkInitialized]);
 
   const getAnonymizationState = async () => {

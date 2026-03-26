@@ -11,6 +11,9 @@ jsconfig.json
 
 # Xcode
 #
+example/ios/.xcode.env
+example/ios/.xcode.env.local
+**/ios/.xcode.env.local
 build/
 *.pbxuser
 !default.pbxuser
@@ -44,6 +47,9 @@ gradle
 # Cocoapods
 #
 example/ios/Pods
+
+# Example app uses Yarn; npm lockfile causes duplicate resolution
+example/package-lock.json
 
 # node.js
 #

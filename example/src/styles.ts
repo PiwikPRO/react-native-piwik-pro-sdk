@@ -51,13 +51,27 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
   },
+  divider: {
+    width: '100%',
+    height: 2,
+    backgroundColor: '#d7d7d7',
+  },
   inputContainer: {
     width: '94%',
     fontSize: 14,
     marginTop: 10,
   },
+  inputLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
   input: {
     fontSize: 16,
-    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: '#bdbdbd',
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
 });

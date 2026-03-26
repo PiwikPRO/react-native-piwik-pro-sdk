@@ -1,3 +1,9 @@
+## 2.2.0
+
+* Added support for native iOS SDK version 2.2.0
+* Added support for native Android SDK version 2.3.0
+* Bumped JavaScript and dev tooling (React Native 0.84, React 19.2.3, TypeScript 6, Jest 30, ESLint/Prettier, Husky, release-it, react-native-builder-bob, and aligned the example app dependencies)
+
 ## 2.1.0
 
 * Added support for native iOS SDK version 2.1.1

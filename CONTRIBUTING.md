@@ -4,13 +4,28 @@ We want this community to be friendly and respectful to each other. Please follo
 
 ## Development workflow
 
-To get started with the project, run `yarn` in the root directory to install the required dependencies for each package:
+### What you need
+
+1. **Node.js** — satisfy the **`engines`** field in **`example/package.json`**.
+2. **Package manager** — **`yarn`** or **`npm`** work in the **root** and in **`example/`**. Prefer **Yarn** when you change example dependencies so installs match maintainers and CI.
+
+If you use Yarn and the `yarn` command is missing or looks wrong, run **`corepack enable`** once (Node includes this), then try again. You usually only do this the first time on a new machine.
+
+### Install dependencies (two steps)
+
+There are **two separate projects**: the SDK at the **root** and the **example** app. Install both:
 
 ```sh
 yarn
+cd example && yarn && cd ..
 ```
 
-> While it's possible to use [`npm`](https://github.com/npm/cli), the tooling is built around [`yarn`](https://classic.yarnpkg.com/), so you'll have an easier time if you use `yarn` for development.
+Or with npm in both places:
+
+```sh
+npm install
+cd example && npm install && cd ..
+```
 
 While developing, you can run the [example app](/example/) to test your changes. Any changes you make in your library's JavaScript code will be reflected in the example app without a rebuild. If you change any native code, then you'll need to rebuild the example app.
 
@@ -51,9 +66,9 @@ Remember to add tests for your change if possible. Run the unit tests by:
 yarn test
 ```
 
-To edit the Objective-C files, open `example/ios/PiwikProSdkExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > react-native-piwik-pro-sdk`.
+To edit the Objective-C files, open `example/ios/PiwikProSdkExample.xcworkspace` in Xcode and find the source files at `Pods > Development Pods > react-native-piwik-pro-sdk`.
 
-To edit the Kotlin files, open `example/android` in Android studio and find the source files at `reactnativepiwikprosdk` under `Android`.
+To edit the Kotlin files, open `example/android` in Android Studio and find the source files at `reactnativepiwikprosdk` under `Android`.
 
 ### Commit message convention
 
@@ -88,15 +103,40 @@ yarn release
 
 ### Scripts
 
-The `package.json` file contains various scripts for common tasks:
+**`yarn example …`** runs a command in the **`example/`** folder. Example: `yarn example start` starts Metro for the sample app.
 
-- `yarn bootstrap`: setup project by installing all dependencies and pods.
-- `yarn typescript`: type-check files with TypeScript.
-- `yarn lint`: lint files with ESLint.
-- `yarn test`: run unit tests with Jest.
-- `yarn example start`: start the Metro server for the example app.
-- `yarn example android`: run the example app on Android.
-- `yarn example ios`: run the example app on iOS.
+**`yarn bootstrap`** installs everything in one go (example + root + iOS pods). Use it when you first clone the repo or after big dependency changes.
+
+#### SDK package (repository root)
+
+*Some **npm** commands span two lines; the second line has empty **Goal** / **Yarn** cells.*
+
+| Goal                            | Yarn              | npm                                                               |
+| ------------------------------- | ----------------- | ----------------------------------------------------------------- |
+| Install dependencies            | `yarn install`    | `npm install`                                                     |
+| Build `lib/`                    | `yarn build`      | `npm run build`                                                   |
+| Tests                           | `yarn test`       | `npm test`                                                        |
+| Typecheck SDK (`src/` only)     | `yarn typescript` | `npm run typescript`                                              |
+| Lint                            | `yarn lint`       | `npm run lint`                                                    |
+| Install CocoaPods for `example` | `yarn pods`       | `cd example/ios && pod install`                                   |
+|                                 |                   | (or `npx pod-install` from `example`)                             |
+| Full bootstrap                  | `yarn bootstrap`  | `npm install` at root, then `npm install` or `yarn` in `example`, |
+|                                 |                   | then `pod install` under `example/ios`                            |
+
+#### Example app (`example/`)
+
+| Goal                              | Yarn                                         | npm                   |
+| --------------------------------- | -------------------------------------------- | --------------------- |
+| Install dependencies              | `yarn install`                               | `npm install`         |
+| Start Metro (port 8088)           | `yarn start`                                 | `npm run start`       |
+| Metro with clean cache            | `yarn start:clean`                           | `npm run start:clean` |
+| Run on Android (CLI)              | `yarn android`                               | `npm run android`     |
+| Run on iOS (CLI)                  | `yarn ios`                                   | `npm run ios`         |
+| Fresh iOS reinstall + run         | `yarn ios:fresh`                             | `npm run ios:fresh`   |
+| Android build only (no JS runner) | `cd android && ./gradlew :app:assembleDebug` | same                  |
+| Typecheck example                 | `yarn typescript`                            | `npm run typescript`  |
+
+Root `yarn typescript` checks only SDK **`src/`**; the example uses **`example/tsconfig.json`**.
 
 ### Sending a pull request
 

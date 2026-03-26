@@ -682,7 +682,15 @@ Returns:
 
 ### Contributing
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+To **develop this SDK** (change its source code): install **Node.js** as required by the **`engines`** field in **`example/package.json`**. Then install dependencies in the **repository root** and again in **`example/`** (two separate projects). See **[CONTRIBUTING.md](CONTRIBUTING.md)** for commands and scripts.
+
+To **use the published library** in your app (not to develop the SDK), run **`npm install @piwikpro/react-native-piwik-pro-sdk`** or **`yarn add @piwikpro/react-native-piwik-pro-sdk`**.
+
+### Example app
+
+The sample app is under **`example/`**. Its React Native version and dependencies are defined there (**`example/package.json`**); use that as the reference when checking compatibility.
+
+After changing native dependencies or upgrading React Native, validate **iOS** (`pod install`, then build in Xcode) and **Android** (`./gradlew :app:assembleDebug` from `example/android`, or run on a device/emulator).
 
 ## License
 

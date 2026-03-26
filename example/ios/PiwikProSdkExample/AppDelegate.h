@@ -1,15 +1,21 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-#import <React/RCTBridgeDelegate.h>
+#import <React-RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
+NS_ASSUME_NONNULL_BEGIN
 
-@property (nonatomic, strong) UIWindow *window;
+@class RCTReactNativeFactory;
+@class RCTRootViewFactory;
+
+@interface AppDelegate : RCTDefaultReactNativeFactoryDelegate <UIApplicationDelegate>
+
+@property (nonatomic, strong, nullable) UIWindow *window;
+@property (nonatomic, strong, nullable) NSString *moduleName;
+@property (nonatomic, strong, nullable) NSDictionary *initialProps;
+@property (nonatomic, strong, nullable) RCTReactNativeFactory *reactNativeFactory;
+@property (nonatomic, assign) BOOL automaticallyLoadReactNativeWindow;
+
+- (nullable RCTRootViewFactory *)rootViewFactory;
 
 @end
+
+NS_ASSUME_NONNULL_END
