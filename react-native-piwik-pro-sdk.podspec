@@ -21,5 +21,5 @@ Pod::Spec.new do |s|
     s.dependency "React-Core"
   end
 
-  s.dependency "PiwikPROSDK", "2.2.0"
+  s.dependency "PiwikPROSDK", "2.2.1"
 end

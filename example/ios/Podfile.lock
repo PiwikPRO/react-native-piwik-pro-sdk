@@ -3,7 +3,7 @@ PODS:
   - hermes-engine (250829098.0.9):
     - hermes-engine/Pre-built (= 250829098.0.9)
   - hermes-engine/Pre-built (250829098.0.9)
-  - PiwikPROSDK (2.2.0)
+  - PiwikPROSDK (2.2.1)
   - RCTDeprecation (0.84.1)
   - RCTRequired (0.84.1)
   - RCTSwiftUI (0.84.1)
@@ -1322,7 +1322,7 @@ PODS:
     - ReactNativeDependencies
   - react-native-piwik-pro-sdk (2.2.0):
     - hermes-engine
-    - PiwikPROSDK (= 2.2.0)
+    - PiwikPROSDK (= 2.2.1)
     - RCTRequired
     - RCTTypeSafety
     - React-Core
@@ -2097,7 +2097,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBLazyVector: baf9d0492aa305444465c798e972f87e6a60dc69
   hermes-engine: 3bd91a315565f25223497f6068f7f4172fecbfd8
-  PiwikPROSDK: 8baaa859ad70fdc7d556ea10b42a8dafa23cefda
+  PiwikPROSDK: 4adb36550b094396f8c744845066dd78ebaf3200
   RCTDeprecation: 7489702d717ceea80e271eeacb3fbca39fa3c056
   RCTRequired: 1cceac389e77dc5826c681cb782d864b0ed623fc
   RCTSwiftUI: afc0a0a635860da1040a0b894bfd529da06d7810
@@ -2133,7 +2133,7 @@ SPEC CHECKSUMS:
   React-logger: f434688aaafe67ae44ce1281fa533aefa63b2b5a
   React-Mapbuffer: db4fdead4595291ce09d3b6fb332da3085bb7bd5
   React-microtasksnativemodule: ec679e33d41dde7d1850ca1ce62d864f970ababe
-  react-native-piwik-pro-sdk: 0e091a493127fcf5c5a7386460849d9d7000cefa
+  react-native-piwik-pro-sdk: 98f62ac290af196b32d18964b84a44101a30f9ae
   react-native-safe-area-context: 9e5bc71daf3e49d12563467aa3f38d3229eed544
   React-NativeModulesApple: 8e6a2e2e6a1959606a81a691a9584d4511a2bb7f
   React-networking: 65f8debdac19f4cdd9741ff4a0a9dda6753eac9e
