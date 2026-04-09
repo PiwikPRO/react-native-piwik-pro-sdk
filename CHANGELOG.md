@@ -1,3 +1,7 @@
+## 2.2.1
+
+* Added support for native iOS SDK version 2.2.1 - fixes iOS build failures with precompiled React Native (Expo SDK 54+ / RN 0.81+)
+
 ## 2.2.0
 
 * Added support for native iOS SDK version 2.2.0
