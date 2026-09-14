@@ -292,7 +292,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun trackEcommerceCartUpdate(products: ReadableArray, grandTotal: String, options: ReadableMap?, promise: Promise) {
+  fun trackEcommerceCartUpdate(products: ReadableArray?, grandTotal: String?, options: ReadableMap?, promise: Promise) {
     if (grandTotal != null && products != null) {
       try {
         val products = buildEcommerceProducts(products)
@@ -356,7 +356,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun trackEcommerceOrder(orderId: String, grandTotal: String, products: ReadableArray, options: ReadableMap?, promise: Promise) {
+  fun trackEcommerceOrder(orderId: String?, grandTotal: String?, products: ReadableArray?, options: ReadableMap?, promise: Promise) {
     if (grandTotal != null && orderId != null && products != null) {
       try {
         val products = buildEcommerceProducts(products)

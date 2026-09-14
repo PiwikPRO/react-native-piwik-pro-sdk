@@ -49,30 +49,31 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
-    "@babel/eslint-parser": "^7.28.6",
-    "@commitlint/config-conventional": "^20.5.0",
-    "@react-native-community/eslint-config": "^3.1.0",
-    "@react-native/babel-preset": "0.84.1",
-    "@release-it/conventional-changelog": "^10.0.6",
+    "@babel/core": "^7.29.7",
+    "@babel/eslint-parser": "^7.29.7",
+    "@commitlint/config-conventional": "^21.2.2",
+    "@react-native/babel-preset": "0.87.1",
+    "@react-native/eslint-config": "0.87.1",
+    "@release-it/conventional-changelog": "^12.0.0",
     "@types/jest": "^30.0.0",
-    "@types/react": "^19.2.14",
-    "commitlint": "^20.5.0",
-    "eslint": "^8.57.0",
+    "@types/react": "^19.3.0",
+    "commitlint": "^21.2.2",
+    "conventional-changelog-angular": "^9.4.0",
+    "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-ft-flow": "^3.0.11",
-    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-prettier": "^5.5.6",
     "genversion": "^3.2.0",
     "husky": "^9.1.7",
-    "jest": "^30.3.0",
-    "metro-minify-terser": "0.84.2",
-    "pod-install": "^1.0.14",
-    "prettier": "^3.8.1",
-    "react": "19.2.3",
-    "react-native": "0.84.1",
-    "react-native-builder-bob": "^0.40.18",
-    "release-it": "^19.2.4",
-    "typescript": "~6.0.2"
+    "jest": "^30.5.1",
+    "metro-minify-terser": "0.87.0",
+    "pod-install": "^1.1.0",
+    "prettier": "^3.9.6",
+    "react": "19.3.0",
+    "react-native": "0.87.1",
+    "react-native-builder-bob": "^0.43.1",
+    "release-it": "^21.0.2",
+    "typescript": "~6.0.3"
   },
   "peerDependencies": {
     "react": "*",
@@ -96,34 +97,12 @@
     },
     "plugins": {
       "@release-it/conventional-changelog": {
-        "preset": "angular"
+        "preset": {
+          "name": "angular"
+        }
       }
     }
   },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@react-native-community",
-      "prettier"
-    ],
-    "rules": {
-      "react/react-in-jsx-scope": "off",
-      "prettier/prettier": [
-        "error",
-        {
-          "quoteProps": "consistent",
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "es5",
-          "useTabs": false
-        }
-      ]
-    }
-  },
-  "eslintIgnore": [
-    "node_modules/",
-    "lib/"
-  ],
   "prettier": {
     "quoteProps": "consistent",
     "singleQuote": true,
@@ -145,5 +124,5 @@
       ]
     ]
   },
-  "packageManager": "yarn@3.5.0"
+  "packageManager": "yarn@4.18.0"
 }

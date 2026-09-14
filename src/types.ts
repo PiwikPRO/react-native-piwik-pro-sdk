@@ -519,8 +519,7 @@ export type TrackProfileAttribute = {
 };
 
 export type TrackProfileAttributes =
-  | TrackProfileAttribute
-  | TrackProfileAttribute[];
+  TrackProfileAttribute | TrackProfileAttribute[];
 
 export enum SessionHash {
   DISABLED = 0,
