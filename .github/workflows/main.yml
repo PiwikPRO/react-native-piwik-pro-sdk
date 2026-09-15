@@ -1,103 +1,73 @@
-name: Bump and Publish
-on:
-  release:
-    types: [released]
-jobs:
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
-        with:
-          node-version: 22.21.0
+name: Stage npm package
 
-      - name: 'Cache node Modules'
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci --ignore-scripts
-      - run: npm test
-  bump-and-build:
-    needs: tests
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to stage, for example 2.3.0
+        required: true
+        type: string
+
+concurrency:
+  group: npm-stage-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  stage-package:
+    name: Validate and stage package
+    if: startsWith(github.ref, 'refs/tags/')
     permissions:
-      contents: write
-      pull-requests: write
-      issues: write
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       HUSKY: '0'
+      RELEASE_VERSION: ${{ inputs.version }}
     steps:
-      - name: Get the version
-        id: get_version
-        run: |
-          version=${GITHUB_REF/refs\/tags\//}
-          echo "VERSION=$version" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+      - name: Checkout release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
         with:
           node-version: 22.21.0
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org
+      - name: Validate release source
+        run: |
+          if [[ ! "$RELEASE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Version must use the X.Y.Z format without a v prefix."
+            exit 1
+          fi
 
-      - name: 'Cache node Modules'
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: 'Install Dependencies'
+          if [ "$GITHUB_REF" != "refs/tags/$RELEASE_VERSION" ]; then
+            echo "Workflow must run from tag $RELEASE_VERSION, but it runs from $GITHUB_REF."
+            exit 1
+          fi
+
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$PACKAGE_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "package.json version $PACKAGE_VERSION does not match tag $RELEASE_VERSION."
+            exit 1
+          fi
+
+          TAG_COMMIT=$(git rev-parse "$RELEASE_VERSION^{commit}")
+          HEAD_COMMIT=$(git rev-parse HEAD)
+          if [ "$TAG_COMMIT" != "$HEAD_COMMIT" ]; then
+            echo "Checked-out commit $HEAD_COMMIT does not match tag commit $TAG_COMMIT."
+            exit 1
+          fi
+      - name: Install dependencies
         run: npm ci --ignore-scripts
-      - name: 'Set version'
-        run: npm --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
-      - name: 'Sync yarn.lock'
-        run: corepack enable && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
-      - name: 'Prepare build'
-        run: npm run prepare
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1  # v8.1.1
-        with:
-          token: ${{ github.token }}
-          commit-message: "Bump to ${{ steps.get_version.outputs.VERSION }}"
-          title: "Bump to ${{ steps.get_version.outputs.VERSION }}"
-          body: "Automated version bump to ${{ steps.get_version.outputs.VERSION }}"
-          branch: "bump-${{ steps.get_version.outputs.VERSION }}"
-          base: "master"
-          delete-branch: true
-      - name: Wait for PR to be merged
-        if: steps.cpr.outputs.pull-request-number
+      - name: Run checks
         run: |
-          echo "Pull Request #${{ steps.cpr.outputs.pull-request-number }} has been created."
-          echo "Please review, approve and merge the PR manually."
-          
-          while true; do
-            PR_STATE=$(gh pr view ${{ steps.cpr.outputs.pull-request-number }} --json state -q .state)
-            if [ "$PR_STATE" = "MERGED" ]; then
-              echo "PR has been merged successfully!"
-              break
-            elif [ "$PR_STATE" = "CLOSED" ]; then
-              echo "PR was closed without merging. Exiting..."
-              exit 1
-            fi
-            echo "Waiting for PR to be merged... (checking again in 60 seconds)"
-            sleep 60
-          done
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Checkout updated code after PR merge
-        if: steps.cpr.outputs.pull-request-number
-        run: |
-          git fetch origin master
-          git checkout master
-          git pull origin master
-          echo "Current package.json version:"
-          cat package.json | grep version
-
-      - name: Release
-        if: steps.cpr.outputs.pull-request-number
+          npm test
+          npm run lint
+          npm run typescript
+          npm run prepare
+      - name: Install npm with staged publishing support
+        run: npm install --global npm@11.19.1
+      - name: Stage package release
         run: npm run release-ci
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
